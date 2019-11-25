@@ -4,6 +4,8 @@
 #include <SDL_ttf.h>
 #include <stdio.h>
 
+#include "../classes/TMS_Base.hpp"
+
 /* Quit all SDL subsystems. */
 void quit();
 
@@ -36,6 +38,13 @@ int main(int argc, char* args[])
     {
         printf("%s", Mix_GetError());
         quit();
+        return -1;
+    }
+
+    TMS_Base baseGame;
+    if (!baseGame.init())
+    {
+        printf("Could not initialise game.\nClosing...\n");
         return -1;
     }
 

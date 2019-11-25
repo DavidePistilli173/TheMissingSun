@@ -128,7 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="classes\TMS_Base.cpp" />
+    <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\TMS_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="classes\TMS_Base.hpp" />
+    <ClInclude Include="include\tms.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
