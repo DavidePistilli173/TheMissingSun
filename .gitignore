@@ -1,19 +1,6 @@
 
-.vs/TheMissingSun/v16/Browse.VC.opendb
 Debug/TheMissingSun.exe
-.vs/TheMissingSun/v16/.suo
 Debug/TheMissingSun.ilk
 Debug/TheMissingSun.pdb
-TheMissingSun/Debug/TheMissingSun.log
-TheMissingSun/Debug/TheMissingSun.tlog/CL.command.1.tlog
-TheMissingSun/Debug/TheMissingSun.tlog/CL.read.1.tlog
-TheMissingSun/Debug/TheMissingSun.tlog/CL.write.1.tlog
-TheMissingSun/Debug/TheMissingSun.tlog/link.command.1.tlog
-TheMissingSun/Debug/TheMissingSun.tlog/link.read.1.tlog
-TheMissingSun/Debug/TheMissingSun.tlog/link.write.1.tlog
-TheMissingSun/Debug/TheMissingSun.tlog/TheMissingSun.lastbuildstate
-TheMissingSun/Debug/TMS_main.obj
-TheMissingSun/Debug/vc142.idb
-TheMissingSun/Debug/vc142.pdb
-TheMissingSun/Debug/glad.obj
-TheMissingSun/Debug/TMS_Base.obj
+TheMissingSun/Debug/
+.vs/TheMissingSun/v16/
