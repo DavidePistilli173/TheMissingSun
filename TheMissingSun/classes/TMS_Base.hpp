@@ -22,8 +22,10 @@ private:
     void render();
 
     /**************** VARIABLES *****************/
-    /* Main game window. */
-    tms::window_t _window;
+    /* WINDOW */
+    tms::window_t _window; // Main game window.
+    int _windowWidth, _windowHeight; // _window resolution.
+
     /* OpenGL context. */
     SDL_GLContext _glContext;
 };
