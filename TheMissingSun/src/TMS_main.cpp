@@ -47,6 +47,7 @@ int main(int argc, char* args[])
         printf("Could not initialise game.\nClosing...\n");
         return -1;
     }
+    baseGame.run();
 
     quit();
     return 0;
