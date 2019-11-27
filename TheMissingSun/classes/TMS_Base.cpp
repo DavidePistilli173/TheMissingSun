@@ -45,7 +45,7 @@ bool TMS_Base::init()
     /* Set VSync on. */
     SDL_GL_SetSwapInterval(1);
     /* Set OpenGL default clear colour to black. */
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(tms::DEFAULT_RED, tms::DEFAULT_GREEN, tms::DEFAULT_BLUE, 1.0f);
     /* Set the OpenGL viewport. */
     glViewport(0, 0, _windowWidth, _windowHeight);
     /* Enable OpenGL depth testing. */

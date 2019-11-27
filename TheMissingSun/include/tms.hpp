@@ -17,6 +17,10 @@ namespace tms
     constexpr int W_DEF_WIDTH = 800;
     /* Default window height. */
     constexpr int W_DEF_HEIGHT = 600;
+    /* Default colour. */
+    constexpr float DEFAULT_RED = 0.2f;
+    constexpr float DEFAULT_GREEN = 0.2f;
+    constexpr float DEFAULT_BLUE = 0.2f;
 }
 
 #endif
