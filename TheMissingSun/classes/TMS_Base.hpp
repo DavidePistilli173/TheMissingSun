@@ -28,18 +28,18 @@ private:
     void render();
 
     /**************** VARIABLES *****************/
-    /* Window */
+    /* Window. */
     tms::window_t _window; // Main game window.
     int _windowWidth, _windowHeight; // _window resolution.
 
-    /* OpenGL context. */
+    /* Graphics. */
     SDL_GLContext _glContext;
 
     /* General variables. */
     bool _exit; // True when exiting the game
     tms::GameState _currentState; // Current game state.
 
-    /* Game */
+    /* Game. */
     TMS_Menu _menu; // Game menu logic and data.
 };
 #endif

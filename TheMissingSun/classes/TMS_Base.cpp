@@ -97,9 +97,9 @@ void TMS_Base::render()
 
 void TMS_Base::run()
 {
-    /* Start the game logic thread. */
+    /* Start the renderer thread. */
     std::thread renderThread(&TMS_Base::render, this);
-    /* Start the rendering loop. */
+    /* Start the game logic. */
     outerLoop();
 
     /* Wait for the rendering thread to end. */
