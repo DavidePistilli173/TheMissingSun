@@ -44,5 +44,8 @@
     <ClInclude Include="classes\TMS_Menu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="classes\TMS_Clock.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

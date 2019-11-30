@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp" />
+    <ClInclude Include="classes\TMS_Clock.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="include\tms.hpp" />
   </ItemGroup>

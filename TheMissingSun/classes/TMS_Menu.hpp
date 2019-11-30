@@ -2,6 +2,7 @@
 #define TMS_MENU_HPP
 
 #include "../include/tms.hpp"
+#include "TMS_Clock.hpp"
 
 /* Menu class. */
 class TMS_Menu
@@ -14,7 +15,7 @@ public:
     tms::GameState menuLoop();
 
 private:
-
+    TMS_Clock _clock; // Input timer.
 };
 
 #endif

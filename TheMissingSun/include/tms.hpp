@@ -31,6 +31,8 @@ namespace tms
     constexpr float DEFAULT_RED = 0.2f;
     constexpr float DEFAULT_GREEN = 0.2f;
     constexpr float DEFAULT_BLUE = 0.2f;
+    /* Times. */
+    constexpr int MENU_UPDATE_TIME = 17; // Approximately 60 UPS.
 }
 
 #endif
