@@ -30,6 +30,9 @@
     <ClCompile Include="src\glad.c">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="classes\TMS_Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="include\tms.hpp">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\TMS_Menu.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,6 +10,16 @@ namespace tms
     /* Game window type. */
     using window_t = std::unique_ptr<SDL_Window, void(*)(SDL_Window*)>;
 
+    /***************** ENUMS *****************/
+    /* List of all possible game states. */
+    enum class GameState
+    {
+        MENU,
+        LOADING,
+        GAME,
+        EXIT
+    };
+
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
     constexpr char GAME_NAME[] = "The Missing Sun";

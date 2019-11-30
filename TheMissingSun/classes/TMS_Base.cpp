@@ -10,7 +10,7 @@ TMS_Base::TMS_Base() :
     _windowHeight(tms::W_DEF_HEIGHT),
     _glContext(NULL),
     _exit(false),
-    _currentState(GameState::MENU)
+    _currentState(tms::GameState::MENU)
 {
 }
 
@@ -57,35 +57,6 @@ bool TMS_Base::init()
     return true;
 }
 
-void TMS_Base::menuLoop()
-{
-    bool done = false; // Loop control variable. 
-    SDL_Event event; // Contains SDL events. 
-
-    while (!done)
-    {
-        while (SDL_PollEvent(&event) != 0)
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                done = true;
-                _exit = true;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_q:
-                    done = true;
-                    _exit = true;
-                    break;
-                }
-                break;
-            }
-        }
-    }
-}
-
 void TMS_Base::outerLoop()
 {
     /* Switch between game states. */
@@ -93,9 +64,13 @@ void TMS_Base::outerLoop()
     {
         switch (_currentState)
         {
-        /* Start the main loop. */
-        case GameState::MENU:
-            menuLoop();
+        /* Start the menu loop. */
+        case tms::GameState::MENU:
+            _currentState = _menu.menuLoop();
+            break;
+        /* Exit the game. */
+        case tms::GameState::EXIT:
+            _exit = true;
             break;
         }
     }

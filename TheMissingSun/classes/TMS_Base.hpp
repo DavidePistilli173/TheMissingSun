@@ -4,15 +4,10 @@
 #include <memory>
 #include <SDL.h>
 
+#include "../classes/TMS_Menu.hpp"
 #include "../include/tms.hpp"
 
-enum class GameState
-{
-    MENU,
-    LOADING,
-    GAME
-};
-
+/* Base class. */
 class TMS_Base
 {
 public:
@@ -28,15 +23,13 @@ public:
 
 private:
     /**************** METHODS ****************/
-    /* Main menu loop. */
-    void menuLoop();
     /* Outer loop to handle high level game states. */
     void outerLoop();
     /* Render engine. It will be executed on a separate thread. */
     void render();
 
     /**************** VARIABLES *****************/
-    /* WINDOW */
+    /* Window */
     tms::window_t _window; // Main game window.
     int _windowWidth, _windowHeight; // _window resolution.
 
@@ -45,6 +38,9 @@ private:
 
     /* General variables. */
     bool _exit; // True when exiting the game
-    GameState _currentState; // Current game state.
+    tms::GameState _currentState; // Current game state.
+
+    /* Game */
+    TMS_Menu _menu; // Game menu logic and data.
 };
 #endif
