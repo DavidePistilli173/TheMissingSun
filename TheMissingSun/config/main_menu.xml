@@ -1,13 +1,17 @@
 <!-- Main Menu layout and configuration. -->
 <!-- Button Width and Height are values between 0 (Invisible) and 1 (Whole window). -->
 <!-- Button X and Y are values between 0 (Left/Upper border) and 1 (Right/Lower border). -->
+<!-- Destination holds the Id of the target page for a Button. -1 means Exit. -->
 
 <Menu>
+    <!-- Main page. -->
     <MenuPage>
+        <Id>0</Id>
         <Title>The Missing Sun</Title>
         <Buttons>
             <Button>
                 <Label>New Game</Label>
+                <Destination>1</Destination>
                 <X>0.35</X>
                 <Y>0.1</Y>
                 <Width>0.3</Width>
@@ -15,6 +19,7 @@
             </Button>
             <Button>
                 <Label>Load Game</Label>
+                <Destination>2</Destination>
                 <X>0.35</X>
                 <Y>0.3</Y>
                 <Width>0.3</Width>
@@ -22,6 +27,7 @@
             </Button>
             <Button>
                 <Label>Options</Label>
+                <Destination>3</Destination>
                 <X>0.35</X>
                 <Y>0.5</Y>
                 <Width>0.3</Width>
@@ -29,8 +35,54 @@
             </Button>
             <Button>
                 <Label>Exit</Label>
+                <Destination>-1</Destination>
                 <X>0.35</X>
                 <Y>0.7</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+        </Buttons>
+    </MenuPage>
+    <!-- New Game page. -->
+    <MenuPage>
+        <Id>1</Id>
+        <Title>New Game</Title>
+        <Buttons>
+            <Button>
+                <Label>Back</Label>
+                <Destination>1</Destination>
+                <X>0.35</X>
+                <Y>0.1</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+        </Buttons>
+    </MenuPage>
+    <!-- Load Game page. -->
+    <MenuPage>
+        <Id>2</Id>
+        <Title>Load Game</Title>
+        <Buttons>
+            <Button>
+                <Label>Back</Label>
+                <Destination>1</Destination>
+                <X>0.35</X>
+                <Y>0.1</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+        </Buttons>
+    </MenuPage>
+    <!-- Options page. -->
+    <MenuPage>
+        <Id>3</Id>
+        <Title>Options</Title>
+        <Buttons>
+            <Button>
+                <Label>Back</Label>
+                <Destination>1</Destination>
+                <X>0.35</X>
+                <Y>0.1</Y>
                 <Width>0.3</Width>
                 <Height>0.1</Height>
             </Button>

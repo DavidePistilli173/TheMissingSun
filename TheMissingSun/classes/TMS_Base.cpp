@@ -54,6 +54,12 @@ bool TMS_Base::init()
     /* Release OpenGL context from the current thread. */
     SDL_GL_MakeCurrent(_window.get(), 0);
 
+    if (!_menu.init())
+    {
+        printf("Could not load main menu.\n");
+        return false;
+    }
+
     return true;
 }
 
