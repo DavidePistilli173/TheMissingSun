@@ -1,0 +1,39 @@
+<!-- Main Menu layout and configuration. -->
+<!-- Button Width and Height are values between 0 (Invisible) and 1 (Whole window). -->
+<!-- Button X and Y are values between 0 (Left/Upper border) and 1 (Right/Lower border). -->
+
+<Menu>
+    <MenuPage>
+        <Title>The Missing Sun</Title>
+        <Buttons>
+            <Button>
+                <Label>New Game</Label>
+                <X>0.35</X>
+                <Y>0.1</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+            <Button>
+                <Label>Load Game</Label>
+                <X>0.35</X>
+                <Y>0.3</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+            <Button>
+                <Label>Options</Label>
+                <X>0.35</X>
+                <Y>0.5</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+            <Button>
+                <Label>Exit</Label>
+                <X>0.35</X>
+                <Y>0.7</Y>
+                <Width>0.3</Width>
+                <Height>0.1</Height>
+            </Button>
+        </Buttons>
+    </MenuPage>
+</Menu>
