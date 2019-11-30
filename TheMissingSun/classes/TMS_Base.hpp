@@ -1,7 +1,6 @@
 #ifndef TMS_BASE_HPP
 #define TMS_BASE_HPP
 
-#include <memory>
 #include <SDL.h>
 
 #include "../classes/TMS_Menu.hpp"
