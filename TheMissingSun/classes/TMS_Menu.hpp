@@ -15,13 +15,14 @@ public:
 
     /**************** METHODS ****************/
     /* Initialise all menu data. */
-    bool init();
+    bool init(const int windowWidth, const int windowHeight);
     /* Main menu loop. */
     tms::GameState menuLoop();
 
 private:
     TMS_Clock _clock; // Input timer.
     std::shared_ptr<TMS_MenuPage> _currentPage; // Current menu page.
+    std::vector<std::shared_ptr<TMS_MenuPage>> _pages; // All menu pages.
 };
 
 #endif

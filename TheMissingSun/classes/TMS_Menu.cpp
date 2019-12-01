@@ -9,7 +9,7 @@ TMS_Menu::TMS_Menu() :
 {
 }
 
-bool TMS_Menu::init()
+bool TMS_Menu::init(const int windowWidth, const int windowHeight)
 {
     /* Load main menu configuration. */
     tinyxml2::XMLDocument configuration;
@@ -36,23 +36,70 @@ bool TMS_Menu::init()
         printf("No pages found in file %s:\n", tms::CONFIG_MM_NAME);
         return false;
     }
+
     /* Loop through all pages. */
+    int pageId = 0;
     while (pageElement != nullptr)
     {
-        std::shared_ptr<TMS_MenuPage> page(new TMS_MenuPage());
-        page->setId(std::atoi(pageElement->FirstChildElement(tms::CONFIG_MM_TAG_ID)->Value()));
+        /* Check whether the page ids are consecutive. */
+        if (std::atoi(pageElement->FirstChildElement(tms::CONFIG_MM_TAG_ID)->FirstChild()->Value()) != pageId)
+        {
+            printf("Page ids are not ordered in %s.\n", tms::CONFIG_MM_NAME);
+            return false;
+        }
+
+        _pages.push_back(std::shared_ptr<TMS_MenuPage>(new TMS_MenuPage)); // Add page to the menu.
+        _pages[pageId]->setId(pageId); // Set the page id.
+        /* Move to the next page. */
+        pageElement = pageElement->NextSiblingElement();
+        ++pageId;
+    }
+
+    /* Add buttons to the pages created above. */
+    pageElement = root->FirstChildElement(tms::CONFIG_MM_TAG_PAGE);
+    pageId = 0;
+    while (pageElement != nullptr)
+    {
         tinyxml2::XMLElement* buttonElement = pageElement->FirstChildElement(tms::CONFIG_MM_TAG_BUTTONS)->FirstChildElement(tms::CONFIG_MM_TAG_BUTTON);
         /* Loop through all buttons for the current page. */
         while (buttonElement != nullptr)
         {
             TMS_Button button;
+            /* Get button label. */
             button.setLabel(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_LABEL)->FirstChild()->Value());
-            printf("%s\n", button.getLabel().c_str());
+            /* Get button coordinates. */
+            int x, y;
+            x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
+            y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
+            button.setDefaultX(x);
+            button.setX(x);
+            button.setDefaultY(y);
+            button.setY(y);
+            /* Get button dimensions. */
+            int width, height;
+            width = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth);
+            height = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_HEIGHT)->FirstChild()->Value()) * windowHeight);
+            button.setWidth(width);
+            button.setHeight(height);
+            /* Get button destination page. */
+            int destinationId = std::atoi(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_DEST)->FirstChild()->Value());
+            if (destinationId > static_cast<int>(_pages.size() - 1))
+            {
+                printf("Destination id out of range for %s.\n", tms::CONFIG_MM_NAME);
+                return false;
+            }
+            /* Add the button to the current page. */
+            if (destinationId == -1) _pages[pageId]->addButton(button, nullptr);
+            else _pages[pageId]->addButton(button, _pages[destinationId]);
+            /* Move to the next button. */
+            buttonElement = buttonElement->NextSiblingElement();
         }
+        /* Move to the next page. */
+        pageElement = pageElement->NextSiblingElement();
+        ++pageId;
     }
-    
-    /* Create the main page. */
-    _currentPage = std::shared_ptr<TMS_MenuPage>(new TMS_MenuPage());
+   
+    _currentPage = _pages[0];
     return true;
 }
 
