@@ -11,21 +11,6 @@ namespace tms
     /* Game window type. */
     using window_t = std::unique_ptr<SDL_Window, void(*)(SDL_Window*)>;
 
-    /***************** ENUMS *****************/
-    /* List of all possible game states. */
-    enum class GameState
-    {
-        MENU,
-        LOADING,
-        GAME,
-        EXIT
-    };
-    /* List of all drawable classes. */
-    enum class Drawable
-    {
-        TOT // Total number of elements.
-    };
-
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
     constexpr char GAME_NAME[] = "The Missing Sun";
@@ -39,6 +24,13 @@ namespace tms
     constexpr float DEFAULT_BLUE = 0.2f;
     /* Times. */
     constexpr int MENU_UPDATE_TIME = 17; // Approximately 60 UPS.
+    /* Rendering matrices. */
+    /* View matrix. */
+    constexpr float DEFAULT_VIEW_X = 0.0f;
+    constexpr float DEFAULT_VIEW_Y = 0.0f;
+    constexpr float DEFAULT_VIEW_Z = -5.0f;
+    /* Orthographic projection matrix. */
+    constexpr int MIN_RENDER_LAYER = -5;
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
@@ -55,6 +47,27 @@ namespace tms
     constexpr char CONFIG_MM_TAG_Y[] = "Y"; // Button y coordinate tag.
     constexpr char CONFIG_MM_TAG_WIDTH[] = "Width"; // Button width tag. 
     constexpr char CONFIG_MM_TAG_HEIGHT[] = "Height"; // Button height tag.
+
+    /***************** ENUMS *****************/
+    /* List of all possible game states. */
+    enum class GameState
+    {
+        MENU,
+        LOADING,
+        GAME,
+        EXIT
+    };
+    /* List of rendering layers. */
+    enum class Layer
+    {
+        LAYER_0 = MIN_RENDER_LAYER,
+        LAYER_1,
+        LAYER_2,
+        LAYER_3,
+        LAYER_4,
+        LAYER_5,
+        MAX_LAYER
+    };
 }
 
 #endif

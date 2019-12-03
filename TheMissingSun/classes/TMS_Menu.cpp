@@ -1,11 +1,16 @@
 #include "TMS_Menu.hpp"
 
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 #include <SDL.h>
 
+#include "../include/glad/glad.h"
 #include "../include/tinyxml2.h"
 
 TMS_Menu::TMS_Menu() :
-    _currentPage(nullptr)
+    _currentPage(nullptr),
+    _menuState(tms::GameState::MENU)
 {
 }
 
@@ -103,8 +108,33 @@ bool TMS_Menu::init(const int windowWidth, const int windowHeight)
     return true;
 }
 
+void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int windowHeight)
+{
+    /* Rendering initialisation. */
+    /* Model matrix. */
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    /* View matrix. */
+    glm::mat4 viewMat = glm::mat4(1.0f);
+    viewMat = glm::translate(viewMat, glm::vec3(tms::DEFAULT_VIEW_X, tms::DEFAULT_VIEW_Y, tms::DEFAULT_VIEW_Z));
+    /* Create an orthographic projection matrix. */
+    glm::mat4 orthographicProjection = glm::ortho(0, windowWidth, 0, windowHeight, static_cast<int>(tms::Layer::LAYER_0), static_cast<int>(tms::Layer::MAX_LAYER));
+
+    while (_menuState != tms::GameState::EXIT)
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+        SDL_GL_SwapWindow(window.get());
+    }
+}
+
 tms::GameState TMS_Menu::menuLoop()
 {
+    /* Reset the menu to the default starting page. */
+    _menuState = tms::GameState::MENU;
+    _currentPage = _pages[0];
+
     SDL_Event event; // Contains SDL events. 
     _clock.startClock();
 
@@ -125,12 +155,14 @@ tms::GameState TMS_Menu::menuLoop()
             switch (event.type)
             {
             case SDL_QUIT:
+                _menuState = tms::GameState::EXIT;
                 return tms::GameState::EXIT;
                 break;
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_q:
+                    _menuState = tms::GameState::EXIT;
                     return tms::GameState::EXIT;
                     break;
                 }

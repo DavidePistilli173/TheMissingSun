@@ -97,6 +97,14 @@ void TMS_Base::render()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        /* Call the appropriate rendering function for the current game state. */
+        switch (_currentState)
+        {
+        case tms::GameState::MENU:
+            _menu.render(_window, _windowWidth, _windowHeight);
+            break;
+        }
+
         SDL_GL_SwapWindow(_window.get());
     }
 }
