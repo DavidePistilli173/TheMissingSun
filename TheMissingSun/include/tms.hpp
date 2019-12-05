@@ -30,7 +30,8 @@ namespace tms
     constexpr float DEFAULT_VIEW_Y = 0.0f;
     constexpr float DEFAULT_VIEW_Z = -5.0f;
     /* Orthographic projection matrix. */
-    constexpr int MIN_RENDER_LAYER = -5;
+    constexpr int MIN_RENDER_LAYER = -5; // Closest rendering layer.
+    constexpr int DEFAULT_RENDER_LAYER = 0; // Default rendering layer.
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
@@ -68,6 +69,13 @@ namespace tms
         LAYER_5,
         MAX_LAYER
     };
+
+    /***************** CONSTEXPR FUNCTIONS *****************/
+    /* Return the default rendering layer. */
+    constexpr Layer default_layer()
+    {
+        return static_cast<Layer>(DEFAULT_RENDER_LAYER);
+    }
 }
 
 #endif
