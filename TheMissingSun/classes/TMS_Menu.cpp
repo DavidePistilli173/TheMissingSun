@@ -104,7 +104,7 @@ bool TMS_Menu::init(const int windowWidth, const int windowHeight)
         ++pageId;
     }
    
-    _currentPage = _pages[0];
+    _currentPage = _pages[0]; // Place the menu in its first page.
     return true;
 }
 
@@ -119,6 +119,7 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
     /* Create an orthographic projection matrix. */
     glm::mat4 orthographicProjection = glm::ortho(0, windowWidth, 0, windowHeight, static_cast<int>(tms::Layer::LAYER_0), static_cast<int>(tms::Layer::MAX_LAYER));
 
+    /* Main rendering loop. */
     while (_menuState != tms::GameState::EXIT)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
