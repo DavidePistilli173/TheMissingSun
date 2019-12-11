@@ -8,8 +8,8 @@
 namespace tms
 {
     /***************** TYPE ALIASES *****************/
-    /* Game window type. */
-    using window_t = std::unique_ptr<SDL_Window, void(*)(SDL_Window*)>;
+    using window_t = std::unique_ptr<SDL_Window, void(*)(SDL_Window*)>; // Game window.
+    using file_t = std::unique_ptr<SDL_RWops, void(*)(SDL_RWops*)>; // File handle.
 
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
@@ -32,6 +32,8 @@ namespace tms
     /* Orthographic projection matrix. */
     constexpr int MIN_RENDER_LAYER = -5; // Closest rendering layer.
     constexpr int DEFAULT_RENDER_LAYER = 0; // Default rendering layer.
+    /* Shaders. */
+    constexpr int UNIFORM_NAME_LEN = 32; // Max length of a uniform name.
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
