@@ -34,6 +34,9 @@ namespace tms
     constexpr int DEFAULT_RENDER_LAYER = 0; // Default rendering layer.
     /* Shaders. */
     constexpr int UNIFORM_NAME_LEN = 32; // Max length of a uniform name.
+    constexpr int CODE_READ_CHUNK = 4096; // Size of a single code chunk to be read.
+    constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
+    constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
@@ -74,10 +77,11 @@ namespace tms
 
     /***************** CONSTEXPR FUNCTIONS *****************/
     /* Return the default rendering layer. */
-    constexpr Layer default_layer()
-    {
-        return static_cast<Layer>(DEFAULT_RENDER_LAYER);
-    }
+    constexpr Layer default_layer();
+
+    /***************** FUNCTIONS *****************/
+    /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */
+    void stringCopy(char* destination, const char* source);
 }
 
 #endif

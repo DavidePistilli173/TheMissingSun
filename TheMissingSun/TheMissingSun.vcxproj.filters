@@ -45,6 +45,9 @@
     <ClCompile Include="classes\TMS_Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tms.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
