@@ -133,6 +133,7 @@
     <ClCompile Include="classes\TMS_Menu.cpp" />
     <ClCompile Include="classes\TMS_MenuPage.cpp" />
     <ClCompile Include="classes\TMS_Shader.cpp" />
+    <ClCompile Include="classes\TMS_Texture.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\tinyxml2.cpp" />
     <ClCompile Include="src\tms.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
+    <ClInclude Include="classes\TMS_Texture.hpp" />
     <ClInclude Include="include\tinyxml2.h" />
     <ClInclude Include="include\tms.hpp" />
   </ItemGroup>

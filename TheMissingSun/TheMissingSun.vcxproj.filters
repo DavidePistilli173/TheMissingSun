@@ -48,6 +48,9 @@
     <ClCompile Include="src\tms.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="classes\TMS_Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -72,6 +75,9 @@
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="classes\TMS_Shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\TMS_Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

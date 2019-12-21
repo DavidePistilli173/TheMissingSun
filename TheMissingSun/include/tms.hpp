@@ -5,11 +5,14 @@
 #include <SDL.h>
 #include <string>
 
+#include "glad/glad.h"
+
 namespace tms
 {
     /***************** TYPE ALIASES *****************/
     using window_t = std::unique_ptr<SDL_Window, void(*)(SDL_Window*)>; // Game window.
     using file_t = std::unique_ptr<SDL_RWops, void(*)(SDL_RWops*)>; // File handle.
+    using surface_t = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>; // SDL_Surface image.
 
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
@@ -37,6 +40,11 @@ namespace tms
     constexpr int CODE_READ_CHUNK = 4096; // Size of a single code chunk to be read.
     constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
     constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
+    /* Textures. */
+    constexpr GLenum DEFAULT_X_WRAP = GL_REPEAT;
+    constexpr GLenum DEFAULT_Y_WRAP = GL_REPEAT;
+    constexpr GLenum DEFAULT_MIN_FILTER = GL_NEAREST_MIPMAP_LINEAR;
+    constexpr GLenum DEFAULT_MAG_FILTER = GL_LINEAR;
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
@@ -72,6 +80,8 @@ namespace tms
         LAYER_3,
         LAYER_4,
         LAYER_5,
+        LAYER_6,
+        LAYER_7,
         MAX_LAYER
     };
 
