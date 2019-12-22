@@ -46,3 +46,33 @@ TMS_Texture::TMS_Texture(const std::string fileName)
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+TMS_Texture::TMS_Texture(TMS_Texture&& oldTexture) noexcept
+{
+    /* Move texture id. */
+    _id = oldTexture._id;
+    oldTexture._id = 0;
+
+    /* Move texture settings. */
+    _wrapX = oldTexture._wrapX;
+    _wrapY = oldTexture._wrapY;
+    _minFilter = oldTexture._minFilter;
+    _magFilter = oldTexture._magFilter;
+}
+
+TMS_Texture& TMS_Texture::operator=(TMS_Texture&& oldTexture) noexcept
+{
+    if (&oldTexture != this)
+    {
+        /* Move texture id. */
+        _id = oldTexture._id;
+        oldTexture._id = 0;
+
+        /* Move texture settings. */
+        _wrapX = oldTexture._wrapX;
+        _wrapY = oldTexture._wrapY;
+        _minFilter = oldTexture._minFilter;
+        _magFilter = oldTexture._magFilter;
+    }
+    return *this;
+}
