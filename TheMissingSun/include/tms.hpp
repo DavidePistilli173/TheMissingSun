@@ -1,6 +1,7 @@
 #ifndef TMS_HPP
 #define TMS_HPP
 
+#include <glm.hpp>
 #include <memory>
 #include <SDL.h>
 #include <string>
@@ -31,20 +32,18 @@ namespace tms
     /* View matrix. */
     constexpr float DEFAULT_VIEW_X = 0.0f;
     constexpr float DEFAULT_VIEW_Y = 0.0f;
-    constexpr float DEFAULT_VIEW_Z = -5.0f;
+    constexpr float DEFAULT_VIEW_Z = 5.0f;
+    const glm::vec3 DEFAULT_CAMERA_POSITION(DEFAULT_VIEW_X, DEFAULT_VIEW_Y, DEFAULT_VIEW_Z);
+    const glm::vec3 DEFAULT_CAMERA_TARGET(0.0f, 0.0f, 0.0f);
+    const glm::vec3 DEFAULT_CAMERA_UP(0.0f, 1.0f, 0.0f);
     /* Orthographic projection matrix. */
-    constexpr int MIN_RENDER_LAYER = -5; // Closest rendering layer.
-    constexpr int DEFAULT_RENDER_LAYER = 0; // Default rendering layer.
+    constexpr int MAX_RENDER_LAYER = -10; // Farthest rendering layer.
+    constexpr int DEFAULT_RENDER_LAYER = 5; // Default rendering layer.
     /* Shaders. */
     constexpr int UNIFORM_NAME_LEN = 32; // Max length of a uniform name.
     constexpr int CODE_READ_CHUNK = 4096; // Size of a single code chunk to be read.
     constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
     constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
-    /* Textures. */
-    constexpr GLenum DEFAULT_X_WRAP = GL_REPEAT;
-    constexpr GLenum DEFAULT_Y_WRAP = GL_REPEAT;
-    constexpr GLenum DEFAULT_MIN_FILTER = GL_NEAREST_MIPMAP_LINEAR;
-    constexpr GLenum DEFAULT_MAG_FILTER = GL_LINEAR;
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
@@ -74,15 +73,9 @@ namespace tms
     /* List of rendering layers. */
     enum class Layer
     {
-        LAYER_0 = MIN_RENDER_LAYER,
-        LAYER_1,
-        LAYER_2,
-        LAYER_3,
-        LAYER_4,
-        LAYER_5,
-        LAYER_6,
-        LAYER_7,
-        MAX_LAYER
+        MAX_LAYER = MAX_RENDER_LAYER,
+        BACKGROUND_LAYER,
+        MIN_LAYER
     };
 
     /***************** CONSTEXPR FUNCTIONS *****************/

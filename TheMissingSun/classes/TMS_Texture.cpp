@@ -3,10 +3,15 @@
 #include <SDL_image.h>
 
 #include "../include/tms.hpp"
+#include "../include/tms_texture_namespace.hpp"
 #include "TMS_Texture.hpp"
 
 TMS_Texture::TMS_Texture() :
-    _id(0)
+    _id(0),
+    _wrapX(tms::texture::DEFAULT_X_WRAP),
+    _wrapY(tms::texture::DEFAULT_Y_WRAP),
+    _minFilter(tms::texture::DEFAULT_MIN_FILTER),
+    _magFilter(tms::texture::DEFAULT_MAG_FILTER)
 {
 }
 
@@ -24,17 +29,17 @@ TMS_Texture::TMS_Texture(const std::string fileName)
     glBindTexture(GL_TEXTURE_2D, _id);
 
     /* Set default texture settings. */
-    _wrapX = tms::DEFAULT_X_WRAP;
-    _wrapY = tms::DEFAULT_Y_WRAP;
-    _minFilter = tms::DEFAULT_MIN_FILTER;
-    _magFilter = tms::DEFAULT_MAG_FILTER;
+    _wrapX = tms::texture::DEFAULT_X_WRAP;
+    _wrapY = tms::texture::DEFAULT_Y_WRAP;
+    _minFilter = tms::texture::DEFAULT_MIN_FILTER;
+    _magFilter = tms::texture::DEFAULT_MAG_FILTER;
 
     /* Set the behaviour when outside texture coordinates. */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, tms::DEFAULT_X_WRAP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tms::DEFAULT_Y_WRAP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, tms::texture::DEFAULT_X_WRAP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tms::texture::DEFAULT_Y_WRAP);
     /* Set the texel selection/interpolation crtiteria. */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tms::DEFAULT_MIN_FILTER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tms::DEFAULT_MAG_FILTER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tms::texture::DEFAULT_MIN_FILTER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tms::texture::DEFAULT_MAG_FILTER);
 
     /* Retrieve the image format. */
     int imageFormat = GL_RGB;

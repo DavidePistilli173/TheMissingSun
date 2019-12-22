@@ -147,8 +147,10 @@
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
+    <ClInclude Include="include\tms_shader_namespace.hpp" />
     <ClInclude Include="include\tinyxml2.h" />
     <ClInclude Include="include\tms.hpp" />
+    <ClInclude Include="include\tms_texture_namespace.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
