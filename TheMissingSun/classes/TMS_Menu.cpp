@@ -54,9 +54,9 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
     //glm::mat4 orthographicProjection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
     /* Combine the visualisation matrices. */
-    glm::mat4 visualMatrix = glm::mat4(1.0f);
-    visualMatrix = orthographicProjection * (viewMat * modelMat);
+    glm::mat4 visualMatrix = orthographicProjection * viewMat * modelMat;
 
+    _shaders[static_cast<int>(Shader::PLAIN)].use();
     _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
 
     /* Main rendering loop. */
@@ -264,12 +264,21 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glGenBuffers(1, &_backgroundVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _backgroundVBO);
     /* Background vertices. */
+    /*
     float backgroundData[] =
     {
         0.0f,                               0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 0.0f, // Bottom left corner.
         static_cast<float>(windowWidth),    0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 0.0f, // Bottom right corner.
         static_cast<float>(windowWidth),    static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Top right corner.
         0.0f,                               static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 1.0f  // Top left corner.
+    };
+    */
+    float backgroundData[] =
+    {
+        -0.5f,                               -0.5f,                               0.0f, 0.0f, 0.0f, // Bottom left corner.
+        0.5f,    -0.5f,                               0.0f, 1.0f, 0.0f, // Bottom right corner.
+        0.5f,    0.5f,   0, 1.0f, 1.0f, // Top right corner.
+        -0.5f,                               0.5f,   0.0f, 0.0f, 1.0f  // Top left corner.
     };
     
     
