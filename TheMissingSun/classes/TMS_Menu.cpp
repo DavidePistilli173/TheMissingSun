@@ -14,7 +14,8 @@ TMS_Menu::TMS_Menu() :
     _currentPage(nullptr),
     _menuState(tms::GameState::MENU),
     _backgroundVAO(0),
-    _backgroundVBO(0)
+    _backgroundVBO(0),
+    _backgroundEBO(0)
 {
 }
 
@@ -58,6 +59,7 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
 
     _shaders[static_cast<int>(Shader::PLAIN)].use();
     _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
+    _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), GL_TEXTURE0);
 
     /* Main rendering loop. */
     while (_menuState != tms::GameState::EXIT)
@@ -69,7 +71,7 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
         /* Draw menu background. */
         _textures[static_cast<int>(Texture::BACKGROUND)].bind();
         glBindVertexArray(_backgroundVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 4);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         SDL_GL_SwapWindow(window.get());
     }
@@ -214,7 +216,7 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
 
 bool TMS_Menu::_loadShaders()
 {
-    _shaders.resize(static_cast<int>(Shader::TOTAL));
+    _shaders.reserve(static_cast<int>(Shader::TOTAL));
 
     /* Load plain shader. */
     try
@@ -263,8 +265,11 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glBindVertexArray(_backgroundVAO);
     glGenBuffers(1, &_backgroundVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _backgroundVBO);
+    glGenBuffers(1, &_backgroundEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _backgroundEBO);
+
     /* Background vertices. */
-    /*
+    
     float backgroundData[] =
     {
         0.0f,                               0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 0.0f, // Bottom left corner.
@@ -272,13 +277,21 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
         static_cast<float>(windowWidth),    static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Top right corner.
         0.0f,                               static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 1.0f  // Top left corner.
     };
-    */
+    
+    /*
     float backgroundData[] =
     {
-        -0.5f,                               -0.5f,                               0.0f, 0.0f, 0.0f, // Bottom left corner.
-        0.5f,    -0.5f,                               0.0f, 1.0f, 0.0f, // Bottom right corner.
-        0.5f,    0.5f,   0, 1.0f, 1.0f, // Top right corner.
-        -0.5f,                               0.5f,   0.0f, 0.0f, 1.0f  // Top left corner.
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom left corner.
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Bottom right corner.
+        0.5f, 0.5f, 0.0f, 1.0f, 1.0f, // Top right corner.
+        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f  // Top left corner.
+    };
+    */
+    
+    unsigned int backgroundIndices[] =
+    {
+        0, 1, 2,
+        2, 3, 0
     };
     
     
@@ -288,6 +301,10 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
     glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
     glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(backgroundIndices), backgroundIndices, GL_STATIC_DRAW);
+
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

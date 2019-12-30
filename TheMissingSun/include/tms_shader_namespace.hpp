@@ -21,11 +21,13 @@ namespace tms::shader
     /* Common. */
     enum class Plain
     {
-        CAMERA_MATRIX
+        CAMERA_MATRIX,
+        TEXTURE
     };
     constexpr const char* plain[] =
     {
-        "cameraMatrix"
+        "cameraMatrix",
+        "baseTexture"
     };
 }
 

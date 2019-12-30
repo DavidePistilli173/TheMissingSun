@@ -57,6 +57,7 @@ private:
     /* Vertex Array Objects. */
     GLuint _backgroundVAO; // VAO for menu background.
     GLuint _backgroundVBO; // VBO for menu background.
+    GLuint _backgroundEBO; // EBO for menu background.
 };
 
 #endif

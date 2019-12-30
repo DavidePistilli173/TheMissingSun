@@ -43,7 +43,7 @@ TMS_Texture::TMS_Texture(const std::string fileName)
 
     /* Retrieve the image format. */
     int imageFormat = GL_RGB;
-    if (textureSurface->format->BitsPerPixel == 4) imageFormat = GL_RGBA;
+    if (textureSurface->format->BytesPerPixel == 4) imageFormat = GL_RGBA;
 
     /* Load the texture into memory. */
     glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, textureSurface->w, textureSurface->h, 0, imageFormat, GL_UNSIGNED_BYTE, textureSurface->pixels);
