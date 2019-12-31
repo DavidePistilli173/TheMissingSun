@@ -166,12 +166,13 @@ bool TMS_Shader::addUniform(const char* name)
     tms::stringCopy(newUniform.name, name);
 
     /* Look for the uniform location and save it. */
-    newUniform.location = glGetUniformLocation(_id, name);
-    if (newUniform.location == 0)
+    int location = glGetUniformLocation(_id, name);
+    if (location == -1)
     {
         printf("Uniform not found: %s\n", name);
         return false;
     }
+    newUniform.location = static_cast<unsigned int>(location);
 
     /* Add the uniform to the shader. */
     _uniforms.push_back(newUniform);
