@@ -7,14 +7,119 @@
 
 #include "../include/glad/glad.h"
 #include "../include/tinyxml2.h"
+#include "../include/tms_shader_namespace.hpp"
+#include "../include/tms_texture_namespace.hpp"
 
 TMS_Menu::TMS_Menu() :
     _currentPage(nullptr),
-    _menuState(tms::GameState::MENU)
+    _menuState(tms::GameState::MENU),
+    _backgroundVAO(0),
+    _backgroundVBO(0),
+    _backgroundEBO(0)
 {
 }
 
 bool TMS_Menu::init(const int windowWidth, const int windowHeight)
+{
+    /* Load menu layout. */
+    if (!_loadLayout(windowWidth, windowHeight))
+    {
+        printf("Failed to load menu layout.\n");
+        return false;
+    }
+    /* Load menu shaders. */
+    if (!_loadShaders())
+    {
+        printf("Failed to load shaders.\n");
+        return false;
+    }
+    /* Load menu textures. */
+    if (!_loadTextures())
+    {
+        printf("Failed to load textures.\n");
+        return false;
+    }
+    _loadVAO(windowWidth, windowHeight);
+
+    return true;
+}
+
+void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int windowHeight)
+{
+    /* Model matrix. */
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    /* View matrix. */
+    glm::mat4 viewMat = glm::lookAt(tms::DEFAULT_CAMERA_POSITION, tms::DEFAULT_CAMERA_TARGET, tms::DEFAULT_CAMERA_UP);
+    /* Create an orthographic projection matrix. */
+    glm::mat4 orthographicProjection = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight), 0.0f, 0.0f, -static_cast<float>(tms::Layer::MAX_LAYER));
+
+    /* Combine the visualisation matrices. */
+    glm::mat4 visualMatrix = orthographicProjection * viewMat * modelMat;
+
+    _shaders[static_cast<int>(Shader::PLAIN)].use();
+    _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
+    _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), GL_TEXTURE0);
+
+    /* Main rendering loop. */
+    while (_menuState != tms::GameState::EXIT)
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        _shaders[static_cast<int>(Shader::PLAIN)].use();
+
+        /* Draw menu background. */
+        _textures[static_cast<int>(Texture::BACKGROUND)].bind();
+        glBindVertexArray(_backgroundVAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        SDL_GL_SwapWindow(window.get());
+    }
+}
+
+tms::GameState TMS_Menu::menuLoop()
+{
+    /* Reset the menu to the default starting page. */
+    _menuState = tms::GameState::MENU;
+    _currentPage = _pages[0];
+
+    SDL_Event event; // Contains SDL events. 
+    _clock.startClock();
+
+    while (true)
+    {
+        /* If the last frame updated too quickly, wait for the remaining time. */
+        int updateTime = _clock.getTime();
+        if (updateTime < tms::MENU_UPDATE_TIME)
+        {
+            SDL_Delay(tms::MENU_UPDATE_TIME - updateTime);
+            updateTime = _clock.getTime(); // Update the elapsed time.
+        }
+        _clock.startClock();
+
+        /* Event polling. */
+        while (SDL_PollEvent(&event) != 0)
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                _menuState = tms::GameState::EXIT;
+                return tms::GameState::EXIT;
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_q:
+                    _menuState = tms::GameState::EXIT;
+                    return tms::GameState::EXIT;
+                    break;
+                }
+                break;
+            }
+        }
+    }
+}
+
+bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
 {
     /* Load main menu configuration. */
     tinyxml2::XMLDocument configuration;
@@ -103,72 +208,92 @@ bool TMS_Menu::init(const int windowWidth, const int windowHeight)
         pageElement = pageElement->NextSiblingElement();
         ++pageId;
     }
-   
+
     _currentPage = _pages[0]; // Place the menu in its first page.
     return true;
 }
 
-void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int windowHeight)
+bool TMS_Menu::_loadShaders()
 {
-    /* Rendering initialisation. */
-    /* Model matrix. */
-    glm::mat4 modelMat = glm::mat4(1.0f);
-    /* View matrix. */
-    glm::mat4 viewMat = glm::mat4(1.0f);
-    viewMat = glm::translate(viewMat, glm::vec3(tms::DEFAULT_VIEW_X, tms::DEFAULT_VIEW_Y, tms::DEFAULT_VIEW_Z));
-    /* Create an orthographic projection matrix. */
-    glm::mat4 orthographicProjection = glm::ortho(0, windowWidth, 0, windowHeight, static_cast<int>(tms::Layer::LAYER_0), static_cast<int>(tms::Layer::MAX_LAYER));
+    _shaders.reserve(static_cast<int>(Shader::TOTAL));
 
-    /* Main rendering loop. */
-    while (_menuState != tms::GameState::EXIT)
+    /* Load plain shader. */
+    try
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-
-        SDL_GL_SwapWindow(window.get());
+        _shaders.push_back(TMS_Shader(tms::shader::PLAIN_VERTEX, tms::shader::PLAIN_FRAGMENT));
     }
+    catch (std::string error)
+    {
+        printf("%s", error.c_str());
+        return false;
+    }
+    /* Load plain shader uniforms. */
+    for (const auto& uniform : tms::shader::plain)
+    {
+        if (!_shaders[static_cast<int>(Shader::PLAIN)].addUniform(uniform))
+        {
+            printf("Failed to add unform to plain shader.\n");
+            return false;
+        }
+    }
+
+    return true;
 }
 
-tms::GameState TMS_Menu::menuLoop()
+bool TMS_Menu::_loadTextures()
 {
-    /* Reset the menu to the default starting page. */
-    _menuState = tms::GameState::MENU;
-    _currentPage = _pages[0];
+    _textures.resize(static_cast<int>(Texture::TOTAL));
 
-    SDL_Event event; // Contains SDL events. 
-    _clock.startClock();
-
-    while (true)
+    /* Load background texture. */
+    try
     {
-        /* If the last frame updated too quickly, wait for the remaining time. */
-        int updateTime = _clock.getTime();
-        if (updateTime < tms::MENU_UPDATE_TIME)
-        {
-            SDL_Delay(tms::MENU_UPDATE_TIME - updateTime);
-            updateTime = _clock.getTime(); // Update the elapsed time.
-        }
-        _clock.startClock();
-
-        /* Event polling. */
-        while (SDL_PollEvent(&event) != 0)
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                _menuState = tms::GameState::EXIT;
-                return tms::GameState::EXIT;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_q:
-                    _menuState = tms::GameState::EXIT;
-                    return tms::GameState::EXIT;
-                    break;
-                }
-                break;
-            }
-        }
+        _textures[static_cast<int>(Texture::BACKGROUND)] = TMS_Texture(tms::texture::MENU_BACKGROUND);
     }
+    catch (std::string error)
+    {
+        printf("%s", error.c_str());
+        return false;
+    }
+    return true;
+}
+
+void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
+{
+    /* Create background buffers. */
+    glGenVertexArrays(1, &_backgroundVAO);
+    glBindVertexArray(_backgroundVAO);
+    glGenBuffers(1, &_backgroundVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, _backgroundVBO);
+    glGenBuffers(1, &_backgroundEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _backgroundEBO);
+
+    /* Background vertices. */
+    float backgroundData[] =
+    {
+        0.0f,                               0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 0.0f, // Top left corner.
+        static_cast<float>(windowWidth),    0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 0.0f, // Top right corner.
+        static_cast<float>(windowWidth),    static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Bottom right corner.
+        0.0f,                               static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 1.0f  // Bottom left corner.
+    };
+    /* Rendering indices for the vertices. */
+    unsigned int backgroundIndices[] =
+    {
+        0, 1, 2,
+        2, 3, 0
+    };
+    /* Transfer vertices to GPU. */
+    glBufferData(GL_ARRAY_BUFFER, sizeof(backgroundData), backgroundData, GL_STATIC_DRAW);
+    /* Set vertex data structure. */
+    int strideSize = 5 * sizeof(float);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
+    /* Transfer vertex indices to GPU. */
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(backgroundIndices), backgroundIndices, GL_STATIC_DRAW);
+
+    /* Unbind all buffers. */
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
