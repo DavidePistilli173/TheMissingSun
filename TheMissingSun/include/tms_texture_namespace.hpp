@@ -19,6 +19,7 @@ namespace tms::texture
     /***************** MENU *****************/
     const std::string TEST = "./resources/textures/test/container.jpg";
     const std::string MENU_BACKGROUND = "./resources/textures/main_menu/background.png";
+    const std::string MENU_BUTTON = "./resources/textures/main_menu/button.png";
 }
 
 #endif

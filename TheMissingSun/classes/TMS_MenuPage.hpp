@@ -21,8 +21,6 @@ public:
     TMS_MenuPage();
 
     /**************** METHODS ****************/
-    /* Render the current page. */
-    void render();
     /* Setters. */
     /* Change the page id if it has not been set previously. */
     void setId(const unsigned int id)
@@ -33,6 +31,11 @@ public:
     /* Getters. */
     int getId() const { return _id; }
     std::string getTitle() const { return _title; }
+    /* Return a constant reference to the button list. */
+    std::vector<Link>& getButtons()
+    {
+        return _buttons;
+    }
     /* Add a button to the page. */
     void addButton(const TMS_Button &button, const std::shared_ptr<TMS_MenuPage> &link)
     {

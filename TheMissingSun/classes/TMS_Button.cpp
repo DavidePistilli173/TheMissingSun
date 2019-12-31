@@ -1,9 +1,10 @@
 #include "TMS_Button.hpp"
 
 TMS_Button::TMS_Button() :
-    _label(""),
-    _defaultX(0), _defaultY(0),
-    _x(0), _y(0),
-    _width(0), _height(0)
+    label(""),
+    defaultX(0), defaultY(0),
+    x(0), y(0),
+    width(0), height(0),
+    vao(0), vbo(0), ebo(0)
 {
 }
