@@ -31,6 +31,18 @@ public:
     /* Add a uniform to the shader. */
     bool addUniform(const char* name);
 
+    /* Uniform setters. */
+    /* Set an integer uniform. */
+    void setUniform(const int uniformId, const int i)
+    {
+        glUniform1i(_uniforms[uniformId].location, i);
+    }
+    /* Set a Mat4 uniform. */
+    void setUniform(const int uniformId, const GLfloat* matrix)
+    {
+        glUniformMatrix4fv(_uniforms[uniformId].location, 1, GL_FALSE, matrix);
+    }
+
 private:
     unsigned int _id; // Shader ID.
     std::vector<Uniform> _uniforms; // List of all uniforms for the current shader.

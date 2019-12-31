@@ -137,7 +137,12 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\tinyxml2.cpp" />
     <ClCompile Include="src\tms.cpp" />
-    <ClCompile Include="src\TMS_main.cpp" />
+    <ClCompile Include="src\TMS_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="testMain.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Button.hpp" />
@@ -147,8 +152,10 @@
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
+    <ClInclude Include="include\tms_shader_namespace.hpp" />
     <ClInclude Include="include\tinyxml2.h" />
     <ClInclude Include="include\tms.hpp" />
+    <ClInclude Include="include\tms_texture_namespace.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

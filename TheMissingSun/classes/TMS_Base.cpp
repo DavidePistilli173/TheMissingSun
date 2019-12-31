@@ -51,15 +51,15 @@ bool TMS_Base::init()
     /* Enable OpenGL depth testing. */
     glEnable(GL_DEPTH_TEST);
 
-    /* Release OpenGL context from the current thread. */
-    SDL_GL_MakeCurrent(_window.get(), 0);
-
     /* Initialise the main menu. */
     if (!_menu.init(_windowWidth, _windowHeight))
     {
         printf("Could not load main menu.\n");
         return false;
     }
+
+    /* Release OpenGL context from the current thread. */
+    SDL_GL_MakeCurrent(_window.get(), 0);
 
     return true;
 }

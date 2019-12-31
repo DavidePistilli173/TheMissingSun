@@ -254,6 +254,7 @@ bool TMS_Menu::_loadTextures()
         printf("%s", error.c_str());
         return false;
     }
+
     return true;
 }
 

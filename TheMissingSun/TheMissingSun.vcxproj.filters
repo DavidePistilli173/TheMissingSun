@@ -51,6 +51,9 @@
     <ClCompile Include="classes\TMS_Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testMain.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -79,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="classes\TMS_Texture.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tms_shader_namespace.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tms_texture_namespace.hpp">
+      <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
