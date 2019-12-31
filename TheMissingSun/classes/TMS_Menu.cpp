@@ -269,22 +269,22 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _backgroundEBO);
 
     /* Background vertices. */
-    
     float backgroundData[] =
     {
-        0.0f,                               0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 0.0f, // Bottom left corner.
-        static_cast<float>(windowWidth),    0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 0.0f, // Bottom right corner.
-        static_cast<float>(windowWidth),    static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Top right corner.
-        0.0f,                               static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 1.0f  // Top left corner.
+        0.0f,                               0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 0.0f, // Top left corner.
+        static_cast<float>(windowWidth),    0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 0.0f, // Top right corner.
+        static_cast<float>(windowWidth),    static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Bottom right corner.
+        0.0f,                               static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 1.0f  // Bottom left corner.
     };
+    
     
     /*
     float backgroundData[] =
     {
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom left corner.
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Bottom right corner.
-        0.5f, 0.5f, 0.0f, 1.0f, 1.0f, // Top right corner.
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f  // Top left corner.
+        0.0f, 100.0f, 0.0f, 0.0f, 0.0f, // Bottom left corner.
+        100.0f, 100.0f, 0.0f, 1.0f, 0.0f, // Bottom right corner.
+        100.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top right corner.
+        0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // Top left corner.
     };
     */
     

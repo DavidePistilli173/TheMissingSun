@@ -73,8 +73,16 @@ namespace tms
     /* List of rendering layers. */
     enum class Layer
     {
-        MAX_LAYER = MAX_RENDER_LAYER,
-        BACKGROUND_LAYER,
+        MAX_LAYER = MAX_RENDER_LAYER, // Parameter required for the orthographic projection matrix.
+        BACKGROUND_LAYER = -4,
+        LAYER_7,
+        LAYER_6,
+        LAYER_5,
+        LAYER_4,
+        LAYER_3,
+        LAYER_2,
+        LAYER_1,
+        LAYER_0,
         MIN_LAYER
     };
 
