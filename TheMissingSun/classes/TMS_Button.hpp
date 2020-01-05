@@ -15,6 +15,8 @@ public:
         x = defaultX;
         y = defaultY;
     }
+    /* Check whether x and y fall inside the button. */
+    bool checkCollision(const int x, const int y) const;
 
     std::string label; // Button label.
     int defaultX, defaultY; // Button default coordinates.

@@ -124,6 +124,24 @@ tms::GameState TMS_Menu::menuLoop()
                     break;
                 }
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (event.button.button == SDL_BUTTON_LEFT)
+                {
+                    int i = 0;
+                    std::vector<TMS_MenuPage::Link> buttons = _currentPage->getButtons();
+                    /* Loop until the correct button is found. */
+                    while (!buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
+                    if (i < buttons.size())
+                    {
+                        _currentPage = buttons[i].link;
+                        if (_currentPage == nullptr)
+                        {
+                            _menuState = tms::GameState::EXIT;
+                            return tms::GameState::EXIT;
+                        }
+                    }
+                }
+                break;
             }
         }
     }

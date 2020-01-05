@@ -8,3 +8,10 @@ TMS_Button::TMS_Button() :
     vao(0), vbo(0), ebo(0)
 {
 }
+
+bool TMS_Button::checkCollision(const int x, const int y) const
+{
+    if (x < this->x || x > this->x + width) return false;
+    if (y < this->y || y > this->y + height) return false;
+    return true;
+}
