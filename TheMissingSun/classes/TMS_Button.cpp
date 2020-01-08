@@ -4,7 +4,8 @@ TMS_Button::TMS_Button() :
     label(""),
     vao(0), vbo(0), ebo(0),
     _defaultBackRect({0,0,0,0}),
-    _currentBackRect({0,0,0,0})
+    _currentBackRect({0,0,0,0}),
+    _labelRect({0,0,0,0})
 {
 }
 

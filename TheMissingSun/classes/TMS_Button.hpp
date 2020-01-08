@@ -10,16 +10,37 @@ class TMS_Button
 public:
     TMS_Button();
 
+    /**************** CONSTANTS ****************/
+    static constexpr float HORIZONTAL_BORDER = 0.1f;
+    static constexpr float VERTICAL_BORDER = 0.1f;
+
     /**************** METHODS ****************/
     /* Setters. */
     void setDefaultX(const int x) { _defaultBackRect.x = x; }
     void setDefaultY(const int y) { _defaultBackRect.y = y; }
     void setDefaultW(const int w) { _defaultBackRect.w = w; }
     void setDefaultH(const int h) { _defaultBackRect.h = h; }
-    void setX(const int x) { _currentBackRect.x = x; }
-    void setY(const int y) { _currentBackRect.y = y; }
-    void setW(const int w) { _currentBackRect.w = w; }
-    void setH(const int h) { _currentBackRect.h = h; }
+    /* When moving and resizing the button, keep the label centered.*/
+    void setX(const int x) 
+    { 
+        _currentBackRect.x = x;
+        _labelRect.x = x + HORIZONTAL_BORDER * _currentBackRect.w;
+    }
+    void setY(const int y) 
+    { 
+        _currentBackRect.y = y;
+        _labelRect.y = y + VERTICAL_BORDER * _currentBackRect.h;
+    }
+    void setW(const int w) 
+    { 
+        _currentBackRect.w = w;
+        _labelRect.w = w - 2 * HORIZONTAL_BORDER * w;
+    }
+    void setH(const int h) 
+    { 
+        _currentBackRect.h = h; 
+        _labelRect.h = h - 2 * VERTICAL_BORDER * h;
+    }
     /* Getters. */
     int getDefaultX() const { return _defaultBackRect.x; }
     int getDefaultY() const { return _defaultBackRect.y; }
@@ -29,14 +50,16 @@ public:
     int getY() const { return _currentBackRect.y; }
     int getW() const { return _currentBackRect.w; }
     int getH() const { return _currentBackRect.h; }
+
     /* Reset the button position to the default value. */
     void resetToDefault()
     {
-        _currentBackRect.x = _defaultBackRect.x;
-        _currentBackRect.y = _defaultBackRect.y;
-        _currentBackRect.w = _defaultBackRect.w;
-        _currentBackRect.h = _defaultBackRect.h;
+        setX(_defaultBackRect.x);
+        setY(_defaultBackRect.y);
+        setW(_defaultBackRect.w);
+        setH(_defaultBackRect.h);
     }
+
     /* Check whether x and y fall inside the button. */
     bool checkCollision(const int x, const int y) const;
 
@@ -48,6 +71,7 @@ public:
 private:
     tms::Rect _defaultBackRect; // Default button rectangle.
     tms::Rect _currentBackRect; // Current button rectangle.
+    tms::Rect _labelRect; // Rectangle for the button's label.
 };
 
 #endif
