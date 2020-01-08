@@ -130,7 +130,7 @@ tms::GameState TMS_Menu::menuLoop()
                     int i = 0;
                     std::vector<TMS_MenuPage::Link> buttons = _currentPage->getButtons();
                     /* Loop until the correct button is found. */
-                    while (!buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
+                    while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
                     if (i < buttons.size())
                     {
                         _currentPage = buttons[i].link;
@@ -209,16 +209,18 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             int x, y;
             x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
             y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
-            button.defaultX = x;
-            button.x = x;
-            button.defaultY = y;
-            button.y = y;
+            button.setDefaultX(x);
+            button.setX(x);
+            button.setDefaultY(y);
+            button.setY(y);
             /* Get button dimensions. */
             int width, height;
             width = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth);
             height = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_HEIGHT)->FirstChild()->Value()) * windowHeight);
-            button.width = width;
-            button.height = height;
+            button.setDefaultW(width);
+            button.setW(width);
+            button.setDefaultH(height);
+            button.setH(height);
             /* Get button destination page. */
             int destinationId = std::atoi(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_DEST)->FirstChild()->Value());
             if (destinationId > static_cast<int>(_pages.size() - 1))
@@ -358,15 +360,15 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
             glGenBuffers(1, &link.button.ebo);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, link.button.ebo);
 
-            float incrementedX = link.button.x + link.button.width;
-            float incrementedY = link.button.y + link.button.height;
+            float incrementedX = link.button.getX() + link.button.getW();
+            float incrementedY = link.button.getY() + link.button.getH();
             
             float buttonVertexData[] =
             {
-                link.button.x, link.button.y, static_cast<float>(tms::Layer::LAYER_7), 0.0f, 0.0f, // Top left corner.
-                incrementedX,  link.button.y, static_cast<float>(tms::Layer::LAYER_7), 1.0f, 0.0f, // Top right corner.
-                incrementedX,  incrementedY,  static_cast<float>(tms::Layer::LAYER_7), 1.0f, 1.0f, // Bottom right corner.
-                link.button.x, incrementedY,  static_cast<float>(tms::Layer::LAYER_7), 0.0f, 1.0f // Bottom left corner.
+                link.button.getX(), link.button.getY(), static_cast<float>(tms::Layer::LAYER_7), 0.0f, 0.0f, // Top left corner.
+                incrementedX,       link.button.getY(), static_cast<float>(tms::Layer::LAYER_7), 1.0f, 0.0f, // Top right corner.
+                incrementedX,       incrementedY,       static_cast<float>(tms::Layer::LAYER_7), 1.0f, 1.0f, // Bottom right corner.
+                link.button.getX(), incrementedY,       static_cast<float>(tms::Layer::LAYER_7), 0.0f, 1.0f // Bottom left corner.
             };
 
             glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
