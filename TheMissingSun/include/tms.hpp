@@ -93,6 +93,14 @@ namespace tms
     /***************** FUNCTIONS *****************/
     /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */
     void stringCopy(char* destination, const char* source);
+
+    /***************** STRUCTS *****************/
+    /* Data for a rectangle. */
+    struct Rect
+    {
+        int x, y; // x and y coordinates.
+        int w, h; // Width and height respectively.
+    };
 }
 
 #endif
