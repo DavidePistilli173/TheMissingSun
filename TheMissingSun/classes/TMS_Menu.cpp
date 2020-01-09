@@ -128,7 +128,7 @@ tms::GameState TMS_Menu::menuLoop()
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     int i = 0;
-                    std::vector<TMS_MenuPage::Link> buttons = _currentPage->getButtons();
+                    std::vector<TMS_MenuPage::Link>& buttons = _currentPage->getButtons();
                     /* Loop until the correct button is found. */
                     while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
                     if (i < buttons.size())
@@ -272,6 +272,7 @@ bool TMS_Menu::_loadShaders()
 
 bool TMS_Menu::_loadTextures()
 {
+    /* Load common menu textures. */
     _textures.resize(static_cast<int>(Texture::TOTAL));
 
     /* Load background texture. */
@@ -293,6 +294,15 @@ bool TMS_Menu::_loadTextures()
     {
         printf("%s", error.c_str());
         return false;
+    }
+
+    /* Generate textures for button labels. */
+    for (auto& menuPage : _pages)
+    {
+        for (auto& button : menuPage->getButtons())
+        {
+
+        }
     }
 
     return true;
