@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../include/tms.hpp"
+#include "TMS_Texture.hpp"
 
 class TMS_Button
 {
@@ -11,6 +12,7 @@ public:
     TMS_Button();
 
     /**************** CONSTANTS ****************/
+    /* Borders for the button's label. */
     static constexpr float HORIZONTAL_BORDER = 0.1f;
     static constexpr float VERTICAL_BORDER = 0.1f;
 
@@ -67,6 +69,8 @@ public:
 
     /* OpenGL buffers. */
     unsigned int vao, vbo, ebo;
+
+    TMS_Texture labelTexture; // Texture generated from the button's label.
 
 private:
     tms::Rect _defaultBackRect; // Default button rectangle.
