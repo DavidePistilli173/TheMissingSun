@@ -75,8 +75,13 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
         
         /* Draw current page buttons. */
         _textures[static_cast<int>(Texture::BUTTON)].bind();
-        for (const auto& link : _currentPage->getButtons())
+        for (auto& link : _currentPage->getButtons())
         {
+            if (link.button.wasModified())
+            {
+                link.button.setRenderingBuffers();
+                link.button.resetModification();
+            }
             glBindVertexArray(link.button.vao);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
@@ -348,50 +353,11 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
-    /* Create buffers for all menu buttons. */
-    unsigned int buttonVertexSequence[] =
-    {
-        0, 1, 2,
-        2, 3, 0
-    };
-
     for (auto& page : _pages)
     {
         for (auto& link : page->getButtons())
         {
-            /* Vertex Array Object. */
-            glGenVertexArrays(1, &link.button.vao);
-            glBindVertexArray(link.button.vao);
-            /* Vertex Buffer Object. */
-            glGenBuffers(1, &link.button.vbo);
-            glBindBuffer(GL_ARRAY_BUFFER, link.button.vbo);
-            /* Element Buffer Object. */
-            glGenBuffers(1, &link.button.ebo);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, link.button.ebo);
-
-            float incrementedX = link.button.getX() + link.button.getW();
-            float incrementedY = link.button.getY() + link.button.getH();
-            
-            float buttonVertexData[] =
-            {
-                link.button.getX(), link.button.getY(), static_cast<float>(tms::Layer::LAYER_7), 0.0f, 0.0f, // Top left corner.
-                incrementedX,       link.button.getY(), static_cast<float>(tms::Layer::LAYER_7), 1.0f, 0.0f, // Top right corner.
-                incrementedX,       incrementedY,       static_cast<float>(tms::Layer::LAYER_7), 1.0f, 1.0f, // Bottom right corner.
-                link.button.getX(), incrementedY,       static_cast<float>(tms::Layer::LAYER_7), 0.0f, 1.0f // Bottom left corner.
-            };
-
-            glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
-            glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
-            glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
-            glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
-            
-            glBufferData(GL_ARRAY_BUFFER, sizeof(buttonVertexData), buttonVertexData, GL_STATIC_DRAW);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(buttonVertexSequence), buttonVertexSequence, GL_STATIC_DRAW);
-
-            glBindVertexArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            link.button.setRenderingBuffers();
         }
     }
 }
