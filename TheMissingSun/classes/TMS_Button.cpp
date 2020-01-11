@@ -104,16 +104,27 @@ void TMS_Button::resetToDefault()
     _modified = true;
 }
 
-void TMS_Button::setRenderingBuffers()
+void TMS_Button::genRenderingBuffers()
 {
     /* Vertex Array Object. */
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
+
     /* Vertex Buffer Object. */
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
     /* Element Buffer Object. */
     glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    setRenderingBuffers();
+}
+
+void TMS_Button::setRenderingBuffers()
+{
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
     float incrementedX = getX() + getW();

@@ -357,7 +357,7 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     {
         for (auto& link : page->getButtons())
         {
-            link.button.setRenderingBuffers();
+            link.button.genRenderingBuffers();
         }
     }
 }

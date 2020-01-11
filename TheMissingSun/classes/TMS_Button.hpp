@@ -54,8 +54,8 @@ public:
     /* Reset the button position to the default value. */
     void resetToDefault();
 
-    /* Set OpenGL buffers. */
-    void setRenderingBuffers();
+    void genRenderingBuffers(); // Generate VAO, VBO and EBO and set them.
+    void setRenderingBuffers(); // Set VBO and EBO data.
 
     /* Check whether x and y fall inside the button. */
     bool checkCollision(const int x, const int y) const;
