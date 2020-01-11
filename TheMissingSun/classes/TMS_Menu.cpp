@@ -19,13 +19,6 @@ TMS_Menu::TMS_Menu() :
 {
 }
 
-TMS_Menu::~TMS_Menu()
-{
-    glDeleteBuffers(1, &_backgroundVAO);
-    glDeleteBuffers(1, &_backgroundVBO);
-    glDeleteBuffers(1, &_backgroundEBO);
-}
-
 bool TMS_Menu::init(const int windowWidth, const int windowHeight)
 {
     /* Load menu layout. */
