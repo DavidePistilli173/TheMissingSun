@@ -11,12 +11,22 @@ TMS_Button::TMS_Button() :
 {
 }
 
+TMS_Button::~TMS_Button()
+{
+    glDeleteBuffers(1, &vao);
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
+}
+
 TMS_Button::TMS_Button(TMS_Button&& oldButton) noexcept
 {
     label = std::move(oldButton.label);
     vao = oldButton.vao;
+    oldButton.vao = 0;
     vbo = oldButton.vbo;
+    oldButton.vbo = 0;
     ebo = oldButton.ebo;
+    oldButton.ebo = 0;
     labelTexture = std::move(oldButton.labelTexture);
 
     _defaultBackRect = oldButton._defaultBackRect;
@@ -31,8 +41,11 @@ TMS_Button& TMS_Button::operator=(TMS_Button&& oldButton) noexcept
     {
         label = std::move(oldButton.label);
         vao = oldButton.vao;
+        oldButton.vao = 0;
         vbo = oldButton.vbo;
+        oldButton.vbo = 0;
         ebo = oldButton.ebo;
+        oldButton.ebo = 0;
         labelTexture = std::move(oldButton.labelTexture);
 
         _defaultBackRect = oldButton._defaultBackRect;
