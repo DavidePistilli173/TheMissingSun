@@ -22,10 +22,6 @@ namespace tms
     constexpr int W_DEF_WIDTH = 800;
     /* Default window height. */
     constexpr int W_DEF_HEIGHT = 600;
-    /* Default colour. */
-    constexpr float DEFAULT_RED = 0.2f;
-    constexpr float DEFAULT_GREEN = 0.2f;
-    constexpr float DEFAULT_BLUE = 0.2f;
     /* Times. */
     constexpr int MENU_UPDATE_TIME = 17; // Approximately 60 UPS.
     /* Rendering matrices. */
@@ -44,6 +40,15 @@ namespace tms
     constexpr int CODE_READ_CHUNK = 4096; // Size of a single code chunk to be read.
     constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
     constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
+    /* Colours. */
+    /* Default colour. */
+    constexpr float DEFAULT_RED = 0.2f;
+    constexpr float DEFAULT_GREEN = 0.2f;
+    constexpr float DEFAULT_BLUE = 0.2f;
+    /* White. */
+    constexpr float COLOUR_WHITE_R = 1.0f;
+    constexpr float COLOUR_WHITE_G = 1.0f;
+    constexpr float COLOUR_WHITE_B = 1.0f;
 
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
@@ -60,6 +65,10 @@ namespace tms
     constexpr char CONFIG_MM_TAG_Y[] = "Y"; // Button y coordinate tag.
     constexpr char CONFIG_MM_TAG_WIDTH[] = "Width"; // Button width tag. 
     constexpr char CONFIG_MM_TAG_HEIGHT[] = "Height"; // Button height tag.
+
+    /***************** FONTS *****************/
+    constexpr char BASE_FONT[] = "resources/fonts/base_font.ttf";
+    constexpr int BASE_FONT_SIZE = 14;
 
     /***************** ENUMS *****************/
     /* List of all possible game states. */
@@ -89,6 +98,7 @@ namespace tms
     /***************** CONSTEXPR FUNCTIONS *****************/
     /* Return the default rendering layer. */
     constexpr Layer default_layer();
+    constexpr int toSDLColour(float colour);
 
     /***************** FUNCTIONS *****************/
     /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */

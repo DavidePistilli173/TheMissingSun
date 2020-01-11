@@ -7,6 +7,10 @@ namespace tms
     {
         return static_cast<Layer>(DEFAULT_RENDER_LAYER);
     }
+    constexpr int toSDLColour(float colour)
+    {
+        return static_cast<int>(colour * 255);
+    }
 
     /***************** FUNCTIONS *****************/
     void stringCopy(char* destination, const char* source)

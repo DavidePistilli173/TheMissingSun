@@ -15,7 +15,8 @@ TMS_Menu::TMS_Menu() :
     _menuState(tms::GameState::MENU),
     _backgroundVAO(0),
     _backgroundVBO(0),
-    _backgroundEBO(0)
+    _backgroundEBO(0),
+    _baseFont(nullptr, [](TTF_Font* font) { TTF_CloseFont(font); })
 {
 }
 
@@ -255,6 +256,45 @@ bool TMS_Menu::_loadTextures()
         printf("%s", error.c_str());
         return false;
     }
+<<<<<<< Updated upstream
+=======
+    /* Load button texture. */
+    try
+    {
+        _textures[static_cast<int>(Texture::BUTTON)] = TMS_Texture(tms::texture::MENU_BUTTON);
+    }
+    catch (std::string error)
+    {
+        printf("%s", error.c_str());
+        return false;
+    }
+
+    /* Load fonts. */
+    _baseFont = tms::font_t(
+        TTF_OpenFont(tms::BASE_FONT, tms::BASE_FONT_SIZE),
+        [](TTF_Font* font) { TTF_CloseFont(font); }
+    );
+    if (_baseFont == nullptr)
+    {
+        printf("Failed to load font %s\n", tms::BASE_FONT);
+        return false;
+    }
+
+    /* Generate textures for button labels. */
+    for (auto& menuPage : _pages)
+    {
+        for (auto& button : menuPage->getButtons())
+        {
+            button.button.setColour(tms::COLOUR_WHITE_B, tms::COLOUR_WHITE_G, tms::COLOUR_WHITE_R, 1.0f);
+            if (!button.button.setLabelTexture(_baseFont))
+            {
+                printf("Failed to generate texture for button's label.\n");
+                return false;
+            }
+        }
+    }
+
+>>>>>>> Stashed changes
     return true;
 }
 
@@ -307,4 +347,16 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+<<<<<<< Updated upstream
+=======
+
+    /* Generate buffers for all buttons. */
+    for (auto& page : _pages)
+    {
+        for (auto& link : page->getButtons())
+        {
+            link.button.genRenderingBuffers();
+        }
+    }
+>>>>>>> Stashed changes
 }

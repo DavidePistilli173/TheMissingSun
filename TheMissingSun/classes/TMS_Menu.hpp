@@ -53,6 +53,7 @@ private:
     tms::GameState _menuState; // Used to signal menu exit.
     std::vector<TMS_Shader> _shaders; // Vector with all shaders.
     std::vector<TMS_Texture> _textures; // Vector with all textures.
+    tms::font_t _baseFont; // Base font for all writing.
 
     /* Vertex Array Objects. */
     GLuint _backgroundVAO; // VAO for menu background.
