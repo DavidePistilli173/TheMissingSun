@@ -10,6 +10,13 @@
 class TMS_Texture
 {
 public:
+    /* Different SDL_Surface data formats. */
+    enum class DataFormat
+    {
+        PNG_JPG,
+        BLENDED_TEXT
+    };
+
     TMS_Texture(); // Create an empty texture.
     TMS_Texture(const std::string fileName); // Load a texture from file.
     TMS_Texture(const std::string text, const SDL_Color textColour, const tms::font_t& font); // Generate a texture from text.
@@ -32,7 +39,7 @@ public:
     }
 private:
     /**************** METHODS ****************/
-    void _loadTexture(tms::surface_t& textureSurface);
+    void _loadTexture(tms::surface_t& textureSurface, DataFormat format);
 
     unsigned int _id;
     GLenum _wrapX, _wrapY; // Wrapping settings for x and y axes.

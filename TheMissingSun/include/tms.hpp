@@ -71,6 +71,7 @@ namespace tms
     /***************** FONTS *****************/
     constexpr char BASE_FONT[] = "resources/fonts/base_font.ttf";
     constexpr int BASE_FONT_SIZE = 14;
+    constexpr char TEST_FONT[] = "resources/fonts/test_font.ttf";
 
     /***************** ENUMS *****************/
     /* List of all possible game states. */
@@ -99,8 +100,15 @@ namespace tms
 
     /***************** CONSTEXPR FUNCTIONS *****************/
     /* Return the default rendering layer. */
-    constexpr Layer default_layer();
-    constexpr int toSDLColour(float colour);
+    constexpr Layer default_layer()
+    {
+        return static_cast<Layer>(DEFAULT_RENDER_LAYER);
+    }
+    /* Convert a float in range [0,1] to an int in range [0,255]. */
+    constexpr int toSDLColour(float colour)
+    {
+        return static_cast<int>(colour * 255);
+    }
 
     /***************** FUNCTIONS *****************/
     /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */

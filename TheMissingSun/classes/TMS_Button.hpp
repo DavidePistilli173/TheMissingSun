@@ -72,7 +72,8 @@ public:
 
     /**************** VARIABLES ****************/
     std::string label; // Button label.
-    unsigned int vao, vbo, ebo; // OpenGL buffers.
+    unsigned int vao, vbo, ebo; // OpenGL buffers for button background.
+    unsigned int labelVAO, labelVBO; // OpenGL buffers for button label.
     TMS_Texture labelTexture; // Texture generated from the button's label.
 
 private:

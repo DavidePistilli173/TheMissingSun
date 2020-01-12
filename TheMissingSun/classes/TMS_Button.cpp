@@ -4,9 +4,11 @@
 TMS_Button::TMS_Button() :
     label(""),
     vao(0), vbo(0), ebo(0),
+    labelVAO(0), labelVBO(0),
     _defaultBackRect({0,0,0,0}),
     _currentBackRect({0,0,0,0}),
     _labelRect({0,0,0,0}),
+    _labelColour({0,0,0,0}),
     _modified(false)
 {
 }
@@ -16,6 +18,8 @@ TMS_Button::~TMS_Button()
     glDeleteBuffers(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
+    glDeleteBuffers(1, &labelVAO);
+    glDeleteBuffers(1, &labelVBO);
 }
 
 TMS_Button::TMS_Button(TMS_Button&& oldButton) noexcept
@@ -27,6 +31,10 @@ TMS_Button::TMS_Button(TMS_Button&& oldButton) noexcept
     oldButton.vbo = 0;
     ebo = oldButton.ebo;
     oldButton.ebo = 0;
+    labelVAO = oldButton.labelVAO;
+    oldButton.labelVAO = 0;
+    labelVBO = oldButton.labelVBO;
+    oldButton.labelVBO = 0;
     labelTexture = std::move(oldButton.labelTexture);
 
     _defaultBackRect = oldButton._defaultBackRect;
@@ -46,6 +54,10 @@ TMS_Button& TMS_Button::operator=(TMS_Button&& oldButton) noexcept
         oldButton.vbo = 0;
         ebo = oldButton.ebo;
         oldButton.ebo = 0;
+        labelVAO = oldButton.labelVAO;
+        oldButton.labelVAO = 0;
+        labelVBO = oldButton.labelVBO;
+        oldButton.labelVBO = 0;
         labelTexture = std::move(oldButton.labelTexture);
 
         _defaultBackRect = oldButton._defaultBackRect;
@@ -132,16 +144,29 @@ void TMS_Button::resetToDefault()
 
 void TMS_Button::genRenderingBuffers()
 {
-    /* Vertex Array Object. */
+    /* Button background buffers. */
+    /* VAO. */
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-
-    /* Vertex Buffer Object. */
+    /* VBO. */
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    /* Element Buffer Object. */
+    /* EBO. */
     glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    /* Button label buffers. */
+    /* VAO. */
+    glGenVertexArrays(1, &labelVAO);
+    glBindVertexArray(labelVAO);
+    /* VBO. */
+    glGenBuffers(1, &labelVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, labelVBO);
+    /* EBO. */
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
     setRenderingBuffers();
@@ -149,6 +174,7 @@ void TMS_Button::genRenderingBuffers()
 
 void TMS_Button::setRenderingBuffers()
 {
+    /* Button background buffers. */
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -171,6 +197,32 @@ void TMS_Button::setRenderingBuffers()
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(buttonVertexData), buttonVertexData, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(buttonVertexSequence), buttonVertexSequence, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    /* Button label buffers. */
+    glBindVertexArray(labelVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, labelVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    incrementedX = _labelRect.x + _labelRect.w;
+    incrementedY = _labelRect.y + _labelRect.h;
+    float labelVertexData[] =
+    {
+        _labelRect.x, _labelRect.y, static_cast<float>(tms::Layer::LAYER_6), 0.0f, 0.0f, // Top left corner.
+        incrementedX, _labelRect.y, static_cast<float>(tms::Layer::LAYER_6), 1.0f, 0.0f, // Top right corner.
+        incrementedX, incrementedY, static_cast<float>(tms::Layer::LAYER_6), 1.0f, 1.0f, // Bottom right corner.
+        _labelRect.x, incrementedY, static_cast<float>(tms::Layer::LAYER_6), 0.0f, 1.0f // Bottom left corner.
+    };
+
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, STRIDE_SIZE, 0);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, STRIDE_SIZE, reinterpret_cast<void*>(3 * sizeof(float)));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(labelVertexData), labelVertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

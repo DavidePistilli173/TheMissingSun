@@ -23,17 +23,17 @@ TMS_Texture::TMS_Texture(const std::string fileName)
         [](SDL_Surface* surf) { SDL_FreeSurface(surf); }
     );
     if (textureSurface == nullptr) throw "Failed to load texture " + fileName + "\n " + IMG_GetError();
-    _loadTexture(textureSurface);
+    _loadTexture(textureSurface, DataFormat::PNG_JPG);
 }
 
 TMS_Texture::TMS_Texture(const std::string text, const SDL_Color textColour, const tms::font_t& font)
 {
     tms::surface_t textureSurface(
-        TTF_RenderText_Solid(font.get(), text.c_str(), textColour),
+        TTF_RenderUTF8_Blended(font.get(), text.c_str(), textColour),
         [](SDL_Surface* surf) { SDL_FreeSurface(surf); }
     );
-    if (textureSurface == nullptr) throw "Failed to generate texture from text " + text + "\n " + IMG_GetError();
-    _loadTexture(textureSurface);
+    if (textureSurface == nullptr) throw "Failed to generate texture from text " + text + "\n " + TTF_GetError();
+    _loadTexture(textureSurface, DataFormat::BLENDED_TEXT);
 }
 
 TMS_Texture::TMS_Texture(TMS_Texture&& oldTexture) noexcept
@@ -66,7 +66,7 @@ TMS_Texture& TMS_Texture::operator=(TMS_Texture&& oldTexture) noexcept
     return *this;
 }
 
-void TMS_Texture::_loadTexture(tms::surface_t& textureSurface)
+void TMS_Texture::_loadTexture(tms::surface_t& textureSurface, DataFormat format)
 {
     /* Generate a new OpenGL texture. */
     glGenTextures(1, &_id);
@@ -87,10 +87,21 @@ void TMS_Texture::_loadTexture(tms::surface_t& textureSurface)
 
     /* Retrieve the image format. */
     int imageFormat = GL_RGB;
-    if (textureSurface->format->BytesPerPixel == 4) imageFormat = GL_RGBA;
+    int pixelFormat = GL_UNSIGNED_BYTE;
+    switch (format)
+    {
+    case DataFormat::PNG_JPG:
+        if (textureSurface->format->BytesPerPixel == 4) imageFormat = GL_RGBA;
+        break;
+    case DataFormat::BLENDED_TEXT:
+        imageFormat = GL_BGRA;
+        pixelFormat = GL_UNSIGNED_INT_8_8_8_8_REV;
+        break;
+    }
+    
 
     /* Load the texture into memory. */
-    glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, textureSurface->w, textureSurface->h, 0, imageFormat, GL_UNSIGNED_BYTE, textureSurface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, imageFormat, textureSurface->w, textureSurface->h, 0, imageFormat, pixelFormat, textureSurface->pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, 0);

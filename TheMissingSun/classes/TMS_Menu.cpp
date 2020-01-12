@@ -88,6 +88,15 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
             glBindVertexArray(0);
         }
 
+        /* Draw button labels. */
+        for (auto& link : _currentPage->getButtons())
+        {
+            link.button.labelTexture.bind();
+            glBindVertexArray(link.button.labelVAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
+
         SDL_GL_SwapWindow(window.get());
     }
 }
@@ -211,14 +220,6 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             TMS_Button button;
             /* Get button label. */
             button.label = buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_LABEL)->FirstChild()->Value();
-            /* Get button coordinates. */
-            int x, y;
-            x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
-            y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
-            button.setDefaultX(x);
-            button.setX(x);
-            button.setDefaultY(y);
-            button.setY(y);
             /* Get button dimensions. */
             int width, height;
             width = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth);
@@ -227,6 +228,14 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             button.setW(width);
             button.setDefaultH(height);
             button.setH(height);
+            /* Get button coordinates. */
+            int x, y;
+            x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
+            y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
+            button.setDefaultX(x);
+            button.setX(x);
+            button.setDefaultY(y);
+            button.setY(y);
             /* Get button destination page. */
             int destinationId = std::atoi(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_DEST)->FirstChild()->Value());
             if (destinationId > static_cast<int>(_pages.size() - 1))
@@ -319,7 +328,7 @@ bool TMS_Menu::_loadTextures()
     {
         for (auto& button : menuPage->getButtons())
         {
-            button.button.setColour(tms::COLOUR_WHITE_B, tms::COLOUR_WHITE_G, tms::COLOUR_WHITE_R, 1.0f);
+            button.button.setColour(tms::toSDLColour(tms::COLOUR_WHITE_R), tms::toSDLColour(tms::COLOUR_WHITE_G), tms::toSDLColour(tms::COLOUR_WHITE_B), 255);
             if (!button.button.setLabelTexture(_baseFont))
             {
                 printf("Failed to generate texture for button's label.\n");
