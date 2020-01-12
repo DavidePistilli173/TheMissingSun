@@ -50,7 +50,7 @@
         <Buttons>
             <Button>
                 <Label>Back</Label>
-                <Destination>1</Destination>
+                <Destination>0</Destination>
                 <X>0.35</X>
                 <Y>0.1</Y>
                 <Width>0.3</Width>
@@ -65,7 +65,7 @@
         <Buttons>
             <Button>
                 <Label>Back</Label>
-                <Destination>1</Destination>
+                <Destination>0</Destination>
                 <X>0.35</X>
                 <Y>0.1</Y>
                 <Width>0.3</Width>
@@ -80,7 +80,7 @@
         <Buttons>
             <Button>
                 <Label>Back</Label>
-                <Destination>1</Destination>
+                <Destination>0</Destination>
                 <X>0.35</X>
                 <Y>0.1</Y>
                 <Width>0.3</Width>

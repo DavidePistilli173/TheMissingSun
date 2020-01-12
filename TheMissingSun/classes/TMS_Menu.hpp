@@ -23,6 +23,7 @@ public:
     enum class Texture
     {
         BACKGROUND,
+        BUTTON,
         TOTAL
     };
 
@@ -44,7 +45,7 @@ private:
     bool _loadShaders();
     /* Load menu textures. */
     bool _loadTextures();
-    /* Load menu vertex array objects. */
+    /* Load OpenGL buffers. */
     void _loadVAO(const int windowWidth, const int windowHeight);
 
     TMS_Clock _clock; // Input timer.

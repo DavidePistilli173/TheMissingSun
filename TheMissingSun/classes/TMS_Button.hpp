@@ -1,44 +1,37 @@
 #ifndef TMS_BUTTON_HPP
 #define TMS_BUTTON_HPP
 
+#include <atomic>
 #include <string>
+
+#include "../include/tms.hpp"
+#include "TMS_Texture.hpp"
 
 class TMS_Button
 {
 public:
     TMS_Button();
+    
+    TMS_Button(const TMS_Button& oldButton) = delete;
+    TMS_Button& operator=(const TMS_Button& oldButton) = delete;
+    TMS_Button(TMS_Button&& oldButton) noexcept;
+    TMS_Button& operator=(TMS_Button&& oldButton) noexcept;
+
+    /**************** CONSTANTS ****************/
+    /* Borders for the button's label. */
+    static constexpr float HORIZONTAL_BORDER = 0.1f;
+    static constexpr float VERTICAL_BORDER = 0.1f;
+    /* Number of bytes required for a single vertex. */
+    static constexpr int STRIDE_SIZE = 5 * sizeof(float);
+    /* EBO data for all buttons. */
+    static constexpr unsigned int buttonVertexSequence[] =
+    {
+        0, 1, 2,
+        2, 3, 0
+    };
 
     /**************** METHODS ****************/
     /* Setters. */
-<<<<<<< Updated upstream
-    void setDefaultX(const int x) { _defaultX = x; }
-    void setDefaultY(const int y) { _defaultY = y; }
-    void setX(const int x) { _x = x; }
-    void setY(const int y) { _y = y; }
-    void setWidth(const int width) { _width = width; }
-    void setHeight(const int height) { _height = height; }
-    void setLabel(const std::string label) { _label = label; };
-    /* Getters. */
-    int getDefaultX() const { return _defaultX; };
-    int getDefaultY() const { return _defaultY; };
-    int getX() const { return _x; };
-    int getY() const { return _y; };
-    int getWidth() const { return _width; };
-    int getHeight() const { return _height; };
-    std::string getLabel() const { return _label; };
-    /* Reset the button position to the default value. */
-    void resetPosition()
-    {
-        _x = _defaultX;
-        _y = _defaultY;
-    }
-
-private:
-    std::string _label; // Button label.
-    int _defaultX, _defaultY; // Button default coordinates.
-    int _x, _y; // Button coordinates.
-    int _width, _height; // Button dimensions.
-=======
     void setDefaultX(const int x);
     void setDefaultY(const int y);
     void setDefaultW(const int w);
@@ -86,9 +79,7 @@ private:
     tms::Rect _defaultBackRect; // Default button rectangle.
     tms::Rect _currentBackRect; // Current button rectangle.
     tms::Rect _labelRect; // Rectangle for the button's label.
-    SDL_Color _labelColour; // Colour information for the button's label.
     std::atomic<bool> _modified; // Set to true when the coordinates change. Set to false at the first render after the changes.
->>>>>>> Stashed changes
 };
 
 #endif

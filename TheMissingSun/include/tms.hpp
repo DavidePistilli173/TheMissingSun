@@ -4,6 +4,7 @@
 #include <glm.hpp>
 #include <memory>
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <string>
 
 #include "glad/glad.h"
@@ -14,6 +15,7 @@ namespace tms
     using window_t = std::unique_ptr<SDL_Window, void(*)(SDL_Window*)>; // Game window.
     using file_t = std::unique_ptr<SDL_RWops, void(*)(SDL_RWops*)>; // File handle.
     using surface_t = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>; // SDL_Surface image.
+    using font_t = std::unique_ptr<TTF_Font, void(*)(TTF_Font*)>; // SDL true type font.
 
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
@@ -103,6 +105,14 @@ namespace tms
     /***************** FUNCTIONS *****************/
     /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */
     void stringCopy(char* destination, const char* source);
+
+    /***************** STRUCTS *****************/
+    /* Data for a rectangle. */
+    struct Rect
+    {
+        int x, y; // x and y coordinates.
+        int w, h; // Width and height respectively.
+    };
 }
 
 #endif

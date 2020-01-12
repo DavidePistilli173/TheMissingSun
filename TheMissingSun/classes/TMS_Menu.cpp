@@ -53,7 +53,6 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
     glm::mat4 viewMat = glm::lookAt(tms::DEFAULT_CAMERA_POSITION, tms::DEFAULT_CAMERA_TARGET, tms::DEFAULT_CAMERA_UP);
     /* Create an orthographic projection matrix. */
     glm::mat4 orthographicProjection = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight), 0.0f, 0.0f, -static_cast<float>(tms::Layer::MAX_LAYER));
-    //glm::mat4 orthographicProjection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
     /* Combine the visualisation matrices. */
     glm::mat4 visualMatrix = orthographicProjection * viewMat * modelMat;
@@ -73,6 +72,21 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
         _textures[static_cast<int>(Texture::BACKGROUND)].bind();
         glBindVertexArray(_backgroundVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+        
+        /* Draw current page buttons. */
+        _textures[static_cast<int>(Texture::BUTTON)].bind();
+        for (auto& link : _currentPage->getButtons())
+        {
+            if (link.button.wasModified())
+            {
+                link.button.setRenderingBuffers();
+                link.button.resetModification();
+            }
+            glBindVertexArray(link.button.vao);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
 
         SDL_GL_SwapWindow(window.get());
     }
@@ -114,6 +128,24 @@ tms::GameState TMS_Menu::menuLoop()
                     _menuState = tms::GameState::EXIT;
                     return tms::GameState::EXIT;
                     break;
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (event.button.button == SDL_BUTTON_LEFT)
+                {
+                    int i = 0;
+                    std::vector<TMS_MenuPage::Link>& buttons = _currentPage->getButtons();
+                    /* Loop until the correct button is found. */
+                    while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
+                    if (i < buttons.size())
+                    {
+                        _currentPage = buttons[i].link;
+                        if (_currentPage == nullptr)
+                        {
+                            _menuState = tms::GameState::EXIT;
+                            return tms::GameState::EXIT;
+                        }
+                    }
                 }
                 break;
             }
@@ -178,7 +210,7 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
         {
             TMS_Button button;
             /* Get button label. */
-            button.setLabel(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_LABEL)->FirstChild()->Value());
+            button.label = buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_LABEL)->FirstChild()->Value();
             /* Get button coordinates. */
             int x, y;
             x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
@@ -191,8 +223,10 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             int width, height;
             width = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth);
             height = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_HEIGHT)->FirstChild()->Value()) * windowHeight);
-            button.setWidth(width);
-            button.setHeight(height);
+            button.setDefaultW(width);
+            button.setW(width);
+            button.setDefaultH(height);
+            button.setH(height);
             /* Get button destination page. */
             int destinationId = std::atoi(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_DEST)->FirstChild()->Value());
             if (destinationId > static_cast<int>(_pages.size() - 1))
@@ -244,6 +278,7 @@ bool TMS_Menu::_loadShaders()
 
 bool TMS_Menu::_loadTextures()
 {
+    /* Load common menu textures. */
     _textures.resize(static_cast<int>(Texture::TOTAL));
 
     /* Load background texture. */
@@ -256,8 +291,7 @@ bool TMS_Menu::_loadTextures()
         printf("%s", error.c_str());
         return false;
     }
-<<<<<<< Updated upstream
-=======
+
     /* Load button texture. */
     try
     {
@@ -269,32 +303,15 @@ bool TMS_Menu::_loadTextures()
         return false;
     }
 
-    /* Load fonts. */
-    _baseFont = tms::font_t(
-        TTF_OpenFont(tms::BASE_FONT, tms::BASE_FONT_SIZE),
-        [](TTF_Font* font) { TTF_CloseFont(font); }
-    );
-    if (_baseFont == nullptr)
-    {
-        printf("Failed to load font %s\n", tms::BASE_FONT);
-        return false;
-    }
-
     /* Generate textures for button labels. */
     for (auto& menuPage : _pages)
     {
         for (auto& button : menuPage->getButtons())
         {
-            button.button.setColour(tms::COLOUR_WHITE_B, tms::COLOUR_WHITE_G, tms::COLOUR_WHITE_R, 1.0f);
-            if (!button.button.setLabelTexture(_baseFont))
-            {
-                printf("Failed to generate texture for button's label.\n");
-                return false;
-            }
+
         }
     }
 
->>>>>>> Stashed changes
     return true;
 }
 
@@ -316,39 +333,27 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
         static_cast<float>(windowWidth),    static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Bottom right corner.
         0.0f,                               static_cast<float>(windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 0.0f, 1.0f  // Bottom left corner.
     };
-    
-    
-    /*
-    float backgroundData[] =
-    {
-        0.0f, 100.0f, 0.0f, 0.0f, 0.0f, // Bottom left corner.
-        100.0f, 100.0f, 0.0f, 1.0f, 0.0f, // Bottom right corner.
-        100.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top right corner.
-        0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // Top left corner.
-    };
-    */
-    
+    /* Rendering indices for the vertices. */
     unsigned int backgroundIndices[] =
     {
         0, 1, 2,
         2, 3, 0
     };
-    
-    
+    /* Transfer vertices to GPU. */
     glBufferData(GL_ARRAY_BUFFER, sizeof(backgroundData), backgroundData, GL_STATIC_DRAW);
+    /* Set vertex data structure. */
     int strideSize = 5 * sizeof(float);
     glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
     glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
     glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
     glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
-
+    /* Transfer vertex indices to GPU. */
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(backgroundIndices), backgroundIndices, GL_STATIC_DRAW);
 
+    /* Unbind all buffers. */
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-<<<<<<< Updated upstream
-=======
 
     /* Generate buffers for all buttons. */
     for (auto& page : _pages)
@@ -358,5 +363,4 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
             link.button.genRenderingBuffers();
         }
     }
->>>>>>> Stashed changes
 }

@@ -1,14 +1,15 @@
+#include "../include/tms_shader_namespace.hpp"
 #include "TMS_Button.hpp"
 
 TMS_Button::TMS_Button() :
-    _label(""),
-    _defaultX(0), _defaultY(0),
-    _x(0), _y(0),
-    _width(0), _height(0)
+    label(""),
+    vao(0), vbo(0), ebo(0),
+    _defaultBackRect({0,0,0,0}),
+    _currentBackRect({0,0,0,0}),
+    _labelRect({0,0,0,0}),
+    _modified(false)
 {
 }
-<<<<<<< Updated upstream
-=======
 
 TMS_Button::~TMS_Button()
 {
@@ -91,14 +92,6 @@ void TMS_Button::setH(const int h)
     _modified = true;
 }
 
-void TMS_Button::setColour(const int r, const int g, const int b, const int a)
-{
-    _labelColour.r = r;
-    _labelColour.g = g;
-    _labelColour.b = b;
-    _labelColour.a = a;
-}
-
 int TMS_Button::getDefaultX() const { return _defaultBackRect.x; }
 
 int TMS_Button::getDefaultY() const { return _defaultBackRect.y; }
@@ -114,11 +107,6 @@ int TMS_Button::getY() const { return _currentBackRect.y; }
 int TMS_Button::getW() const { return _currentBackRect.w; }
 
 int TMS_Button::getH() const { return _currentBackRect.h; }
-
-SDL_Color TMS_Button::getColour()
-{
-    return _labelColour;
-}
 
 void TMS_Button::resetToDefault()
 {
@@ -176,20 +164,6 @@ void TMS_Button::setRenderingBuffers()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-bool TMS_Button::setLabelTexture(tms::font_t& font)
-{
-    try
-    {
-        labelTexture = TMS_Texture(label, _labelColour, font);
-    }
-    catch (std::string error)
-    {
-        printf("%s", error.c_str());
-        return false;
-    }
-    return true;
-}
-
 bool TMS_Button::checkCollision(const int x, const int y) const
 {
     if (x < _currentBackRect.x || x > _currentBackRect.x + _currentBackRect.w) return false;
@@ -206,4 +180,3 @@ void TMS_Button::resetModification()
 {
     _modified = false;
 }
->>>>>>> Stashed changes
