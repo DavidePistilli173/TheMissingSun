@@ -11,7 +11,7 @@ class TMS_Button
 {
 public:
     TMS_Button();
-    
+    ~TMS_Button();
     TMS_Button(const TMS_Button& oldButton) = delete;
     TMS_Button& operator=(const TMS_Button& oldButton) = delete;
     TMS_Button(TMS_Button&& oldButton) noexcept;
