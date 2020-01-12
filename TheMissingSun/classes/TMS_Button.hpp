@@ -79,6 +79,7 @@ private:
     tms::Rect _defaultBackRect; // Default button rectangle.
     tms::Rect _currentBackRect; // Current button rectangle.
     tms::Rect _labelRect; // Rectangle for the button's label.
+    SDL_Color _labelColour; // Colour information for the button's label.
     std::atomic<bool> _modified; // Set to true when the coordinates change. Set to false at the first render after the changes.
 };
 

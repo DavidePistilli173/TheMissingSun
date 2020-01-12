@@ -58,9 +58,6 @@ bool TMS_Base::init()
         return false;
     }
 
-    /* Release OpenGL context from the current thread. */
-    SDL_GL_MakeCurrent(_window.get(), 0);
-
     return true;
 }
 
@@ -108,10 +105,16 @@ void TMS_Base::render()
 
         SDL_GL_SwapWindow(_window.get());
     }
+
+    /* Release OpenGL context from the current thread. */
+    SDL_GL_MakeCurrent(_window.get(), 0);
 }
 
 void TMS_Base::run()
 {
+    /* Release OpenGL context from the current thread. */
+    SDL_GL_MakeCurrent(_window.get(), 0);
+
     /* Start the renderer thread. */
     std::thread renderThread(&TMS_Base::render, this);
     /* Start the game logic. */
@@ -119,4 +122,7 @@ void TMS_Base::run()
 
     /* Wait for the rendering thread to end. */
     renderThread.join();
+
+    /* Release OpenGL context from the current thread. */
+    SDL_GL_MakeCurrent(_window.get(), _glContext);
 }

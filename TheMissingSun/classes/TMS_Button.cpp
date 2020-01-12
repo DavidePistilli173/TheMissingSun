@@ -92,6 +92,14 @@ void TMS_Button::setH(const int h)
     _modified = true;
 }
 
+void TMS_Button::setColour(const int r, const int g, const int b, const int a)
+{
+    _labelColour.r = r;
+    _labelColour.g = g;
+    _labelColour.b = b;
+    _labelColour.a = a;
+}
+
 int TMS_Button::getDefaultX() const { return _defaultBackRect.x; }
 
 int TMS_Button::getDefaultY() const { return _defaultBackRect.y; }
@@ -107,6 +115,11 @@ int TMS_Button::getY() const { return _currentBackRect.y; }
 int TMS_Button::getW() const { return _currentBackRect.w; }
 
 int TMS_Button::getH() const { return _currentBackRect.h; }
+
+SDL_Color TMS_Button::getColour()
+{
+    return _labelColour;
+}
 
 void TMS_Button::resetToDefault()
 {
@@ -162,6 +175,20 @@ void TMS_Button::setRenderingBuffers()
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+bool TMS_Button::setLabelTexture(tms::font_t& font)
+{
+    try
+    {
+        labelTexture = TMS_Texture(label, _labelColour, font);
+    }
+    catch (std::string error)
+    {
+        printf("%s", error.c_str());
+        return false;
+    }
+    return true;
 }
 
 bool TMS_Button::checkCollision(const int x, const int y) const

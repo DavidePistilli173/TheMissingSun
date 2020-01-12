@@ -303,12 +303,28 @@ bool TMS_Menu::_loadTextures()
         return false;
     }
 
+    /* Load fonts. */
+    _baseFont = tms::font_t(
+        TTF_OpenFont(tms::BASE_FONT, tms::BASE_FONT_SIZE),
+        [](TTF_Font* font) { TTF_CloseFont(font); }
+    );
+    if (_baseFont == nullptr)
+    {
+        printf("Failed to load font %s\n", tms::BASE_FONT);
+        return false;
+    }
+
     /* Generate textures for button labels. */
     for (auto& menuPage : _pages)
     {
         for (auto& button : menuPage->getButtons())
         {
-
+            button.button.setColour(tms::COLOUR_WHITE_B, tms::COLOUR_WHITE_G, tms::COLOUR_WHITE_R, 1.0f);
+            if (!button.button.setLabelTexture(_baseFont))
+            {
+                printf("Failed to generate texture for button's label.\n");
+                return false;
+            }
         }
     }
 
