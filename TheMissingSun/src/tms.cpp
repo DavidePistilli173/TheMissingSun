@@ -2,12 +2,6 @@
 
 namespace tms
 {
-    /***************** CONSTEXPR FUNCTIONS *****************/
-    constexpr Layer default_layer()
-    {
-        return static_cast<Layer>(DEFAULT_RENDER_LAYER);
-    }
-
     /***************** FUNCTIONS *****************/
     void stringCopy(char* destination, const char* source)
     {

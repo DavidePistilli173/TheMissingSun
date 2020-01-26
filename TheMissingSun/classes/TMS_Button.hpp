@@ -19,8 +19,10 @@ public:
 
     /**************** CONSTANTS ****************/
     /* Borders for the button's label. */
-    static constexpr float HORIZONTAL_BORDER = 0.1f;
-    static constexpr float VERTICAL_BORDER = 0.1f;
+    static constexpr float HORIZONTAL_BORDER = 0.12f;
+    static constexpr float VERTICAL_BORDER = 0.2f;
+    /* Maximum length of the button's label. */
+    static constexpr int MAX_TEXT_LEN = 1000;
     /* Number of bytes required for a single vertex. */
     static constexpr int STRIDE_SIZE = 5 * sizeof(float);
     /* EBO data for all buttons. */
@@ -41,6 +43,7 @@ public:
     void setY(const int y);
     void setW(const int w);
     void setH(const int h);
+    void setColour(const int r, const int g, const int b, const int a);
     /* Getters. */
     int getDefaultX() const;
     int getDefaultY() const;
@@ -50,12 +53,14 @@ public:
     int getY() const;
     int getW() const;
     int getH() const;
+    SDL_Color getColour();
 
     /* Reset the button position to the default value. */
     void resetToDefault();
 
     void genRenderingBuffers(); // Generate VAO, VBO and EBO and set them.
     void setRenderingBuffers(); // Set VBO and EBO data.
+    bool setLabelTexture(tms::font_t& font);
 
     /* Check whether x and y fall inside the button. */
     bool checkCollision(const int x, const int y) const;
@@ -69,13 +74,18 @@ public:
 
     /**************** VARIABLES ****************/
     std::string label; // Button label.
-    unsigned int vao, vbo, ebo; // OpenGL buffers.
+    unsigned int vao, vbo, ebo; // OpenGL buffers for button background.
+    unsigned int labelVAO, labelVBO; // OpenGL buffers for button label.
     TMS_Texture labelTexture; // Texture generated from the button's label.
 
 private:
     tms::Rect _defaultBackRect; // Default button rectangle.
     tms::Rect _currentBackRect; // Current button rectangle.
+
     tms::Rect _labelRect; // Rectangle for the button's label.
+    SDL_Color _labelColour; // Colour information for the button's label.
+    float _labelLenFraction; // Label texture length over max label length.
+
     std::atomic<bool> _modified; // Set to true when the coordinates change. Set to false at the first render after the changes.
 };
 

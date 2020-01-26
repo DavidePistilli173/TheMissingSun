@@ -6,8 +6,8 @@
 
 #include "../classes/TMS_Base.hpp"
 
-/* Quit all SDL subsystems. */
-void quit();
+bool run(); // Initialise and run the game.
+void quit(); // Quit all SDL subsystems.
 
 int main(int argc, char* args[])
 {
@@ -41,16 +41,23 @@ int main(int argc, char* args[])
         return -1;
     }
 
+    int returnValue = 0;
+    if (!run()) returnValue = -1;
+
+    quit();
+    return returnValue;
+}
+
+bool run()
+{
     TMS_Base baseGame;
     if (!baseGame.init())
     {
         printf("Could not initialise game.\nClosing...\n");
-        return -1;
+        return false;
     }
     baseGame.run();
-
-    quit();
-    return 0;
+    return true;
 }
 
 void quit()

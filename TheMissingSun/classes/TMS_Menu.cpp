@@ -15,7 +15,8 @@ TMS_Menu::TMS_Menu() :
     _menuState(tms::GameState::MENU),
     _backgroundVAO(0),
     _backgroundVBO(0),
-    _backgroundEBO(0)
+    _backgroundEBO(0),
+    _baseFont(nullptr, [](TTF_Font* font) { TTF_CloseFont(font); })
 {
 }
 
@@ -90,6 +91,15 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
                 link.button.resetModification();
             }
             glBindVertexArray(link.button.vao);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
+
+        /* Draw button labels. */
+        for (auto& link : _currentPage->getButtons())
+        {
+            link.button.labelTexture.bind();
+            glBindVertexArray(link.button.labelVAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
         }
@@ -217,14 +227,6 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             TMS_Button button;
             /* Get button label. */
             button.label = buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_LABEL)->FirstChild()->Value();
-            /* Get button coordinates. */
-            int x, y;
-            x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
-            y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
-            button.setDefaultX(x);
-            button.setX(x);
-            button.setDefaultY(y);
-            button.setY(y);
             /* Get button dimensions. */
             int width, height;
             width = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth);
@@ -233,6 +235,14 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             button.setW(width);
             button.setDefaultH(height);
             button.setH(height);
+            /* Get button coordinates. */
+            int x, y;
+            x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
+            y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
+            button.setDefaultX(x);
+            button.setX(x);
+            button.setDefaultY(y);
+            button.setY(y);
             /* Get button destination page. */
             int destinationId = std::atoi(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_DEST)->FirstChild()->Value());
             if (destinationId > static_cast<int>(_pages.size() - 1))
@@ -297,6 +307,7 @@ bool TMS_Menu::_loadTextures()
         printf("%s", error.c_str());
         return false;
     }
+
     /* Load button texture. */
     try
     {
@@ -308,12 +319,29 @@ bool TMS_Menu::_loadTextures()
         return false;
     }
 
+    /* Load fonts. */
+    _baseFont = tms::font_t(
+        TTF_OpenFont(tms::BASE_FONT, tms::BASE_FONT_SIZE),
+        [](TTF_Font* font) { TTF_CloseFont(font); }
+    );
+    if (_baseFont == nullptr)
+    {
+        printf("Failed to load font %s\n", tms::BASE_FONT);
+        return false;
+    }
+
     /* Generate textures for button labels. */
     for (auto& menuPage : _pages)
     {
         for (auto& button : menuPage->getButtons())
         {
-
+            button.button.setColour(tms::toSDLColour(tms::COLOUR_WHITE_R), tms::toSDLColour(tms::COLOUR_WHITE_G), tms::toSDLColour(tms::COLOUR_WHITE_B), 255);
+            if (!button.button.setLabelTexture(_baseFont))
+            {
+                printf("Failed to generate texture for button's label.\n");
+                return false;
+            }
+            button.button.resetToDefault();
         }
     }
 
@@ -360,6 +388,7 @@ void TMS_Menu::_loadVAO(const int windowWidth, const int windowHeight)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+    /* Generate buffers for all buttons. */
     for (auto& page : _pages)
     {
         for (auto& link : page->getButtons())
