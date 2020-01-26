@@ -50,6 +50,10 @@ bool TMS_Base::init()
     glViewport(0, 0, _windowWidth, _windowHeight);
     /* Enable OpenGL depth testing. */
     glEnable(GL_DEPTH_TEST);
+    /* Enable alpha blending. */
+    glEnable(GL_BLEND);
+    /* Set blending factors. */
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     /* Initialise the main menu. */
     if (!_menu.init(_windowWidth, _windowHeight))
@@ -106,7 +110,7 @@ void TMS_Base::render()
         SDL_GL_SwapWindow(_window.get());
     }
 
-    /* Release the OpenGL context. */
+    /* Release OpenGL context from the current thread. */
     SDL_GL_MakeCurrent(_window.get(), 0);
 }
 
@@ -123,5 +127,6 @@ void TMS_Base::run()
     /* Wait for the rendering thread to end. */
     renderThread.join();
 
+    /* Release OpenGL context from the current thread. */
     SDL_GL_MakeCurrent(_window.get(), _glContext);
 }

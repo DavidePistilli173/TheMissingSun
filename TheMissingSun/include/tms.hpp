@@ -24,10 +24,6 @@ namespace tms
     constexpr int W_DEF_WIDTH = 800;
     /* Default window height. */
     constexpr int W_DEF_HEIGHT = 600;
-    /* Default colour. */
-    constexpr float DEFAULT_RED = 0.2f;
-    constexpr float DEFAULT_GREEN = 0.2f;
-    constexpr float DEFAULT_BLUE = 0.2f;
     /* Times. */
     constexpr int MENU_UPDATE_TIME = 17; // Approximately 60 UPS.
     /* Rendering matrices. */
@@ -47,6 +43,16 @@ namespace tms
     constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
     constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
 
+    /* Colours. */
+    /* Default colour. */
+    constexpr float DEFAULT_RED = 0.2f;
+    constexpr float DEFAULT_GREEN = 0.2f;
+    constexpr float DEFAULT_BLUE = 0.2f;
+    /* White. */
+    constexpr float COLOUR_WHITE_R = 1.0f;
+    constexpr float COLOUR_WHITE_G = 1.0f;
+    constexpr float COLOUR_WHITE_B = 1.0f;
+
     /***************** CONFIGURATION FILES *****************/
     /* Main menu. */
     constexpr char CONFIG_MM_NAME[] = "config/main_menu.xml"; // Configuration file name.
@@ -62,6 +68,11 @@ namespace tms
     constexpr char CONFIG_MM_TAG_Y[] = "Y"; // Button y coordinate tag.
     constexpr char CONFIG_MM_TAG_WIDTH[] = "Width"; // Button width tag. 
     constexpr char CONFIG_MM_TAG_HEIGHT[] = "Height"; // Button height tag.
+
+    /***************** FONTS *****************/
+    constexpr char BASE_FONT[] = "resources/fonts/base_font.ttf";
+    constexpr int BASE_FONT_SIZE = 180;
+    constexpr char TEST_FONT[] = "resources/fonts/test_font.ttf";
 
     /***************** ENUMS *****************/
     /* List of all possible game states. */
@@ -90,7 +101,15 @@ namespace tms
 
     /***************** CONSTEXPR FUNCTIONS *****************/
     /* Return the default rendering layer. */
-    constexpr Layer default_layer();
+    constexpr Layer default_layer()
+    {
+        return static_cast<Layer>(DEFAULT_RENDER_LAYER);
+    }
+    /* Convert a float in range [0,1] to an int in range [0,255]. */
+    constexpr int toSDLColour(float colour)
+    {
+        return static_cast<int>(colour * 255);
+    }
 
     /***************** FUNCTIONS *****************/
     /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */
