@@ -28,6 +28,7 @@ public:
     };
 
     TMS_Menu();
+    ~TMS_Menu();
 
     /**************** METHODS ****************/
     /* Initialise all menu data. */
