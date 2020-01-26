@@ -42,6 +42,7 @@ namespace tms
     constexpr int CODE_READ_CHUNK = 4096; // Size of a single code chunk to be read.
     constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
     constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
+
     /* Colours. */
     /* Default colour. */
     constexpr float DEFAULT_RED = 0.2f;
@@ -70,7 +71,7 @@ namespace tms
 
     /***************** FONTS *****************/
     constexpr char BASE_FONT[] = "resources/fonts/base_font.ttf";
-    constexpr int BASE_FONT_SIZE = 14;
+    constexpr int BASE_FONT_SIZE = 180;
     constexpr char TEST_FONT[] = "resources/fonts/test_font.ttf";
 
     /***************** ENUMS *****************/

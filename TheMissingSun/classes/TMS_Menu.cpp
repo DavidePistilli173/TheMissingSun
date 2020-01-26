@@ -334,6 +334,7 @@ bool TMS_Menu::_loadTextures()
                 printf("Failed to generate texture for button's label.\n");
                 return false;
             }
+            button.button.resetToDefault();
         }
     }
 

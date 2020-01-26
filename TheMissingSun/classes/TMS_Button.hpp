@@ -19,8 +19,10 @@ public:
 
     /**************** CONSTANTS ****************/
     /* Borders for the button's label. */
-    static constexpr float HORIZONTAL_BORDER = 0.1f;
-    static constexpr float VERTICAL_BORDER = 0.1f;
+    static constexpr float HORIZONTAL_BORDER = 0.12f;
+    static constexpr float VERTICAL_BORDER = 0.2f;
+    /* Maximum length of the button's label. */
+    static constexpr int MAX_TEXT_LEN = 1000;
     /* Number of bytes required for a single vertex. */
     static constexpr int STRIDE_SIZE = 5 * sizeof(float);
     /* EBO data for all buttons. */
@@ -79,8 +81,11 @@ public:
 private:
     tms::Rect _defaultBackRect; // Default button rectangle.
     tms::Rect _currentBackRect; // Current button rectangle.
+
     tms::Rect _labelRect; // Rectangle for the button's label.
     SDL_Color _labelColour; // Colour information for the button's label.
+    float _labelLenFraction; // Label texture length over max label length.
+
     std::atomic<bool> _modified; // Set to true when the coordinates change. Set to false at the first render after the changes.
 };
 

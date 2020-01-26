@@ -32,6 +32,9 @@ public:
     TMS_Texture& operator= (TMS_Texture&& oldTexture) noexcept;
 
     /**************** METHODS ****************/
+    /* Getters. */
+    int getW() const;
+    int getH() const;
     /* Bind the current texture. */
     void bind()
     {
@@ -44,6 +47,8 @@ private:
     unsigned int _id;
     GLenum _wrapX, _wrapY; // Wrapping settings for x and y axes.
     GLenum _minFilter, _magFilter; // Filter settings for scaling down and up.
+
+    unsigned int _width, _height; // Texture dimensions.
 };
 
 #endif

@@ -9,6 +9,7 @@ TMS_Button::TMS_Button() :
     _currentBackRect({0,0,0,0}),
     _labelRect({0,0,0,0}),
     _labelColour({0,0,0,0}),
+    _labelLenFraction(0),
     _modified(false)
 {
 }
@@ -40,6 +41,7 @@ TMS_Button::TMS_Button(TMS_Button&& oldButton) noexcept
     _defaultBackRect = oldButton._defaultBackRect;
     _currentBackRect = oldButton._currentBackRect;
     _labelRect = oldButton._labelRect;
+    _labelLenFraction = oldButton._labelLenFraction;
     _modified = oldButton._modified.load();
 }
 
@@ -63,6 +65,7 @@ TMS_Button& TMS_Button::operator=(TMS_Button&& oldButton) noexcept
         _defaultBackRect = oldButton._defaultBackRect;
         _currentBackRect = oldButton._currentBackRect;
         _labelRect = oldButton._labelRect;
+        _labelLenFraction = oldButton._labelLenFraction;
         _modified = oldButton._modified.load();
     }
     return *this;
@@ -79,7 +82,8 @@ void TMS_Button::setDefaultH(const int h) { _defaultBackRect.h = h; }
 void TMS_Button::setX(const int x)
 {
     _currentBackRect.x = x;
-    _labelRect.x = x + HORIZONTAL_BORDER * _currentBackRect.w;
+    int horizontalMargin = static_cast<int>(HORIZONTAL_BORDER * _currentBackRect.w);
+    _labelRect.x = x + horizontalMargin + _labelLenFraction * (_currentBackRect.w - horizontalMargin)/2;
     _modified = true;
 }
 
@@ -93,7 +97,8 @@ void TMS_Button::setY(const int y)
 void TMS_Button::setW(const int w)
 {
     _currentBackRect.w = w;
-    _labelRect.w = w - 2 * HORIZONTAL_BORDER * w;
+    int horizontalMargin = static_cast<int>(HORIZONTAL_BORDER * w);
+    _labelRect.w = w - 2 * horizontalMargin - 2 * _labelLenFraction * (w - horizontalMargin)/2;
     _modified = true;
 }
 
@@ -240,6 +245,9 @@ bool TMS_Button::setLabelTexture(tms::font_t& font)
         printf("%s", error.c_str());
         return false;
     }
+
+    _labelLenFraction = 1.0f - static_cast<float>(labelTexture.getW()) / MAX_TEXT_LEN;
+    
     return true;
 }
 
