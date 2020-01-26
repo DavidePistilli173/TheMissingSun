@@ -89,5 +89,8 @@
     <ClInclude Include="include\tms_texture_namespace.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="classes\TMS_Entity.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

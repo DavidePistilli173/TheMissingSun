@@ -150,6 +150,7 @@
     <ClInclude Include="classes\TMS_Button.hpp" />
     <ClInclude Include="classes\TMS_Base.hpp" />
     <ClInclude Include="classes\TMS_Clock.hpp" />
+    <ClInclude Include="classes\TMS_Entity.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
