@@ -1,8 +1,10 @@
 #ifndef TMS_ENTITY_HPP
 #define TMS_ENTITY_HPP
 
+#include <optional>
 #include <SDL.h>
 
+#include "TMS_Action.hpp"
 #include "TMS_Shader.hpp"
 #include "TMS_Texture.hpp"
 
@@ -16,8 +18,10 @@ public:
         _textures(textures)
     {}
 
+    /* Check whether (x,y) is inside the current entity or not. */
+    virtual bool checkCollision(const int x, const int y) = 0;
     /* Handle each event passed to this entity. */
-    virtual void handleEvent(SDL_Event& event) = 0;
+    virtual std::optional<TMS_Action> handleEvent(const SDL_Event& event) = 0;
     /* Render the object on screen. */
     virtual void render() = 0;
 
