@@ -132,8 +132,10 @@
   <ItemGroup>
     <ClCompile Include="classes\TMS_Button.cpp" />
     <ClCompile Include="classes\TMS_Base.cpp" />
+    <ClCompile Include="classes\TMS_EntityGrid.cpp" />
     <ClCompile Include="classes\TMS_Menu.cpp" />
     <ClCompile Include="classes\TMS_MenuPage.cpp" />
+    <ClCompile Include="classes\TMS_QuadTree.cpp" />
     <ClCompile Include="classes\TMS_Shader.cpp" />
     <ClCompile Include="classes\TMS_Texture.cpp" />
     <ClCompile Include="src\glad.c" />
@@ -147,12 +149,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="classes\TMS_Action.hpp" />
     <ClInclude Include="classes\TMS_Button.hpp" />
     <ClInclude Include="classes\TMS_Base.hpp" />
     <ClInclude Include="classes\TMS_Clock.hpp" />
     <ClInclude Include="classes\TMS_Entity.hpp" />
+    <ClInclude Include="classes\TMS_EntityGrid.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
+    <ClInclude Include="classes\TMS_QuadTree.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
     <ClInclude Include="include\tms_shader_namespace.hpp" />
