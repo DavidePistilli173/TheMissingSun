@@ -133,6 +133,7 @@
     <ClCompile Include="classes\TMS_Button.cpp" />
     <ClCompile Include="classes\TMS_Base.cpp" />
     <ClCompile Include="classes\TMS_EventDispatcher.cpp" />
+    <ClCompile Include="classes\TMS_Game.cpp" />
     <ClCompile Include="classes\TMS_Menu.cpp" />
     <ClCompile Include="classes\TMS_MenuPage.cpp" />
     <ClCompile Include="classes\TMS_Shader.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="classes\TMS_Entity.hpp" />
     <ClInclude Include="classes\TMS_Event.hpp" />
     <ClInclude Include="classes\TMS_EventDispatcher.hpp" />
+    <ClInclude Include="classes\TMS_Game.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />

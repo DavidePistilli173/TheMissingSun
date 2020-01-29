@@ -155,11 +155,22 @@ tms::GameState TMS_Menu::menuLoop()
                     while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
                     if (i < buttons.size())
                     {
+                        bool moveToGame = buttons[i].startGame;
                         _currentPage = buttons[i].link;
                         if (_currentPage == nullptr)
                         {
-                            _menuState = tms::GameState::EXIT;
-                            return tms::GameState::EXIT;
+                            if (moveToGame == false)
+                            {
+                                /* Exit the game. */
+                                _menuState = tms::GameState::EXIT;
+                                return tms::GameState::EXIT;
+                            }
+                            else
+                            {
+                                /* Move to asset loading and start the game. */
+                                _menuState = tms::GameState::EXIT;
+                                return tms::GameState::LOADING;
+                            }
                         }
                     }
                 }
@@ -252,6 +263,7 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             }
             /* Add the button to the current page. */
             if (destinationId == -1) _pages[pageId]->addButton(button, nullptr);
+            else if (destinationId == -2) _pages[pageId]->addButton(button, nullptr, true);
             else _pages[pageId]->addButton(button, _pages[destinationId]);
             /* Move to the next button. */
             buttonElement = buttonElement->NextSiblingElement();

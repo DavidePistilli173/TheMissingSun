@@ -3,8 +3,9 @@
 
 #include <SDL.h>
 
-#include "../classes/TMS_Menu.hpp"
 #include "../include/tms.hpp"
+#include "TMS_Game.hpp"
+#include "TMS_Menu.hpp"
 
 /* Base class. */
 class TMS_Base
@@ -36,10 +37,12 @@ private:
     SDL_GLContext _glContext;
 
     /* General variables. */
+    bool _gameRunning;
     bool _exit; // True when exiting the game
     tms::GameState _currentState; // Current game state.
 
     /* Game. */
     TMS_Menu _menu; // Game menu logic and data.
+    TMS_Game _game; // Main game logic and data.
 };
 #endif

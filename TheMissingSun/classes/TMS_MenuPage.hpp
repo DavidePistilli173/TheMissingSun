@@ -16,6 +16,7 @@ public:
     {
         TMS_Button button;
         std::shared_ptr<TMS_MenuPage> link;
+        bool startGame = false; // True if the button needs to start the game loop.
     };
 
     TMS_MenuPage();
@@ -42,6 +43,14 @@ public:
         Link newButton;
         newButton.button = std::move(button);
         newButton.link = link;
+        _buttons.push_back(std::move(newButton));
+    }
+    void addButton(TMS_Button& button, std::shared_ptr<TMS_MenuPage> link, bool game)
+    {
+        Link newButton;
+        newButton.button = std::move(button);
+        newButton.link = link;
+        newButton.startGame = game;
         _buttons.push_back(std::move(newButton));
     }
 

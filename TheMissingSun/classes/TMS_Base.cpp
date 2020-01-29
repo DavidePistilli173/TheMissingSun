@@ -9,6 +9,7 @@ TMS_Base::TMS_Base() :
     _windowWidth(tms::W_DEF_WIDTH),
     _windowHeight(tms::W_DEF_HEIGHT),
     _glContext(NULL),
+    _gameRunning(false),
     _exit(false),
     _currentState(tms::GameState::MENU)
 {
@@ -76,6 +77,23 @@ void TMS_Base::outerLoop()
         case tms::GameState::MENU:
             _currentState = _menu.menuLoop();
             break;
+        /* Load the game. */
+        case tms::GameState::LOADING:
+            if (_gameRunning) _currentState = tms::GameState::GAME;
+            else
+            {
+                _currentState = _game.loadGameLogic();
+                if (_currentState == tms::GameState::EXIT)
+                {
+                    printf("Error while loading game.\nExiting...\n");
+                    _exit = true;
+                }
+                _gameRunning = true;
+            }
+            break;
+        case tms::GameState::GAME:
+            _currentState =_game.gameLoop();
+            break;
         /* Exit the game. */
         case tms::GameState::EXIT:
             _exit = true;
@@ -105,6 +123,14 @@ void TMS_Base::render()
         case tms::GameState::MENU:
             _menu.render(_window, _windowWidth, _windowHeight);
             break;
+        case tms::GameState::LOADING:
+            if (!_gameRunning)
+            {
+                _game.loadOpenGLAssets();
+            }
+            break;
+        case tms::GameState::GAME:
+            _game.renderLoop(_window);
         }
 
         SDL_GL_SwapWindow(_window.get());
