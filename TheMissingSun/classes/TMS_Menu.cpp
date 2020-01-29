@@ -335,7 +335,7 @@ bool TMS_Menu::_loadTextures()
     {
         for (auto& button : menuPage->getButtons())
         {
-            button.button.setColour(tms::toSDLColour(tms::COLOUR_WHITE_R), tms::toSDLColour(tms::COLOUR_WHITE_G), tms::toSDLColour(tms::COLOUR_WHITE_B), 255);
+            button.button.setColour(tms::to_SDL_colour(tms::COLOUR_WHITE_R), tms::to_SDL_colour(tms::COLOUR_WHITE_G), tms::to_SDL_colour(tms::COLOUR_WHITE_B), 255);
             if (!button.button.setLabelTexture(_baseFont))
             {
                 printf("Failed to generate texture for button's label.\n");

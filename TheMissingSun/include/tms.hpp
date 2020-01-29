@@ -105,8 +105,18 @@ namespace tms
     {
         return static_cast<Layer>(DEFAULT_RENDER_LAYER);
     }
+    /* Return the number of rendering layers. */
+    constexpr int layer_num()
+    {
+        return static_cast<int>(Layer::MIN_LAYER) - static_cast<int>(Layer::BACKGROUND_LAYER) + 1;
+    }
+    /* Convert the layer number to an array index (from MIN_LAYER to BACKGROUND_LAYER). */
+    constexpr int layer_index(Layer layer)
+    {
+        return static_cast<int>(Layer::MIN_LAYER) - static_cast<int>(layer);
+    }
     /* Convert a float in range [0,1] to an int in range [0,255]. */
-    constexpr int toSDLColour(float colour)
+    constexpr int to_SDL_colour(float colour)
     {
         return static_cast<int>(colour * 255);
     }
