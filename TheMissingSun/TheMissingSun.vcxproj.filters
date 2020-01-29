@@ -54,12 +54,6 @@
     <ClCompile Include="testMain.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="classes\TMS_QuadTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\TMS_EntityGrid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -98,13 +92,7 @@
     <ClInclude Include="classes\TMS_Entity.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classes\TMS_QuadTree.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classes\TMS_Action.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\TMS_EntityGrid.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
