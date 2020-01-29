@@ -18,6 +18,8 @@ public:
         _textures(textures)
     {}
 
+    /* Getters. */
+    virtual tms::Rect getLayer() = 0; // Return the entities' depth layer.
     /* Check whether (x,y) is inside the current entity or not. */
     virtual bool checkCollision(const int x, const int y) = 0;
     /* Handle each event passed to this entity. */
