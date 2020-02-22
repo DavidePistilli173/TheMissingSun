@@ -16,6 +16,7 @@ tms::GameState TMS_Game::loadGameLogic()
     /* Wait for the renderer thread to load OpenGL assets. */
     std::unique_lock<std::mutex> lock(_mutex);
     _waitCondition.wait(lock, std::bind(&TMS_Game::_mainCanLoad, this));
+    if (_loadingState == LoadingState::FAILURE) return tms::GameState::EXIT;
 
     /* Load main assets. */
 
@@ -23,6 +24,7 @@ tms::GameState TMS_Game::loadGameLogic()
     _loadingState = LoadingState::GL_BUFFERS;
     _waitCondition.notify_one();
     _waitCondition.wait(lock, std::bind(&TMS_Game::_mainCanLoad, this));
+    if (_loadingState == LoadingState::FAILURE) return tms::GameState::EXIT;
 
     return tms::GameState::GAME;
 }
@@ -36,11 +38,25 @@ void TMS_Game::loadOpenGLAssets()
     _waitCondition.wait(lock, std::bind(&TMS_Game::_rendererCanLoad, this));
 
     /* Load OpenGL assets. */
+    try
+    {
+        for (int i = 0; i < static_cast<int>(tms::texture::Name::TOT); ++i)
+        {
+            _textures[i] = std::make_shared<TMS_Texture>(TMS_Texture(tms::texture::FILES[i]));
+        }
+    }
+    catch (std::string error)
+    {
+        printf("Unable to load game textures: %s\n", error.c_str());
+        _loadingState = LoadingState::FAILURE;
+        return;
+    }
 
     /* Return the mutex and wait for the main thread to load its assets. */
     _loadingState = LoadingState::MAIN_ASSETS;
     _waitCondition.notify_one();
     _waitCondition.wait(lock, std::bind(&TMS_Game::_rendererCanLoad, this));
+    if (_loadingState == LoadingState::FAILURE) return;
 
     /* Load OpenGL buffers. */
 
@@ -100,10 +116,11 @@ void TMS_Game::renderLoop(tms::window_t& window)
 
 bool TMS_Game::_mainCanLoad()
 {
-    return (_loadingState == LoadingState::MAIN_ASSETS || _loadingState == LoadingState::COMPLETE);
+    return (_loadingState == LoadingState::MAIN_ASSETS || _loadingState == LoadingState::COMPLETE ||
+            _loadingState == LoadingState::FAILURE);
 }
 
 bool TMS_Game::_rendererCanLoad()
 {
-    return (_loadingState != LoadingState::MAIN_ASSETS);
+    return (_loadingState != LoadingState::MAIN_ASSETS || _loadingState == LoadingState::FAILURE);
 }

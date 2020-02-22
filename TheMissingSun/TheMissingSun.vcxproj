@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="classes\TMS_Background.cpp" />
     <ClCompile Include="classes\TMS_Button.cpp" />
     <ClCompile Include="classes\TMS_Base.cpp" />
     <ClCompile Include="classes\TMS_EventDispatcher.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Action.hpp" />
+    <ClInclude Include="classes\TMS_Background.hpp" />
     <ClInclude Include="classes\TMS_Button.hpp" />
     <ClInclude Include="classes\TMS_Base.hpp" />
     <ClInclude Include="classes\TMS_Clock.hpp" />

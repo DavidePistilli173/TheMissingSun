@@ -13,7 +13,13 @@ class TMS_Entity
 {
 public:
     /* At creation the entity must have references to all resources. */
-    TMS_Entity(std::unique_ptr<std::vector<TMS_Shader>>& shaders, std::unique_ptr<std::vector<TMS_Texture>>& textures) :
+    TMS_Entity(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures) :
+        id(0),
+        _shaders(shaders),
+        _textures(textures)
+    {}
+    TMS_Entity(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures, unsigned int i) :
+        id(i),
         _shaders(shaders),
         _textures(textures)
     {}
@@ -27,9 +33,11 @@ public:
     /* Render the object on screen. */
     virtual void render() = 0;
 
-private:
-    std::unique_ptr<std::vector<TMS_Shader>>& _shaders; // Vector containing all game shaders.
-    std::unique_ptr<std::vector<TMS_Texture>>& _textures; // Vector containing all game textures.
+    unsigned int id; // ID given by the owner class.
+
+protected:
+    std::vector<std::shared_ptr<TMS_Shader>> _shaders; // Vector containing all game shaders.
+    std::vector<std::shared_ptr<TMS_Texture>> _textures; // Vector containing all game textures.
 };
 
 #endif

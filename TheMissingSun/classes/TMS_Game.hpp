@@ -5,7 +5,9 @@
 #include <mutex>
 
 #include "../include/tms.hpp"
+#include "../include/tms_texture_namespace.hpp"
 #include "TMS_Clock.hpp"
+#include "TMS_Texture.hpp"
 
 class TMS_Game
 {
@@ -16,7 +18,8 @@ public:
         GL_ASSETS,
         MAIN_ASSETS,
         GL_BUFFERS,
-        COMPLETE
+        COMPLETE,
+        FAILURE
     };
 
     TMS_Game();
@@ -42,6 +45,8 @@ private:
 
     tms::GameState _currentState; // Current game state.
     TMS_Clock _clock; // Game clock.
+
+    std::shared_ptr<TMS_Texture> _textures[static_cast<int>(tms::texture::Name::TOT)]; // Array containing all game textures.
 };
 
 #endif
