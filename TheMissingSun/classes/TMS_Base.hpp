@@ -13,6 +13,7 @@ class TMS_Base
 public:
     /* Default constructor. */
     TMS_Base();
+    ~TMS_Base();
 
     /**************** METHODS ****************/
     /* Initialise the basic game data. 
@@ -34,7 +35,7 @@ private:
     int _windowWidth, _windowHeight; // _window resolution.
 
     /* Graphics. */
-    SDL_GLContext _glContext;
+    SDL_GLContext _glContext; // Rendering context.
 
     /* General variables. */
     bool _gameRunning;

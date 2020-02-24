@@ -15,6 +15,11 @@ TMS_Base::TMS_Base() :
 {
 }
 
+TMS_Base::~TMS_Base()
+{
+    SDL_GL_DeleteContext(_glContext);
+}
+
 bool TMS_Base::init()
 {
     /* Set OpenGL version. */
@@ -41,6 +46,7 @@ bool TMS_Base::init()
     /* Rendering related initialisation. */
     /* Create OpenGL context. */
     _glContext = SDL_GL_CreateContext(_window.get());
+
     /* Load OpenGL function calls. */
     gladLoadGLLoader(SDL_GL_GetProcAddress);
     /* Set VSync on. */
@@ -142,7 +148,7 @@ void TMS_Base::render()
 
 void TMS_Base::run()
 {
-    /* Release OpenGL context from the current thread. */
+    /* Release the OpenGL context from the current thread. */
     SDL_GL_MakeCurrent(_window.get(), 0);
 
     /* Start the renderer thread. */
@@ -152,7 +158,4 @@ void TMS_Base::run()
 
     /* Wait for the rendering thread to end. */
     renderThread.join();
-
-    /* Release OpenGL context from the current thread. */
-    SDL_GL_MakeCurrent(_window.get(), _glContext);
 }
