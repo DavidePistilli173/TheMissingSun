@@ -24,9 +24,11 @@ public:
                    tms::Rect span);
     TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures, 
                    unsigned int id, tms::Rect span);
+    ~TMS_Background();
     TMS_Background(const TMS_Background& oldBackground) = delete;
     TMS_Background& operator= (const TMS_Background& oldBackground) = delete;
-    // TODO: Add move constructor and move assignment operator.
+    TMS_Background(TMS_Background&& oldBackground) noexcept;
+    TMS_Background& operator= (TMS_Background&& oldBackground) noexcept;
 
     /***************** CONSTANTS *****************/
     static constexpr float LEVEL_HEIGHT_FRACTION = 0.5f;

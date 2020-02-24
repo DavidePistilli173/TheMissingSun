@@ -44,6 +44,67 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
     if (_textures.size() != static_cast<int>(Texture::TOT)) throw "Wrong number of textures for background initialisation.\n";
 }
 
+TMS_Background::~TMS_Background()
+{
+    glDeleteBuffers(1, &_skyVAO);
+    glDeleteBuffers(1, &_skyVBO);
+    glDeleteBuffers(1, &_surfaceVAO);
+    glDeleteBuffers(1, &_surfaceVBO);
+    glDeleteBuffers(1, &_undergroundVAO);
+    glDeleteBuffers(1, &_undergroundVBO);
+    glDeleteBuffers(1, &_EBO);
+}
+
+TMS_Background::TMS_Background(TMS_Background&& oldBackground) noexcept :
+    TMS_Entity(std::move(oldBackground)),
+    _skyRect(oldBackground._skyRect),
+    _surfaceRect(oldBackground._surfaceRect),
+    _undergroundRect(oldBackground._undergroundRect)
+{
+        _EBO = oldBackground._EBO;
+        oldBackground._EBO = 0;
+        _skyVAO = oldBackground._skyVAO;
+        oldBackground._skyVAO = 0;
+        _skyVBO = oldBackground._skyVBO;
+        oldBackground._skyVBO = 0;
+        _surfaceVAO = oldBackground._surfaceVAO;
+        oldBackground._surfaceVAO = 0;
+        _surfaceVBO = oldBackground._surfaceVBO;
+        oldBackground._surfaceVBO = 0;
+        _undergroundVAO = oldBackground._undergroundVAO;
+        oldBackground._undergroundVAO = 0;
+        _undergroundVBO = oldBackground._undergroundVBO;
+        oldBackground._undergroundVBO = 0;
+}
+
+TMS_Background& TMS_Background::operator=(TMS_Background&& oldBackground) noexcept
+{
+    if (this != &oldBackground)
+    {
+        TMS_Entity::operator=(std::move(oldBackground));
+
+        _skyRect = oldBackground._skyRect;
+        _surfaceRect = oldBackground._surfaceRect;
+        _undergroundRect = oldBackground._undergroundRect;
+
+        _EBO = oldBackground._EBO;
+        oldBackground._EBO = 0;
+        _skyVAO = oldBackground._skyVAO;
+        oldBackground._skyVAO = 0;
+        _skyVBO = oldBackground._skyVBO;
+        oldBackground._skyVBO = 0;
+        _surfaceVAO = oldBackground._surfaceVAO;
+        oldBackground._surfaceVAO = 0;
+        _surfaceVBO = oldBackground._surfaceVBO;
+        oldBackground._surfaceVBO = 0;
+        _undergroundVAO = oldBackground._undergroundVAO;
+        oldBackground._undergroundVAO = 0;
+        _undergroundVBO = oldBackground._undergroundVBO;
+        oldBackground._undergroundVBO = 0;
+    }
+    return *this;
+}
+
 tms::Layer TMS_Background::getLayer()
 {
     return tms::Layer::BACKGROUND_LAYER;
