@@ -33,10 +33,12 @@ public:
     /**************** METHODS ****************/
     /* Initialise all menu data. */
     bool init(const int windowWidth, const int windowHeight);
+    /* Handle user inputs. */
+    tms::GameState handleEvents();
     /* Render the menu. */
     void render(tms::window_t& window, const int windowWidth, const int windowHeight);
     /* Main menu loop. */
-    tms::GameState menuLoop();
+    tms::GameState menuLoop(tms::window_t& window, const int windowWidth, const int windowHeight);
 
 private:
     /**************** METHODS ****************/

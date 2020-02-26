@@ -52,8 +52,100 @@ bool TMS_Menu::init(const int windowWidth, const int windowHeight)
     return true;
 }
 
+tms::GameState TMS_Menu::handleEvents()
+{
+    /* Event polling. */
+    SDL_Event event; // Contains SDL events.
+    while (SDL_PollEvent(&event) != 0)
+    {
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            _menuState = tms::GameState::EXIT;
+            return tms::GameState::EXIT;
+            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_q:
+                _menuState = tms::GameState::EXIT;
+                return tms::GameState::EXIT;
+                break;
+            }
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                int i = 0;
+                std::vector<TMS_MenuPage::Link>& buttons = _currentPage->getButtons();
+                /* Loop until the correct button is found. */
+                while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
+                if (i < buttons.size())
+                {
+                    bool moveToGame = buttons[i].startGame;
+                    _currentPage = buttons[i].link;
+                    if (_currentPage == nullptr)
+                    {
+                        if (moveToGame == false)
+                        {
+                            /* Exit the game. */
+                            _menuState = tms::GameState::EXIT;
+                            return tms::GameState::EXIT;
+                        }
+                        else
+                        {
+                            /* Move to asset loading and start the game. */
+                            _menuState = tms::GameState::EXIT;
+                            return tms::GameState::LOADING;
+                        }
+                    }
+                }
+            }
+            break;
+        }
+    }
+    return tms::GameState::MENU;
+}
+
 void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int windowHeight)
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _shaders[static_cast<int>(Shader::PLAIN)].use();
+
+    /* Draw menu background. */
+    _textures[static_cast<int>(Texture::BACKGROUND)].bind();
+    glBindVertexArray(_backgroundVAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+        
+    /* Draw current page buttons. */
+    _textures[static_cast<int>(Texture::BUTTON)].bind();
+    for (auto& link : _currentPage->getButtons())
+    {
+        glBindVertexArray(link.button.vao);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
+    /* Draw button labels. */
+    for (auto& link : _currentPage->getButtons())
+    {
+        link.button.labelTexture.bind();
+        glBindVertexArray(link.button.labelVAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
+    SDL_GL_SwapWindow(window.get());
+}
+
+tms::GameState TMS_Menu::menuLoop(tms::window_t& window, const int windowWidth, const int windowHeight)
+{
+    /* Reset the menu to the default starting page. */
+    _menuState = tms::GameState::MENU;
+    _currentPage = _pages[0];
+
     /* Model matrix. */
     glm::mat4 modelMat = glm::mat4(1.0f);
     /* View matrix. */
@@ -67,56 +159,8 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
     _shaders[static_cast<int>(Shader::PLAIN)].use();
     _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
     _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), GL_TEXTURE0);
-
-    /* Main rendering loop. */
-    while (_menuState != tms::GameState::EXIT)
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        _shaders[static_cast<int>(Shader::PLAIN)].use();
-
-        /* Draw menu background. */
-        _textures[static_cast<int>(Texture::BACKGROUND)].bind();
-        glBindVertexArray(_backgroundVAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-        
-        /* Draw current page buttons. */
-        _textures[static_cast<int>(Texture::BUTTON)].bind();
-        for (auto& link : _currentPage->getButtons())
-        {
-            if (link.button.wasModified())
-            {
-                link.button.setRenderingBuffers();
-                link.button.resetModification();
-            }
-            glBindVertexArray(link.button.vao);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-        }
-
-        /* Draw button labels. */
-        for (auto& link : _currentPage->getButtons())
-        {
-            link.button.labelTexture.bind();
-            glBindVertexArray(link.button.labelVAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-        }
-
-        SDL_GL_SwapWindow(window.get());
-    }
-}
-
-tms::GameState TMS_Menu::menuLoop()
-{
-    /* Reset the menu to the default starting page. */
-    _menuState = tms::GameState::MENU;
-    _currentPage = _pages[0];
-
-    SDL_Event event; // Contains SDL events. 
+ 
     _clock.startClock();
-
     while (true)
     {
         /* If the last frame updated too quickly, wait for the remaining time. */
@@ -128,55 +172,12 @@ tms::GameState TMS_Menu::menuLoop()
         }
         _clock.startClock();
 
-        /* Event polling. */
-        while (SDL_PollEvent(&event) != 0)
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                _menuState = tms::GameState::EXIT;
-                return tms::GameState::EXIT;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_q:
-                    _menuState = tms::GameState::EXIT;
-                    return tms::GameState::EXIT;
-                    break;
-                }
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.button == SDL_BUTTON_LEFT)
-                {
-                    int i = 0;
-                    std::vector<TMS_MenuPage::Link>& buttons = _currentPage->getButtons();
-                    /* Loop until the correct button is found. */
-                    while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
-                    if (i < buttons.size())
-                    {
-                        bool moveToGame = buttons[i].startGame;
-                        _currentPage = buttons[i].link;
-                        if (_currentPage == nullptr)
-                        {
-                            if (moveToGame == false)
-                            {
-                                /* Exit the game. */
-                                _menuState = tms::GameState::EXIT;
-                                return tms::GameState::EXIT;
-                            }
-                            else
-                            {
-                                /* Move to asset loading and start the game. */
-                                _menuState = tms::GameState::EXIT;
-                                return tms::GameState::LOADING;
-                            }
-                        }
-                    }
-                }
-                break;
-            }
-        }
+        /* Event handling. */
+        tms::GameState newState = handleEvents();
+        if (newState != tms::GameState::MENU) return newState;
+
+        /* Rendering. */
+        render(window, windowWidth, windowHeight);
     }
 }
 

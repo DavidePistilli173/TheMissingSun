@@ -26,8 +26,6 @@ private:
     /**************** METHODS ****************/
     /* Outer loop to handle high level game states. */
     void outerLoop();
-    /* Render engine. It will be executed on a separate thread. */
-    void render();
 
     /**************** VARIABLES *****************/
     /* Window. */

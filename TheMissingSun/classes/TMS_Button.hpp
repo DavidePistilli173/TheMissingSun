@@ -1,7 +1,6 @@
 #ifndef TMS_BUTTON_HPP
 #define TMS_BUTTON_HPP
 
-#include <atomic>
 #include <string>
 
 #include "../include/tms.hpp"
@@ -65,12 +64,6 @@ public:
     /* Check whether x and y fall inside the button. */
     bool checkCollision(const int x, const int y) const;
 
-    /* Check whether the button was modified since the last render. */
-    bool wasModified();
-
-    /* Reset the modification value to false. */
-    void resetModification();
-
 
     /**************** VARIABLES ****************/
     std::string label; // Button label.
@@ -85,8 +78,6 @@ private:
     tms::Rect _labelRect; // Rectangle for the button's label.
     SDL_Color _labelColour; // Colour information for the button's label.
     float _labelLenFraction; // Label texture length over max label length.
-
-    std::atomic<bool> _modified; // Set to true when the coordinates change. Set to false at the first render after the changes.
 };
 
 #endif

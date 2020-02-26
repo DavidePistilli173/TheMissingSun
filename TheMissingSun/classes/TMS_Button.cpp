@@ -9,9 +9,9 @@ TMS_Button::TMS_Button() :
     _currentBackRect({0,0,0,0}),
     _labelRect({0,0,0,0}),
     _labelColour({0,0,0,0}),
-    _labelLenFraction(0),
-    _modified(false)
+    _labelLenFraction(0)
 {
+    genRenderingBuffers();
 }
 
 TMS_Button::~TMS_Button()
@@ -42,7 +42,6 @@ TMS_Button::TMS_Button(TMS_Button&& oldButton) noexcept
     _currentBackRect = oldButton._currentBackRect;
     _labelRect = oldButton._labelRect;
     _labelLenFraction = oldButton._labelLenFraction;
-    _modified = oldButton._modified.load();
 }
 
 TMS_Button& TMS_Button::operator=(TMS_Button&& oldButton) noexcept
@@ -66,7 +65,6 @@ TMS_Button& TMS_Button::operator=(TMS_Button&& oldButton) noexcept
         _currentBackRect = oldButton._currentBackRect;
         _labelRect = oldButton._labelRect;
         _labelLenFraction = oldButton._labelLenFraction;
-        _modified = oldButton._modified.load();
     }
     return *this;
 }
@@ -84,14 +82,16 @@ void TMS_Button::setX(const int x)
     _currentBackRect.x = x;
     int horizontalMargin = static_cast<int>(HORIZONTAL_BORDER * _currentBackRect.w);
     _labelRect.x = x + horizontalMargin + _labelLenFraction * (_currentBackRect.w - horizontalMargin)/2;
-    _modified = true;
+
+    setRenderingBuffers();
 }
 
 void TMS_Button::setY(const int y)
 {
     _currentBackRect.y = y;
     _labelRect.y = y + VERTICAL_BORDER * _currentBackRect.h;
-    _modified = true;
+
+    setRenderingBuffers();
 }
 
 void TMS_Button::setW(const int w)
@@ -99,14 +99,16 @@ void TMS_Button::setW(const int w)
     _currentBackRect.w = w;
     int horizontalMargin = static_cast<int>(HORIZONTAL_BORDER * w);
     _labelRect.w = w - 2 * horizontalMargin - 2 * _labelLenFraction * (w - horizontalMargin)/2;
-    _modified = true;
+
+    setRenderingBuffers();
 }
 
 void TMS_Button::setH(const int h)
 {
     _currentBackRect.h = h;
     _labelRect.h = h - 2 * VERTICAL_BORDER * h;
-    _modified = true;
+
+    setRenderingBuffers();
 }
 
 void TMS_Button::setColour(const int r, const int g, const int b, const int a)
@@ -144,7 +146,6 @@ void TMS_Button::resetToDefault()
     setY(_defaultBackRect.y);
     setW(_defaultBackRect.w);
     setH(_defaultBackRect.h);
-    _modified = true;
 }
 
 void TMS_Button::genRenderingBuffers()
@@ -256,14 +257,4 @@ bool TMS_Button::checkCollision(const int x, const int y) const
     if (x < _currentBackRect.x || x > _currentBackRect.x + _currentBackRect.w) return false;
     if (y < _currentBackRect.y || y > _currentBackRect.y + _currentBackRect.h) return false;
     return true;
-}
-
-bool TMS_Button::wasModified()
-{
-    return _modified;
-}
-
-void TMS_Button::resetModification()
-{
-    _modified = false;
 }

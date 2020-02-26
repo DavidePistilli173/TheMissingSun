@@ -81,14 +81,14 @@ void TMS_Base::outerLoop()
         {
         /* Start the menu loop. */
         case tms::GameState::MENU:
-            _currentState = _menu.menuLoop();
+            _currentState = _menu.menuLoop(_window, _windowWidth, _windowHeight);
             break;
         /* Load the game. */
         case tms::GameState::LOADING:
             if (_gameRunning) _currentState = tms::GameState::GAME;
             else
             {
-                _currentState = _game.loadGameLogic();
+                _currentState = _game.loadGame();
                 if (_currentState == tms::GameState::EXIT)
                 {
                     printf("Error while loading game.\nExiting...\n");
@@ -98,7 +98,7 @@ void TMS_Base::outerLoop()
             }
             break;
         case tms::GameState::GAME:
-            _currentState =_game.gameLoop();
+            _currentState =_game.gameLoop(_window);
             break;
         /* Exit the game. */
         case tms::GameState::EXIT:
@@ -108,54 +108,8 @@ void TMS_Base::outerLoop()
     }
 }
 
-void TMS_Base::render()
-{
-    /* Take control of the OpenGL context. */
-    if (SDL_GL_MakeCurrent(_window.get(), _glContext) < 0)
-    {
-        printf("Could not transfer OpenGL context to rendering thread:\n%s", SDL_GetError());
-        _exit = true;
-        return;
-    }
-
-    /* Rendering loop. */
-    while (!_exit)
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        /* Call the appropriate rendering function for the current game state. */
-        switch (_currentState)
-        {
-        case tms::GameState::MENU:
-            _menu.render(_window, _windowWidth, _windowHeight);
-            break;
-        case tms::GameState::LOADING:
-            if (!_gameRunning)
-            {
-                _game.loadOpenGLAssets();
-            }
-            break;
-        case tms::GameState::GAME:
-            _game.renderLoop(_window);
-        }
-
-        SDL_GL_SwapWindow(_window.get());
-    }
-
-    /* Release OpenGL context from the current thread. */
-    SDL_GL_MakeCurrent(_window.get(), 0);
-}
-
 void TMS_Base::run()
 {
-    /* Release the OpenGL context from the current thread. */
-    SDL_GL_MakeCurrent(_window.get(), 0);
-
-    /* Start the renderer thread. */
-    std::thread renderThread(&TMS_Base::render, this);
     /* Start the game logic. */
     outerLoop();
-
-    /* Wait for the rendering thread to end. */
-    renderThread.join();
 }
