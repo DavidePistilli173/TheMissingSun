@@ -1,2 +1,7 @@
-TheMissingSun/Debug
-.vs/TheMissingSun/v16
+TheMissingSun/Debug/
+.vs/TheMissingSun/v16/
+*.log
+*.tlog
+*.obj
+*.idb
+*.pdb
