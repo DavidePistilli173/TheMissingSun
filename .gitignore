@@ -5,3 +5,5 @@ TheMissingSun/Debug/
 *.obj
 *.idb
 *.pdb
+*.exe
+*.ilk
