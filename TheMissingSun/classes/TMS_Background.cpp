@@ -1,5 +1,18 @@
 #include "../include/tms_shader_namespace.hpp"
+#include "../include/tms_texture_namespace.hpp"
 #include "TMS_Background.hpp"
+
+/* Defitions of static variables. */
+const std::string TMS_Background::REQUIRED_SHADERS[] =
+{
+    tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]
+};
+const std::string TMS_Background::REQUIRED_TEXTURES[] =
+{
+    tms::texture::NAMES[static_cast<int>(tms::texture::Name::SKY)],
+    tms::texture::NAMES[static_cast<int>(tms::texture::Name::SURFACE)],
+    tms::texture::NAMES[static_cast<int>(tms::texture::Name::UNDERGROUND)]
+};
 
 /* Build a two-level background: first level has the sky/surface, the second one has the underground. */
 TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
@@ -21,6 +34,9 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
 {
     if (_shaders.size() != static_cast<int>(Shader::TOT)) throw "Wrong number of shaders for background initialisation.\n";
     if (_textures.size() != static_cast<int>(Texture::TOT)) throw "Wrong number of textures for background initialisation.\n";
+
+    _initBuffers();
+    _setEvents();
 }
 
 TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures, 
@@ -42,6 +58,9 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
 {
     if (_shaders.size() != static_cast<int>(Shader::TOT)) throw "Wrong number of shaders for background initialisation.\n";
     if (_textures.size() != static_cast<int>(Texture::TOT)) throw "Wrong number of textures for background initialisation.\n";
+
+    _initBuffers();
+    _setEvents();
 }
 
 TMS_Background::~TMS_Background()
@@ -115,7 +134,12 @@ bool TMS_Background::checkCollision(const int x, const int y)
     return true;
 }
 
-std::optional<TMS_Action> TMS_Background::handleEvent(const TMS_Event& event)
+std::vector<tms::EventType>& TMS_Background::getRelevantEvents()
+{
+    return _relevantEvents;
+}
+
+std::optional<TMS_Action> TMS_Background::handleEvent(const SDL_Event& event)
 {
     return std::optional<TMS_Action>();
 }
@@ -142,7 +166,7 @@ void TMS_Background::render()
     glBindVertexArray(0);
 }
 
-void TMS_Background::initBuffers()
+void TMS_Background::_initBuffers()
 {
     /* Create the EBO. */
     glGenBuffers(1, &_EBO);
@@ -272,4 +296,9 @@ void TMS_Background::initBuffers()
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void TMS_Background::_setEvents()
+{
+    _relevantEvents.push_back(tms::EventType::MOUSE_LEFT_CLICK);
 }

@@ -37,6 +37,13 @@ namespace tms::texture
         "./resources/textures/background/surface.png",
         "./resources/textures/background/underground.png"
     };
+    /* List of texture names. */
+    const std::string NAMES[] =
+    {
+        "sky",
+        "surface",
+        "underground"
+    };
 }
 
 #endif

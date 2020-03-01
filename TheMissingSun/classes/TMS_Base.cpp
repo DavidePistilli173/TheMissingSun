@@ -88,7 +88,7 @@ void TMS_Base::outerLoop()
             if (_gameRunning) _currentState = tms::GameState::GAME;
             else
             {
-                _currentState = _game.loadGame();
+                _currentState = _game.loadGame(_windowWidth, _windowHeight);
                 if (_currentState == tms::GameState::EXIT)
                 {
                     printf("Error while loading game.\nExiting...\n");

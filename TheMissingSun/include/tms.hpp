@@ -99,6 +99,13 @@ namespace tms
         MIN_LAYER
     };
 
+    enum class EventType
+    {
+        MOUSE_LEFT_CLICK,
+        MOUSE_HOVER,
+        KEY_PRESS
+    };
+
     /***************** CONSTEXPR FUNCTIONS *****************/
     /* Return the default rendering layer. */
     constexpr Layer default_layer()

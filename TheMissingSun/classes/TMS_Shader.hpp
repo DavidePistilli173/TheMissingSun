@@ -19,6 +19,9 @@ public:
     /* Build a shader from source files. Throws std::string in case of error. */
     TMS_Shader(const std::string vertexShader, const std::string fragmentShader); 
     ~TMS_Shader(); // Correctly destroy the shader.
+    /* Shader class cannot be copied. */
+    TMS_Shader(const TMS_Shader& oldShader) = delete;
+    TMS_Shader& operator = (const TMS_Shader& oldTexture) = delete;
     TMS_Shader(TMS_Shader&& oldShader) noexcept; // Move constructor.
     TMS_Shader& operator=(TMS_Shader&& oldShader) noexcept; // Move assignment operator.
 
@@ -46,10 +49,6 @@ public:
 private:
     unsigned int _id; // Shader ID.
     std::vector<Uniform> _uniforms; // List of all uniforms for the current shader.
-
-    /* Shader class cannot be copied. */
-    TMS_Shader(const TMS_Shader& oldShader);
-    TMS_Shader& operator = (const TMS_Shader& oldTexture);
 };
 
 #endif

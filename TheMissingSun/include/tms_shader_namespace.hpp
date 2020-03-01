@@ -29,6 +29,25 @@ namespace tms::shader
         "cameraMatrix",
         "baseTexture"
     };
+
+    /***************** GAME *****************/
+    /* List of all game shaders. */
+    enum class Name
+    {
+        PLAIN,
+        TOT
+    };
+    /* List of all files containing game shaders. */
+    const std::string FILES[] =
+    {
+        "./shaders/common/plainVertex.glsl",
+        "./shaders/common/plainFragment.glsl"
+    };
+    /* List of shader names. */
+    const std::string NAMES[] =
+    {
+        "plain"
+    };
 }
 
 #endif
