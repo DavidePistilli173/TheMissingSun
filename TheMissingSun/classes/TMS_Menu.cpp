@@ -158,7 +158,7 @@ tms::GameState TMS_Menu::menuLoop(tms::window_t& window, const int windowWidth, 
 
     _shaders[static_cast<int>(Shader::PLAIN)].use();
     _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
-    _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), GL_TEXTURE0);
+    _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
  
     _clock.startClock();
     while (true)

@@ -90,6 +90,18 @@ int TMS_Texture::getH() const
     return _height;
 }
 
+void TMS_Texture::setWrapX(const GLenum setting)
+{
+    bind();
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, setting);
+}
+
+void TMS_Texture::setWrapY(const GLenum setting)
+{
+    bind();
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, setting);
+}
+
 void TMS_Texture::_loadTexture(tms::surface_t& textureSurface, DataFormat format)
 {
     /* Store texture dimensions. */

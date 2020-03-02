@@ -1,3 +1,7 @@
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
 #include "TMS_Background.hpp"
 #include "TMS_Game.hpp"
 
@@ -10,6 +14,10 @@ TMS_Game::TMS_Game() :
 
 tms::GameState TMS_Game::loadGame(const int winW, const int winH)
 {
+    /* Set width and height of the window. */
+    _windowWidth = winW;
+    _windowHeight = winH;
+
     /* Load textures. */
     try
     {
@@ -42,6 +50,16 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
         return tms::GameState::EXIT;
     }
 
+    /* Load plain shader uniforms. */
+    for (const auto& uniform : tms::shader::plain)
+    {
+        if (!_shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second->addUniform(uniform))
+        {
+            printf("Failed to add unform to plain shader.\n");
+            return tms::GameState::EXIT;
+        }
+    }
+
     /* Load initial entities. */
     /* Load background. */
     std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;
@@ -59,13 +77,28 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
                         TMS_Background(requiredShaders, 
                                        requiredTextures,
                                        _entities.size(),
-                                       tms::Rect({ -winW, 0, BASE_WIDTH * winW, BASE_HEIGHT * winH }))));
+                                       tms::Rect({ -_windowWidth, 0, BASE_WIDTH * _windowWidth, BASE_HEIGHT * _windowHeight }))));
 
     return tms::GameState::GAME;
 }
 
 tms::GameState TMS_Game::gameLoop(tms::window_t& window)
 {
+    /* Model matrix. */
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    /* View matrix. */
+    glm::mat4 viewMat = glm::lookAt(tms::DEFAULT_CAMERA_POSITION, tms::DEFAULT_CAMERA_TARGET, tms::DEFAULT_CAMERA_UP);
+    /* Create an orthographic projection matrix. */
+    glm::mat4 orthographicProjection = glm::ortho(0.0f, static_cast<float>(_windowWidth), static_cast<float>(_windowHeight), 0.0f, 0.0f, -static_cast<float>(tms::Layer::MAX_LAYER));
+
+    /* Combine the visualisation matrices. */
+    glm::mat4 visualMatrix = orthographicProjection * viewMat * modelMat;
+
+    auto shader = _shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second;
+    shader->use();
+    shader->setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
+    shader->setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
+
     _clock.startClock();
     while (true)
     {
@@ -116,6 +149,11 @@ tms::GameState TMS_Game::handleEvents()
 void TMS_Game::render(tms::window_t& window)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    for (const auto& entity : _entities)
+    {
+        entity->render();
+    }
 
     SDL_GL_SwapWindow(window.get());
 }

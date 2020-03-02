@@ -35,6 +35,9 @@ public:
     /* Getters. */
     int getW() const;
     int getH() const;
+    /* Setters. */
+    void setWrapX(const GLenum setting);
+    void setWrapY(const GLenum setting);
     /* Bind the current texture. */
     void bind()
     {

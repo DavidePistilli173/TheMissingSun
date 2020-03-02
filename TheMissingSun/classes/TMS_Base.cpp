@@ -23,7 +23,7 @@ TMS_Base::~TMS_Base()
 bool TMS_Base::init()
 {
     /* Set OpenGL version. */
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     /* Set core profile for OpenGL. */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -61,6 +61,12 @@ bool TMS_Base::init()
     glEnable(GL_BLEND);
     /* Set blending factors. */
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    /* Set debug context. */
+    #ifdef _DEBUG
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(&tms::openGLError, nullptr);
+    #endif
 
     /* Initialise the main menu. */
     if (!_menu.init(_windowWidth, _windowHeight))

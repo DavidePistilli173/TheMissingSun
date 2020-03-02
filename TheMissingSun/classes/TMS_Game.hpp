@@ -46,6 +46,8 @@ private:
     std::map<std::string, std::shared_ptr<TMS_Texture>> _textures; // All game textures.
     std::map<std::string, std::shared_ptr<TMS_Shader>> _shaders; // All game shaders.
     std::vector<std::unique_ptr<TMS_Entity>> _entities; // Vector containing active game entities.
+
+    int _windowWidth, _windowHeight;
 };
 
 #endif

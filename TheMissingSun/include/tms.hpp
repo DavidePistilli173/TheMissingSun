@@ -98,12 +98,20 @@ namespace tms
         LAYER_0,
         MIN_LAYER
     };
-
+    /* Types of events relevant to the game. */
     enum class EventType
     {
         MOUSE_LEFT_CLICK,
         MOUSE_HOVER,
         KEY_PRESS
+    };
+    /* OpenGL error severities. */
+    enum class ErrorSeverity
+    {
+        NOTIFICATION,
+        LOW,
+        MEDIUM,
+        HIGH
     };
 
     /***************** CONSTEXPR FUNCTIONS *****************/
@@ -131,6 +139,14 @@ namespace tms
     /***************** FUNCTIONS *****************/
     /* Copy the source string into the destination one. Maximum string length: UNIFORM_NAME_LEN. */
     void stringCopy(char* destination, const char* source);
+    /* Print all OpenGL errors. */
+    void GLAPIENTRY openGLError(GLenum source,
+                                GLenum type,
+                                GLuint id,
+                                GLenum severity,
+                                GLsizei length,
+                                const GLchar* message,
+                                const void* userParam);
 
     /***************** STRUCTS *****************/
     /* Data for a rectangle. */
