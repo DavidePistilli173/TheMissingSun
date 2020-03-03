@@ -27,9 +27,9 @@ namespace tms
         /* Keep track of the number of the current error. */
         static int errorNum = 0;
         ++errorNum;
-        /* Desired minimum error level to be printed. */
-        const ErrorSeverity MIN_SEVERITY = ErrorSeverity::LOW;
-        ErrorSeverity currentSeverity = ErrorSeverity::NOTIFICATION;
+
+        const ErrorSeverity MIN_SEVERITY = ErrorSeverity::LOW;  // Desired minimum error level to be printed.
+        ErrorSeverity currentSeverity = ErrorSeverity::NOTIFICATION; // Severity of the current error.
 
         /* Set the error strings. */
         std::string errorType, errorSeverity;
@@ -87,9 +87,10 @@ namespace tms
             break;
         }
 
+        /* If the error is severe enough print it. */
         if (currentSeverity >= MIN_SEVERITY)
         {
-            printf("OpenGL error %d:\n   type = %s,\n   severity = %s,\n   message = %s\n\n",
+            printf("[OPENGL #%d]\n   type = %s,\n   severity = %s,\n   message = %s\n\n",
                 errorNum,
                 errorType.c_str(),
                 errorSeverity.c_str(),

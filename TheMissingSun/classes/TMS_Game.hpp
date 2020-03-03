@@ -6,6 +6,7 @@
 #include "../include/tms.hpp"
 #include "../include/tms_shader_namespace.hpp"
 #include "../include/tms_texture_namespace.hpp"
+#include "TMS_Camera.hpp"
 #include "TMS_Clock.hpp"
 #include "TMS_Entity.hpp"
 #include "TMS_Shader.hpp"
@@ -37,11 +38,16 @@ public:
     static constexpr int BASE_HEIGHT = 2; // Height of the base with respect to the window's height.
 
 private:
+    /***************** METHODS *****************/
+    void _moveCamera(const Uint8* currentKeyState); // Update the position of the camera.
+
     /***************** VARIABLES *****************/
     bool _isRunning; // True if there already is a game running.
 
     tms::GameState _currentState; // Current game state.
     TMS_Clock _clock; // Game clock.
+    TMS_Camera _camera; // Game camera.
+    glm::mat4 _orthoMat; // Orthographic projection matrix.
 
     std::map<std::string, std::shared_ptr<TMS_Texture>> _textures; // All game textures.
     std::map<std::string, std::shared_ptr<TMS_Shader>> _shaders; // All game shaders.

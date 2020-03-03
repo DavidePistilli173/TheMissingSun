@@ -8,7 +8,9 @@
 
 TMS_Game::TMS_Game() :
     _isRunning(false),
-    _currentState(tms::GameState::GAME)
+    _currentState(tms::GameState::GAME),
+    _windowWidth(0),
+    _windowHeight(0)
 {
 }
 
@@ -73,11 +75,22 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
         requiredTextures.push_back((*_textures.find(TMS_Background::REQUIRED_TEXTURES[i])).second);
     }
     
+    tms::Rect backgroundSpan = { -_windowWidth, 0, BASE_WIDTH * _windowWidth, BASE_HEIGHT * _windowHeight };
     _entities.push_back(std::make_unique<TMS_Background>(
                         TMS_Background(requiredShaders, 
                                        requiredTextures,
                                        _entities.size(),
-                                       tms::Rect({ -_windowWidth, 0, BASE_WIDTH * _windowWidth, BASE_HEIGHT * _windowHeight }))));
+                                       backgroundSpan,
+                                       _windowWidth,
+                                       _windowHeight)));
+
+    /* Set up the camera. */
+    _camera.setBoundaries({ backgroundSpan.x, backgroundSpan.x + backgroundSpan.w, backgroundSpan.y, backgroundSpan.y + backgroundSpan.h }, 
+                          _windowWidth, 
+                          _windowHeight);
+
+    /* Create an orthographic projection matrix. */
+    _orthoMat = glm::ortho(0.0f, static_cast<float>(_windowWidth), static_cast<float>(_windowHeight), 0.0f, 0.0f, -static_cast<float>(tms::Layer::MAX_LAYER));
 
     return tms::GameState::GAME;
 }
@@ -87,12 +100,10 @@ tms::GameState TMS_Game::gameLoop(tms::window_t& window)
     /* Model matrix. */
     glm::mat4 modelMat = glm::mat4(1.0f);
     /* View matrix. */
-    glm::mat4 viewMat = glm::lookAt(tms::DEFAULT_CAMERA_POSITION, tms::DEFAULT_CAMERA_TARGET, tms::DEFAULT_CAMERA_UP);
-    /* Create an orthographic projection matrix. */
-    glm::mat4 orthographicProjection = glm::ortho(0.0f, static_cast<float>(_windowWidth), static_cast<float>(_windowHeight), 0.0f, 0.0f, -static_cast<float>(tms::Layer::MAX_LAYER));
+    glm::mat4 viewMat = _camera.getView();
 
     /* Combine the visualisation matrices. */
-    glm::mat4 visualMatrix = orthographicProjection * viewMat * modelMat;
+    glm::mat4 visualMatrix = _orthoMat * viewMat * modelMat;
 
     auto shader = _shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second;
     shader->use();
@@ -143,6 +154,10 @@ tms::GameState TMS_Game::handleEvents()
             break;
         }
     }
+
+    const Uint8* currentKeyState = SDL_GetKeyboardState(nullptr); // Get current keypresses.
+    _moveCamera(currentKeyState);
+
     return tms::GameState::GAME;
 }
 
@@ -156,4 +171,42 @@ void TMS_Game::render(tms::window_t& window)
     }
 
     SDL_GL_SwapWindow(window.get());
+}
+
+void TMS_Game::_moveCamera(const Uint8* currentKeyState)
+{
+    /* Camera controls. */
+    bool moved = false;
+    if (currentKeyState[SDL_SCANCODE_A])
+    {
+        moved = true;
+        if (currentKeyState[SDL_SCANCODE_W]) _camera.move(TMS_Camera::Direction::L_UP);
+        else if (currentKeyState[SDL_SCANCODE_S]) _camera.move(TMS_Camera::Direction::L_DOWN);
+        else _camera.move(TMS_Camera::Direction::L_MID);
+    }
+    else if (currentKeyState[SDL_SCANCODE_D])
+    {
+        moved = true;
+        if (currentKeyState[SDL_SCANCODE_W]) _camera.move(TMS_Camera::Direction::R_UP);
+        else if (currentKeyState[SDL_SCANCODE_S]) _camera.move(TMS_Camera::Direction::R_DOWN);
+        else _camera.move(TMS_Camera::Direction::R_MID);
+    }
+    else if (currentKeyState[SDL_SCANCODE_W])
+    {
+        moved = true;
+        _camera.move(TMS_Camera::Direction::C_UP);
+    }
+    else if (currentKeyState[SDL_SCANCODE_S])
+    {
+        moved = true;
+        _camera.move(TMS_Camera::Direction::C_DOWN);
+    }
+
+    /* Update the shaders. */
+    if (moved)
+    {
+        auto shader = _shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second;
+        shader->use();
+        shader->setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(_orthoMat * _camera.getView()));
+    }
 }

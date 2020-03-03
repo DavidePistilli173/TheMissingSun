@@ -57,6 +57,8 @@ bool TMS_Base::init()
     glViewport(0, 0, _windowWidth, _windowHeight);
     /* Enable OpenGL depth testing. */
     glEnable(GL_DEPTH_TEST);
+    /* Set depth testing function. */
+    glDepthFunc(GL_LEQUAL);
     /* Enable alpha blending. */
     glEnable(GL_BLEND);
     /* Set blending factors. */

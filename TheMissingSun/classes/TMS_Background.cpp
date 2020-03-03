@@ -16,7 +16,7 @@ const std::string TMS_Background::REQUIRED_TEXTURES[] =
 
 /* Build a two-level background: first level has the sky/surface, the second one has the underground. */
 TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-                               tms::Rect span) :
+                               const tms::Rect span, const int winW, const int winH) :
     TMS_Entity(shaders, textures),
     _skyRect({span.x, 
               span.y, 
@@ -30,7 +30,8 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
                       span.y + static_cast<int>(span.h * LEVEL_HEIGHT_FRACTION), 
                       span.w, 
                       static_cast<int>(span.h * (1 - LEVEL_HEIGHT_FRACTION))}),
-    _skyVAO(0), _skyVBO(0), _surfaceVAO(0), _surfaceVBO(0), _undergroundVAO(0), _undergroundVBO(0), _EBO(0)
+    _skyVAO(0), _skyVBO(0), _surfaceVAO(0), _surfaceVBO(0), _undergroundVAO(0), _undergroundVBO(0), _EBO(0),
+    _winW(winW), _winH(winH)
 {
     if (_shaders.size() != static_cast<int>(Shader::TOT)) throw "Wrong number of shaders for background initialisation.\n";
     if (_textures.size() != static_cast<int>(Texture::TOT)) throw "Wrong number of textures for background initialisation.\n";
@@ -40,7 +41,7 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
 }
 
 TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures, 
-                               unsigned int id, tms::Rect span) :
+                               const unsigned int id, const tms::Rect span, const int winW, const int winH) :
     TMS_Entity(shaders, textures, id),
     _skyRect({ span.x,
               span.y,
@@ -54,7 +55,8 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
                       span.y + static_cast<int>(span.h* LEVEL_HEIGHT_FRACTION),
                       span.w,
                       static_cast<int>(span.h* (1 - LEVEL_HEIGHT_FRACTION)) }),
-    _skyVAO(0), _skyVBO(0), _surfaceVAO(0), _surfaceVBO(0), _undergroundVAO(0), _undergroundVBO(0), _EBO(0)
+    _skyVAO(0), _skyVBO(0), _surfaceVAO(0), _surfaceVBO(0), _undergroundVAO(0), _undergroundVBO(0), _EBO(0),
+    _winW(winW), _winH(winH)
 {
     if (_shaders.size() != static_cast<int>(Shader::TOT)) throw "Wrong number of shaders for background initialisation.\n";
     if (_textures.size() != static_cast<int>(Texture::TOT)) throw "Wrong number of textures for background initialisation.\n";
@@ -78,7 +80,9 @@ TMS_Background::TMS_Background(TMS_Background&& oldBackground) noexcept :
     TMS_Entity(std::move(oldBackground)),
     _skyRect(oldBackground._skyRect),
     _surfaceRect(oldBackground._surfaceRect),
-    _undergroundRect(oldBackground._undergroundRect)
+    _undergroundRect(oldBackground._undergroundRect),
+    _winW(oldBackground._winW),
+    _winH(oldBackground._winH)
 {
         _EBO = oldBackground._EBO;
         oldBackground._EBO = 0;
@@ -105,6 +109,8 @@ TMS_Background& TMS_Background::operator=(TMS_Background&& oldBackground) noexce
         _skyRect = oldBackground._skyRect;
         _surfaceRect = oldBackground._surfaceRect;
         _undergroundRect = oldBackground._undergroundRect;
+        _winW = oldBackground._winW;
+        _winH = oldBackground._winH;
 
         _EBO = oldBackground._EBO;
         oldBackground._EBO = 0;
@@ -172,12 +178,13 @@ void TMS_Background::_initBuffers()
     glGenBuffers(1, &_EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
 
-    float eboData[] =
+    unsigned int eboData[] =
     {
         0, 1, 2,
         2, 3, 0
     };
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(eboData), eboData, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     /* Initialise the sky. */
     glGenVertexArrays(1, &_skyVAO);
@@ -188,31 +195,31 @@ void TMS_Background::_initBuffers()
 
     float maxX = static_cast<float>(_skyRect.x) + static_cast<float>(_skyRect.w);
     float maxY = static_cast<float>(_skyRect.y) + static_cast<float>(_skyRect.h);
-    float maxTexW = static_cast<float>(_skyRect.w) / _textures[static_cast<int>(Texture::SKY)]->getW();
-    float maxTexH = static_cast<float>(_skyRect.h) / _textures[static_cast<int>(Texture::SKY)]->getW();
+    float maxTexW = static_cast<float>(_skyRect.w) / _winW;
+    float maxTexH = static_cast<float>(_skyRect.h) / _winH;
     float data[BUFFER_SIZE];
     // Top left corner.
     data[0] = static_cast<float>(_skyRect.x);
     data[1] = static_cast<float>(_skyRect.y);
-    data[2] = static_cast<int>(tms::Layer::BACKGROUND_LAYER);
+    data[2] = static_cast<float>(tms::Layer::BACKGROUND_LAYER);
     data[3] = 0.0f;
     data[4] = 0.0f;
     // Top right corner.
     data[5] = maxX;
     data[6] = static_cast<float>(_skyRect.y);
-    data[7] = static_cast<int>(tms::Layer::BACKGROUND_LAYER);
+    data[7] = static_cast<float>(tms::Layer::BACKGROUND_LAYER);
     data[8] = maxTexW;
     data[9] = 0.0f;
     // Bottom right corner
     data[10] = maxX;
     data[11] = maxY;
-    data[12] = static_cast<int>(tms::Layer::BACKGROUND_LAYER);
+    data[12] = static_cast<float>(tms::Layer::BACKGROUND_LAYER);
     data[13] = maxTexW;
     data[14] = maxTexH;
     // Bottom left corner.
     data[15] = static_cast<float>(_skyRect.x);
     data[16] = maxY;
-    data[17] = static_cast<int>(tms::Layer::BACKGROUND_LAYER);
+    data[17] = static_cast<float>(tms::Layer::BACKGROUND_LAYER);
     data[18] = 0.0f;
     data[19] = maxTexH;
 
@@ -233,8 +240,8 @@ void TMS_Background::_initBuffers()
 
     maxX = static_cast<float>(_surfaceRect.x) + static_cast<float>(_surfaceRect.w);
     maxY = static_cast<float>(_surfaceRect.y) + static_cast<float>(_surfaceRect.h);
-    maxTexW = static_cast<float>(_surfaceRect.w) / _textures[static_cast<int>(Texture::SURFACE)]->getW();
-    maxTexH = static_cast<float>(_surfaceRect.h) / _textures[static_cast<int>(Texture::SURFACE)]->getW();
+    maxTexW = static_cast<float>(_surfaceRect.w) /_winW;
+    maxTexH = static_cast<float>(_surfaceRect.h) / _winH;
     // Top left corner.
     data[0] = static_cast<float>(_surfaceRect.x);
     data[1] = static_cast<float>(_surfaceRect.y);
@@ -268,8 +275,8 @@ void TMS_Background::_initBuffers()
 
     maxX = static_cast<float>(_undergroundRect.x) + static_cast<float>(_undergroundRect.w);
     maxY = static_cast<float>(_undergroundRect.y) + static_cast<float>(_undergroundRect.h);
-    maxTexW = static_cast<float>(_undergroundRect.w) / _textures[static_cast<int>(Texture::UNDERGROUND)]->getW();
-    maxTexH = static_cast<float>(_undergroundRect.h) / _textures[static_cast<int>(Texture::UNDERGROUND)]->getW();
+    maxTexW = static_cast<float>(_undergroundRect.w) / _winW;
+    maxTexH = static_cast<float>(_undergroundRect.h) / _winH;
     // Top left corner.
     data[0] = static_cast<float>(_undergroundRect.x);
     data[1] = static_cast<float>(_undergroundRect.y);

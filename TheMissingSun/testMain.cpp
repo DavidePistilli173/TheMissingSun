@@ -9,6 +9,7 @@
 #include "include/tms.hpp"
 #include "include/tms_shader_namespace.hpp"
 #include "include/tms_texture_namespace.hpp"
+#include "classes/TMS_Game.hpp"
 #include "classes/TMS_Shader.hpp"
 #include "classes/TMS_Texture.hpp"
 
@@ -18,7 +19,7 @@ int main(int argc, char* args[])
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
     
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
@@ -37,27 +38,39 @@ int main(int argc, char* args[])
     glClearColor(tms::DEFAULT_RED, tms::DEFAULT_GREEN, tms::DEFAULT_BLUE, 1.0f);
     glViewport(0, 0, _windowWidth, _windowHeight);
     glEnable(GL_DEPTH_TEST);
+    /* Enable alpha blending. */
+    glEnable(GL_BLEND);
+    /* Set blending factors. */
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    /* Set debug context. */
+    #ifdef _DEBUG
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glDebugMessageCallback(&tms::openGLError, nullptr);
+    #endif
 
     TMS_Texture texture;
     TMS_Shader shader;
+    TMS_Game game;
+    game.loadGame(_windowWidth, _windowHeight);
 
     try
     {
-        texture = TMS_Texture(tms::texture::MENU_BACKGROUND);
+        texture = TMS_Texture(tms::texture::FILES[3]);
         shader  = TMS_Shader(tms::shader::PLAIN_VERTEX, tms::shader::PLAIN_FRAGMENT);
     }
-    catch (std::exception e)
+    catch (std::string e)
     {
-        printf("%s", e.what());
+        printf("%s", e.c_str());
         return -1;
     }
 
-    float backgroundBox[] = 
+    float backgroundBox[] =
     {
-        -0.75f, -0.75f, 0.0f, 0.0f, 0.0f, // 0. Bottom left
-        0.75f, -0.75f, 0.0f, 1.0f, 0.0f,  // 1. Bottom right
-        0.75f, 0.75f, 0.0f, 1.0f, 1.0f, // 2. Top right
-        -0.75f, 0.75f, 0.0f, 0.0f, 1.0f // 3. Top left
+        static_cast<float>(-_windowWidth),   0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), -1.0f, 0.0f, // Top left corner.
+        static_cast<float>(2*_windowWidth),    0.0f,                               static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 0.0f, // Top right corner.
+        static_cast<float>(2*_windowWidth),    static_cast<float>(_windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), 1.0f, 1.0f, // Bottom right corner.
+        static_cast<float>(-_windowWidth),   static_cast<float>(_windowHeight),   static_cast<float>(tms::Layer::BACKGROUND_LAYER), -1.0f, 1.0f  // Bottom left corner.
     };
     unsigned int backgroundBoxIndices[] =
     {
@@ -84,12 +97,22 @@ int main(int argc, char* args[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, backgroundEBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(backgroundBoxIndices), backgroundBoxIndices, GL_STATIC_DRAW);
 
-    glm::mat4 mat = glm::mat4(1.0f);
+    /* Model matrix. */
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    /* View matrix. */
+    glm::mat4 viewMat = glm::lookAt(tms::DEFAULT_CAMERA_POSITION, tms::DEFAULT_CAMERA_TARGET, tms::DEFAULT_CAMERA_UP);
+    glm::vec3 currentCameraPos = tms::DEFAULT_CAMERA_POSITION;
+    glm::vec3 currentCameraTarget = tms::DEFAULT_CAMERA_TARGET;
+    /* Create an orthographic projection matrix. */
+    glm::mat4 orthographicProjection = glm::ortho(0.0f, static_cast<float>(_windowWidth), static_cast<float>(_windowHeight), 0.0f, 0.0f, -static_cast<float>(tms::Layer::MAX_LAYER));
+
+    /* Combine the visualisation matrices. */
+    glm::mat4 mat = orthographicProjection * viewMat * modelMat;
     if (!shader.addUniform(tms::shader::plain[static_cast<int>(tms::shader::Plain::CAMERA_MATRIX)])) return -1;
     if (!shader.addUniform(tms::shader::plain[static_cast<int>(tms::shader::Plain::TEXTURE)])) return -1;
     shader.use();
     shader.setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(mat));
-    shader.setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), GL_TEXTURE0);
+    shader.setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
 
     bool done = false;
     SDL_Event event;
@@ -99,20 +122,55 @@ int main(int argc, char* args[])
         {
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.sym == SDLK_q)
+                switch (event.key.keysym.sym)
                 {
+                case SDLK_q:
                     done = true;
+                    break;
+                case SDLK_w:
+                    currentCameraPos.y -= 10.0f;
+                    currentCameraTarget.y -= 10.0f;
+                    viewMat = glm::lookAt(currentCameraPos, currentCameraTarget, tms::DEFAULT_CAMERA_UP);
+                    mat = orthographicProjection * viewMat * modelMat;
+                    shader.use();
+                    shader.setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(mat));
+                    break;
+                case SDLK_a:
+                    currentCameraPos.x -= 10.0f;
+                    currentCameraTarget.x -= 10.0f;
+                    viewMat = glm::lookAt(currentCameraPos, currentCameraTarget, tms::DEFAULT_CAMERA_UP);
+                    mat = orthographicProjection * viewMat * modelMat;
+                    shader.use();
+                    shader.setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(mat));
+                    break;
+                case SDLK_s:
+                    currentCameraPos.y += 10.0f;
+                    currentCameraTarget.y += 10.0f;
+                    viewMat = glm::lookAt(currentCameraPos, currentCameraTarget, tms::DEFAULT_CAMERA_UP);
+                    mat = orthographicProjection * viewMat * modelMat;
+                    shader.use();
+                    shader.setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(mat));
+                    break;
+                case SDLK_d:
+                    currentCameraPos.x += 10.0f;
+                    currentCameraTarget.x += 10.0f;
+                    viewMat = glm::lookAt(currentCameraPos, currentCameraTarget, tms::DEFAULT_CAMERA_UP);
+                    mat = orthographicProjection * viewMat * modelMat;
+                    shader.use();
+                    shader.setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(mat));
+                    break;
                 }
             }
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindVertexArray(backgroundVAO);
 
-        texture.bind();
+        //glBindVertexArray(backgroundVAO);
         shader.use();
-        
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        texture.bind();
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        game.render(_window);
+        glBindVertexArray(0);
 
         SDL_GL_SwapWindow(_window.get());
     }

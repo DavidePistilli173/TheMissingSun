@@ -25,6 +25,7 @@ namespace tms::texture
     /* List of all game textures. */
     enum class Name
     {
+        TEST,
         SKY,
         SURFACE,
         UNDERGROUND,
@@ -33,6 +34,7 @@ namespace tms::texture
     /* List of all files containing game textures. */
     const std::string FILES[] =
     {
+        "./resources/textures/test/container.jpg",
         "./resources/textures/background/sky.png",
         "./resources/textures/background/surface.png",
         "./resources/textures/background/underground.png"
@@ -40,6 +42,7 @@ namespace tms::texture
     /* List of texture names. */
     const std::string NAMES[] =
     {
+        "test",
         "sky",
         "surface",
         "underground"

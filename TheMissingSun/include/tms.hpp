@@ -150,10 +150,20 @@ namespace tms
 
     /***************** STRUCTS *****************/
     /* Data for a rectangle. */
-    struct Rect
+    union Rect
     {
-        int x, y; // x and y coordinates.
-        int w, h; // Width and height respectively.
+        /* Upper left corner and dimensions. */
+        struct
+        {
+            int x, y; // x and y coordinates.
+            int w, h; // Width and height respectively.
+        };
+        /* Vertical and horizontal limits. */
+        struct
+        {
+            int minX, maxX; // Left and right limits of the rectangle.
+            int minY, maxY; // Upper and lower limits of the rectangle.
+        };
     };
 }
 

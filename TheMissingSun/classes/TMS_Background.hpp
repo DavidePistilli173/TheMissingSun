@@ -21,9 +21,9 @@ public:
     };
 
     TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-                   tms::Rect span);
+                   const tms::Rect span, const int winW, const int winH);
     TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures, 
-                   unsigned int id, tms::Rect span);
+                   const unsigned int id, const tms::Rect span, const int winW, const int winH);
     ~TMS_Background();
     TMS_Background(const TMS_Background& oldBackground) = delete;
     TMS_Background& operator= (const TMS_Background& oldBackground) = delete;
@@ -52,6 +52,7 @@ private:
     /***************** VARIABLES *****************/
     tms::Rect _skyRect, _surfaceRect, _undergroundRect; // Boxes for background levels.
     unsigned int _skyVAO, _skyVBO, _surfaceVAO, _surfaceVBO, _undergroundVAO, _undergroundVBO, _EBO; // OpenGL buffers.
+    int _winW, _winH; // Window resolution.
 };
 
 #endif
