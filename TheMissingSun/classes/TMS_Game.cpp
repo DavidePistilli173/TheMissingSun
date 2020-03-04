@@ -21,45 +21,17 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     _windowHeight = winH;
 
     /* Load textures. */
-    try
+    if (!_textures.loadResources(tms::texture::LIST_FILE))
     {
-        for (int i = 0; i < static_cast<int>(tms::texture::Name::TOT); ++i)
-        {
-            _textures.insert(std::pair<std::string, std::shared_ptr<TMS_Texture>>(
-                             tms::texture::NAMES[i], 
-                             std::make_shared<TMS_Texture>(TMS_Texture(tms::texture::FILES[i]))));
-        }
-    }
-    catch (std::string e)
-    {
-        printf("Unable to load game textures:\n%s", e.c_str());
+        printf("Unable to load game textures.\n");
         return tms::GameState::EXIT;
     }
 
     /* Load shaders. */
-    try
+    if (!_shaders.loadResources(tms::shader::LIST_FILE))
     {
-        for (int i = 0; i < static_cast<int>(tms::shader::Name::TOT); ++i)
-        {
-            _shaders.insert(std::pair<std::string, std::shared_ptr<TMS_Shader>>(
-                            tms::shader::NAMES[i],
-                            std::make_shared<TMS_Shader>(TMS_Shader(tms::shader::FILES[2 * i], tms::shader::FILES[2 * i + 1]))));
-        }
-    }
-    catch (std::string e)
-    {
-        printf("Unable to load game shaders:\n%s", e.c_str());
+        printf("Unable to load game shaders.\n");
         return tms::GameState::EXIT;
-    }
-
-    /* Load plain shader uniforms. */
-    for (const auto& uniform : tms::shader::plain)
-    {
-        if (!_shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second->addUniform(uniform))
-        {
-            printf("Failed to add unform to plain shader.\n");
-            return tms::GameState::EXIT;
-        }
     }
 
     /* Load initial entities. */
@@ -67,12 +39,12 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;
     for (int i = 0; i < static_cast<int>(TMS_Background::Shader::TOT); ++i)
     {
-        requiredShaders.push_back((*_shaders.find(TMS_Background::REQUIRED_SHADERS[i])).second);
+        requiredShaders.push_back(_shaders.get(TMS_Background::REQUIRED_SHADERS[i]));
     }
     std::vector<std::shared_ptr<TMS_Texture>> requiredTextures;
     for (int i = 0; i < static_cast<int>(TMS_Background::Texture::TOT); ++i)
     {
-        requiredTextures.push_back((*_textures.find(TMS_Background::REQUIRED_TEXTURES[i])).second);
+        requiredTextures.push_back((_textures.get(TMS_Background::REQUIRED_TEXTURES[i])));
     }
     
     tms::Rect backgroundSpan = { -_windowWidth, 0, BASE_WIDTH * _windowWidth, BASE_HEIGHT * _windowHeight };
@@ -105,7 +77,8 @@ tms::GameState TMS_Game::gameLoop(tms::window_t& window)
     /* Combine the visualisation matrices. */
     glm::mat4 visualMatrix = _orthoMat * viewMat * modelMat;
 
-    auto shader = _shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second;
+    /* Set initial shader uniforms. */
+    auto shader = _shaders.get(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]);
     shader->use();
     shader->setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
     shader->setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
@@ -205,7 +178,7 @@ void TMS_Game::_moveCamera(const Uint8* currentKeyState)
     /* Update the shaders. */
     if (moved)
     {
-        auto shader = _shaders.find(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)])->second;
+        auto shader = _shaders.get(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]);
         shader->use();
         shader->setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(_orthoMat * _camera.getView()));
     }

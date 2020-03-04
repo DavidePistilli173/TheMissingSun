@@ -138,6 +138,7 @@
     <ClCompile Include="classes\TMS_Game.cpp" />
     <ClCompile Include="classes\TMS_Menu.cpp" />
     <ClCompile Include="classes\TMS_MenuPage.cpp" />
+    <ClCompile Include="classes\TMS_ResourceContainer.cpp" />
     <ClCompile Include="classes\TMS_Shader.cpp" />
     <ClCompile Include="classes\TMS_Texture.cpp" />
     <ClCompile Include="src\glad.c" />
@@ -163,6 +164,7 @@
     <ClInclude Include="classes\TMS_Game.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
+    <ClInclude Include="classes\TMS_ResourceContainer.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
     <ClInclude Include="include\tms_shader_namespace.hpp" />

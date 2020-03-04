@@ -1,0 +1,18 @@
+<Textures>
+    <Texture>
+        <Name>test</Name>
+        <File>./resources/textures/test/container.jpg</File>
+    </Texture>
+    <Texture>
+        <Name>sky</Name>
+        <File>./resources/textures/background/sky.png</File>
+    </Texture>
+    <Texture>
+        <Name>surface</Name>
+        <File>./resources/textures/background/surface.png</File>
+    </Texture>
+    <Texture>
+        <Name>underground</Name>
+        <File>./resources/textures/background/underground.png</File>
+    </Texture>
+</Textures>

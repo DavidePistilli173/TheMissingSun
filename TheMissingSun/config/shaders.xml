@@ -1,0 +1,12 @@
+<!-- List of all game shaders with their names and uniforms. -->
+<Shaders>
+    <Shader>
+        <Name>plain</Name>
+        <VertexFile>./shaders/common/plainVertex.glsl</VertexFile>
+        <FragmentFile>./shaders/common/plainFragment.glsl</FragmentFile>
+        <Uniforms>
+            <Uniform>cameraMatrix</Uniform>
+            <Uniform>baseTexture</Uniform>
+        </Uniforms>
+    </Shader>
+</Shaders>

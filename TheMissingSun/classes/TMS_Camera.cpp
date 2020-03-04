@@ -20,14 +20,17 @@ glm::mat4 TMS_Camera::getView()
 
 void TMS_Camera::setBoundaries(const tms::Rect limits, const int winW, const int winH)
 {
+    /* Set horizontal and vertical limits. */
     _minX = limits.minX;
     _maxX = limits.maxX - winW;
     _minY = limits.minY;
     _maxY = limits.maxY - winH;
 
+    /* Set camera speed. */
     _speedX = CAMERA_SPEED_COEFF * winW;
     _speedY = CAMERA_SPEED_COEFF * winH;
 
+    /* Reset the camera's position to the centre if it falls outside the new boundaries. */
     if (!_isWithinBoundaries())
     {
         _cameraPos.x = (limits.maxX - limits.minX) / 2;
@@ -36,12 +39,14 @@ void TMS_Camera::setBoundaries(const tms::Rect limits, const int winW, const int
         _cameraTarget = _cameraPos;
         _cameraTarget.z -= TARGET_DISTANCE;
 
+        /* If the camera position was reset, update the view matrix. */
         _lookAtMat = glm::lookAt(_cameraPos, _cameraTarget, _cameraUp);
     }
 }
 
 void TMS_Camera::move(Direction dir)
 {
+    /* Move the camera. */
     switch (dir)
     {
     case Direction::L_UP:
@@ -86,9 +91,11 @@ void TMS_Camera::move(Direction dir)
         break;
     }
 
+    /* Move the target. */
     _cameraTarget = _cameraPos;
     _cameraTarget.z -= TARGET_DISTANCE;
 
+    /* Update the view matrix. */
     _lookAtMat = glm::lookAt(_cameraPos, _cameraTarget, _cameraUp);
 }
 

@@ -1,14 +1,13 @@
 #ifndef TMS_GAME_HPP
 #define TMS_GAME_HPP
 
-#include <map>
-
 #include "../include/tms.hpp"
 #include "../include/tms_shader_namespace.hpp"
 #include "../include/tms_texture_namespace.hpp"
 #include "TMS_Camera.hpp"
 #include "TMS_Clock.hpp"
 #include "TMS_Entity.hpp"
+#include "TMS_ResourceContainer.hpp"
 #include "TMS_Shader.hpp"
 #include "TMS_Texture.hpp"
 
@@ -49,8 +48,8 @@ private:
     TMS_Camera _camera; // Game camera.
     glm::mat4 _orthoMat; // Orthographic projection matrix.
 
-    std::map<std::string, std::shared_ptr<TMS_Texture>> _textures; // All game textures.
-    std::map<std::string, std::shared_ptr<TMS_Shader>> _shaders; // All game shaders.
+    TMS_ResourceContainer<TMS_Shader> _shaders; // All game shaders.
+    TMS_ResourceContainer<TMS_Texture> _textures; // All game textures.
     std::vector<std::unique_ptr<TMS_Entity>> _entities; // Vector containing active game entities.
 
     int _windowWidth, _windowHeight;
