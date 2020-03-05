@@ -26,6 +26,7 @@ namespace tms::shader
     /* Common. */
     const std::string PLAIN_VERTEX = "./shaders/common/plainVertex.glsl";
     const std::string PLAIN_FRAGMENT = "./shaders/common/plainFragment.glsl";
+    const std::string HIGHLIGHT_FRAGMENT = "./shaders/common/highlightFragment.glsl";
 
     /***************** UNFIORMS *****************/
     /* Common. */
@@ -39,18 +40,30 @@ namespace tms::shader
         "cameraMatrix",
         "baseTexture"
     };
+    enum class Highlight
+    {
+        CAMERA_MATRIX,
+        TEXTURE
+    };
+    constexpr const char* highlight[] =
+    {
+        "cameraMatrix",
+        "baseTexture"
+    };
 
     /***************** GAME *****************/
     /* List of all game shaders. */
     enum class Name
     {
         PLAIN,
+        HIGHLIGHT,
         TOT
     };
     /* List of shader names. */
     const std::string NAMES[] =
     {
-        "plain"
+        "plain",
+        "highlight"
     };
 }
 

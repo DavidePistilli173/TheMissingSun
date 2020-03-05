@@ -16,7 +16,8 @@ TMS_Menu::TMS_Menu() :
     _backgroundVAO(0),
     _backgroundVBO(0),
     _backgroundEBO(0),
-    _baseFont(nullptr, [](TTF_Font* font) { TTF_CloseFont(font); })
+    _baseFont(nullptr, [](TTF_Font* font) { TTF_CloseFont(font); }),
+    _highlightedButton(-1)
 {
 }
 
@@ -102,6 +103,20 @@ tms::GameState TMS_Menu::handleEvents()
                 }
             }
             break;
+        case SDL_MOUSEMOTION:
+            int i = 0;
+            std::vector<TMS_MenuPage::Link>& buttons = _currentPage->getButtons();
+            /* Loop until the correct button is found. */
+            while (i < buttons.size() && !buttons[i].button.checkCollision(event.button.x, event.button.y)) ++i;
+            if (i < buttons.size())
+            {
+                _highlightedButton = i;
+            }
+            else
+            {
+                _highlightedButton = -1;
+            }
+            break;
         }
     }
     return tms::GameState::MENU;
@@ -121,12 +136,17 @@ void TMS_Menu::render(tms::window_t& window, const int windowWidth, const int wi
         
     /* Draw current page buttons. */
     _textures[static_cast<int>(Texture::BUTTON)].bind();
+    int i = 0;
     for (auto& link : _currentPage->getButtons())
     {
+        if (_highlightedButton == i) _shaders[static_cast<int>(Shader::HIGHLIGHT)].use();
+        else _shaders[static_cast<int>(Shader::PLAIN)].use();
         glBindVertexArray(link.button.vao);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+        ++i;
     }
+    _shaders[static_cast<int>(Shader::PLAIN)].use();
 
     /* Draw button labels. */
     for (auto& link : _currentPage->getButtons())
@@ -155,6 +175,11 @@ tms::GameState TMS_Menu::menuLoop(tms::window_t& window, const int windowWidth, 
 
     /* Combine the visualisation matrices. */
     glm::mat4 visualMatrix = orthographicProjection * viewMat * modelMat;
+
+    /* Set initial uniform values. */
+    _shaders[static_cast<int>(Shader::HIGHLIGHT)].use();
+    _shaders[static_cast<int>(Shader::HIGHLIGHT)].setUniform(static_cast<int>(tms::shader::Highlight::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
+    _shaders[static_cast<int>(Shader::HIGHLIGHT)].setUniform(static_cast<int>(tms::shader::Highlight::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
 
     _shaders[static_cast<int>(Shader::PLAIN)].use();
     _shaders[static_cast<int>(Shader::PLAIN)].setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
@@ -282,10 +307,11 @@ bool TMS_Menu::_loadShaders()
 {
     _shaders.reserve(static_cast<int>(Shader::TOTAL));
 
-    /* Load plain shader. */
+    /* Load shaders. */
     try
     {
         _shaders.push_back(TMS_Shader(tms::shader::PLAIN_VERTEX, tms::shader::PLAIN_FRAGMENT));
+        _shaders.push_back(TMS_Shader(tms::shader::PLAIN_VERTEX, tms::shader::HIGHLIGHT_FRAGMENT));
     }
     catch (std::string error)
     {
@@ -298,6 +324,15 @@ bool TMS_Menu::_loadShaders()
         if (!_shaders[static_cast<int>(Shader::PLAIN)].addUniform(uniform))
         {
             printf("Failed to add unform to plain shader.\n");
+            return false;
+        }
+    }
+    /* Load highlight shader uniforms. */
+    for (const auto& uniform : tms::shader::highlight)
+    {
+        if (!_shaders[static_cast<int>(Shader::HIGHLIGHT)].addUniform(uniform))
+        {
+            printf("Failed to add uniform to highlight shader.\n");
             return false;
         }
     }

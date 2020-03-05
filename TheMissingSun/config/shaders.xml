@@ -9,4 +9,13 @@
             <Uniform>baseTexture</Uniform>
         </Uniforms>
     </Shader>
+    <Shader>
+        <Name>highlight</Name>
+        <VertexFile>./shaders/common/plainVertex.glsl</VertexFile>
+        <FragmentFile>./shaders/common/highlightFragment.glsl</FragmentFile>
+        <Uniforms>
+            <Uniform>cameraMatrix</Uniform>
+            <Uniform>baseTexture</Uniform>
+        </Uniforms>
+    </Shader>
 </Shaders>

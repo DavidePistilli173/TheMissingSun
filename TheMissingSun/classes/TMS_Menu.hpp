@@ -17,6 +17,7 @@ public:
     enum class Shader
     {
         PLAIN, // Plain shader, just renders the textures.
+        HIGHLIGHT,
         TOTAL
     };
     /* Textures. */
@@ -51,6 +52,7 @@ private:
     /* Load OpenGL buffers. */
     void _loadVAO(const int windowWidth, const int windowHeight);
 
+    /**************** VARIABLES ****************/
     TMS_Clock _clock; // Input timer.
     std::shared_ptr<TMS_MenuPage> _currentPage; // Current menu page.
     std::vector<std::shared_ptr<TMS_MenuPage>> _pages; // All menu pages.
@@ -58,11 +60,13 @@ private:
     std::vector<TMS_Shader> _shaders; // Vector with all shaders.
     std::vector<TMS_Texture> _textures; // Vector with all textures.
     tms::font_t _baseFont; // Base font for all writing.
+    int _highlightedButton; // Index of the currently highlighted button.
 
     /* Vertex Array Objects. */
     GLuint _backgroundVAO; // VAO for menu background.
     GLuint _backgroundVBO; // VBO for menu background.
     GLuint _backgroundEBO; // EBO for menu background.
+
 };
 
 #endif
