@@ -1,0 +1,144 @@
+<!-- List of all building types with their properties. -->
+<!--
+    TEMPLATE
+
+    <Building>
+        // Name of the building.
+        <Name>TypeName</Name>
+
+        // Construction time.
+        <BuildTime>BuildTime(seconds)</BuildTime>
+
+        // Construction cost.
+        <Cost>
+            <Item>
+                <Name>ItemName</Name>
+                <Amount>ResourceAmount</Amount>
+            </Item>
+        </Cost>
+
+        // The building produces a fixed amount, which is always present while the building is active.
+        <FixedProduction>
+            <Item>
+                <Name>ItemName</Name>
+                <Amount>ResourceAmount</Amount>
+                <Cost>
+                    <Item>
+                        <Name>ItemName</Name>
+                        <Amount>ResourceAmount</Amount>
+                    </Item>
+                </Cost>
+            </Item>
+        </FixedProduction>
+
+        // The building produces a certain amount of items per game tick.
+        <ContinuousProduction>
+            <Item>
+                <Name>ItemName</Name>
+                <Amount>ResourceAmount</Amount>
+                <Cost>
+                    <Item>
+                        <Name>ItemName</Name>
+                        <Amount>ResourceAmount</Amount>
+                    </Item>
+                </Cost>
+            </Item>
+        </ContinuousProduction>
+
+        // The building produces a certain amount of items on demand.
+        <OneTimeProduction>
+            <Item>
+                <Name>ItemName</Name>
+                <Amount>ResourceAmount</Amount>
+                <Cost>
+                    <Item>
+                        <Name>ItemName</Name>
+                        <Amount>ResourceAmount</Amount>
+                    </Item>
+                </Cost>
+            </Item>
+        </OneTimeProduction>
+
+        // Item storage inside the building.
+        <Storage>
+            <Item>
+                <Name>ItemName</Name>
+                <Amount>ItemAmount</Amount>
+            </Item>
+        </Storage>
+
+        // List of textures representing the building. Multiple textures mean the building will be animated.
+        <Textures>
+            <Texture>TextureName</Texture>
+        </Textures>
+
+    </Building>
+
+-->
+
+<Buildings>
+    <!-- Empty building for filling currently buildable cells. -->
+    <Building>
+        <Name>Empty</Name>
+        <BuildTime>0</BuildTime>
+        <Textures>
+            <Texture>building_empty</Texture>
+        </Textures>
+    </Building>
+    <!-- Test building. -->
+    <Building>
+        <Name>Test</Name>
+        <BuildTime>5</BuildTime>
+        <Cost>
+            <Item>
+                <Name>Scrap Metal</Name>
+                <Amount>100</Amount>
+            </Item>
+        </Cost>
+        <FixedProduction>
+            <Item>
+                <Name>Scrap Metal</Name>
+                <Amount>2</Amount>
+                <Cost>
+                    <Item>
+                        <Name>Scrap Metal</Name>
+                        <Amount>1</Amount>
+                    </Item>
+                </Cost>
+            </Item>
+        </FixedProduction>
+        <ContinuousProduction>
+            <Item>
+                <Name>Scrap Metal</Name>
+                <Amount>10</Amount>
+                <Cost>
+                    <Item>
+                        <Name>Scrap Metal</Name>
+                        <Amount>5</Amount>
+                    </Item>
+                </Cost>
+            </Item>
+        </ContinuousProduction>
+        <OneTimeProduction>
+            <Item>
+                <Name>Scrap Metal</Name>
+                <Amount>1000</Amount>
+                <Cost>
+                    <Item>
+                        <Name>Scrap Metal</Name>
+                        <Amount>500</Amount>
+                    </Item>
+                </Cost>
+            </Item>
+        </OneTimeProduction>
+        <Storage>
+            <Item>
+                <Name>Scrap Metal</Name>
+                <Amount>10000</Amount>
+            </Item>
+        </Storage>
+        <Textures>
+            <Texture>building_default</Texture>
+        </Textures>
+    </Building>
+</Buildings>

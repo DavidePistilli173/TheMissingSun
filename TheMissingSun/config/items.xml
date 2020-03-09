@@ -1,0 +1,8 @@
+<!-- List of all in-game items and resources. -->
+
+<Items>
+    <Item>
+        <Name>Scrap Metal</Name>
+        <Texture>item_default</Texture>
+    </Item>
+</Items>

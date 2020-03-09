@@ -98,12 +98,13 @@ namespace tms
         LAYER_0,
         MIN_LAYER
     };
-    /* Types of events relevant to the game. */
+    /* Types of event relevant to the game. */
     enum class EventType
     {
         MOUSE_LEFT_CLICK,
         MOUSE_HOVER,
-        KEY_PRESS
+        KEY_PRESS,
+        TOT
     };
     /* OpenGL error severities. */
     enum class ErrorSeverity

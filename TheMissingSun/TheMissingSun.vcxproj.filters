@@ -19,6 +19,12 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{e66fcfda-e42f-4747-a492-caf3d1cdf934}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{0151ae83-b2a4-4cdd-b67a-8829f6733b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{04480054-975b-40db-af19-487a54152300}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="classes\TMS_Base.cpp">
@@ -60,14 +66,23 @@
     <ClCompile Include="classes\TMS_Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classes\TMS_Background.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="classes\TMS_Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="classes\TMS_ResourceContainer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_Background.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_PlayerBase.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_Building.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_Item.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +119,6 @@
     <ClInclude Include="include\tms_texture_namespace.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="classes\TMS_Entity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classes\TMS_Action.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -119,14 +131,29 @@
     <ClInclude Include="classes\TMS_Game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classes\TMS_Background.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classes\TMS_Camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="classes\TMS_ResourceContainer.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_Entity.hpp">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_Background.hpp">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_PlayerBase.hpp">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_Building.hpp">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tms_building_namespace.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_Item.hpp">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

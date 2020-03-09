@@ -1,3 +1,5 @@
+<!-- List of all game textures with names and corresponding files. -->
+
 <Textures>
     <Texture>
         <Name>test</Name>
@@ -14,5 +16,17 @@
     <Texture>
         <Name>underground</Name>
         <File>./resources/textures/background/underground.png</File>
+    </Texture>
+    <Texture>
+        <Name>build_default</Name>
+        <File>./resources/textures/buildings/default.png</File>
+    </Texture>
+    <Texture>
+        <Name>empty</Name>
+        <File>./resources/textures/buildings/empty.png</File>
+    </Texture>
+    <Texture>
+        <Name>item_default</Name>
+        <File>./resources/textures/items/default.png</File>
     </Texture>
 </Textures>

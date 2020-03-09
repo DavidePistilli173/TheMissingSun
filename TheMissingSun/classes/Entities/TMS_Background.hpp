@@ -33,13 +33,13 @@ public:
     /***************** CONSTANTS *****************/
     static constexpr float LEVEL_HEIGHT_FRACTION = 0.5f;
     static constexpr int BUFFER_SIZE = 20;
-    static const std::string REQUIRED_SHADERS[];
-    static const std::string REQUIRED_TEXTURES[];
+    static const std::string REQUIRED_SHADERS[]; // List of all required shaders.
+    static const std::string REQUIRED_TEXTURES[]; // List of all required textures.
 
     /***************** METHODS *****************/
     /* Base class methods. */
-    tms::Layer getLayer() override;
-    bool checkCollision(const int x, const int y) override;
+    tms::Layer getLayer() const override;
+    bool checkCollision(const int x, const int y) const override;
     std::vector<tms::EventType>& getRelevantEvents() override;
     std::optional<TMS_Action> handleEvent(const SDL_Event& event) override;
     void render() override;

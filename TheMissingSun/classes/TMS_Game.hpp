@@ -4,9 +4,10 @@
 #include "../include/tms.hpp"
 #include "../include/tms_shader_namespace.hpp"
 #include "../include/tms_texture_namespace.hpp"
+#include "./Entities/TMS_Entity.hpp"
 #include "TMS_Camera.hpp"
 #include "TMS_Clock.hpp"
-#include "TMS_Entity.hpp"
+#include "TMS_EventDispatcher.hpp"
 #include "TMS_ResourceContainer.hpp"
 #include "TMS_Shader.hpp"
 #include "TMS_Texture.hpp"
@@ -34,7 +35,8 @@ public:
 
     /***************** CONSTANTS *****************/
     static constexpr int BASE_WIDTH = 3; // Width of the base with respect to the window's width.
-    static constexpr int BASE_HEIGHT = 2; // Height of the base with respect to the window's height.
+    static constexpr int BACKGROUND_HEIGHT = 2; // Height of the background with respect to the window's height.
+    static constexpr float BASE_HEIGHT = 1.5f; // Height of the base with respect to the window's height.
 
 private:
     /***************** METHODS *****************/
@@ -48,11 +50,13 @@ private:
     TMS_Camera _camera; // Game camera.
     glm::mat4 _orthoMat; // Orthographic projection matrix.
 
+    TMS_EventDispatcher _eventDispatcher; // Routes each event to the relevant entity.
+
     TMS_ResourceContainer<TMS_Shader> _shaders; // All game shaders.
     TMS_ResourceContainer<TMS_Texture> _textures; // All game textures.
     std::vector<std::unique_ptr<TMS_Entity>> _entities; // Vector containing active game entities.
 
-    int _windowWidth, _windowHeight;
+    int _windowWidth, _windowHeight; // Dimensions of the window.
 };
 
 #endif

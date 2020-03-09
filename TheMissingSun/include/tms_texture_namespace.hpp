@@ -36,6 +36,8 @@ namespace tms::texture
         SKY,
         SURFACE,
         UNDERGROUND,
+        BUILD_DEFAULT,
+        ITEM_DEFAULT,
         TOT
     };
     /* List of texture names. */
@@ -44,7 +46,9 @@ namespace tms::texture
         "test",
         "sky",
         "surface",
-        "underground"
+        "underground",
+        "build_default",
+        "item_default"
     };
 }
 

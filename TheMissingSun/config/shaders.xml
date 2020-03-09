@@ -1,4 +1,5 @@
 <!-- List of all game shaders with their names and uniforms. -->
+
 <Shaders>
     <Shader>
         <Name>plain</Name>

@@ -130,7 +130,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="classes\TMS_Background.cpp" />
+    <ClCompile Include="classes\Entities\TMS_Background.cpp" />
+    <ClCompile Include="classes\Entities\TMS_Building.cpp" />
+    <ClCompile Include="classes\Entities\TMS_Item.cpp" />
+    <ClCompile Include="classes\Entities\TMS_PlayerBase.cpp" />
     <ClCompile Include="classes\TMS_Button.cpp" />
     <ClCompile Include="classes\TMS_Base.cpp" />
     <ClCompile Include="classes\TMS_Camera.cpp" />
@@ -152,13 +155,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="classes\Entities\TMS_Background.hpp" />
+    <ClInclude Include="classes\Entities\TMS_Building.hpp" />
+    <ClInclude Include="classes\Entities\TMS_Entity.hpp" />
+    <ClInclude Include="classes\Entities\TMS_Item.hpp" />
+    <ClInclude Include="classes\Entities\TMS_PlayerBase.hpp" />
     <ClInclude Include="classes\TMS_Action.hpp" />
-    <ClInclude Include="classes\TMS_Background.hpp" />
     <ClInclude Include="classes\TMS_Button.hpp" />
     <ClInclude Include="classes\TMS_Base.hpp" />
     <ClInclude Include="classes\TMS_Camera.hpp" />
     <ClInclude Include="classes\TMS_Clock.hpp" />
-    <ClInclude Include="classes\TMS_Entity.hpp" />
     <ClInclude Include="classes\TMS_Event.hpp" />
     <ClInclude Include="classes\TMS_EventDispatcher.hpp" />
     <ClInclude Include="classes\TMS_Game.hpp" />
@@ -167,6 +173,7 @@
     <ClInclude Include="classes\TMS_ResourceContainer.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
+    <ClInclude Include="include\tms_building_namespace.hpp" />
     <ClInclude Include="include\tms_shader_namespace.hpp" />
     <ClInclude Include="include\tinyxml2.h" />
     <ClInclude Include="include\tms.hpp" />

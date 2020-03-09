@@ -1,5 +1,5 @@
-#include "../include/tms_shader_namespace.hpp"
-#include "../include/tms_texture_namespace.hpp"
+#include "../../include/tms_shader_namespace.hpp"
+#include "../../include/tms_texture_namespace.hpp"
 #include "TMS_Background.hpp"
 
 /* Defitions of static variables. */
@@ -130,12 +130,12 @@ TMS_Background& TMS_Background::operator=(TMS_Background&& oldBackground) noexce
     return *this;
 }
 
-tms::Layer TMS_Background::getLayer()
+tms::Layer TMS_Background::getLayer() const
 {
     return tms::Layer::BACKGROUND_LAYER;
 }
 
-bool TMS_Background::checkCollision(const int x, const int y)
+bool TMS_Background::checkCollision(const int x, const int y) const
 {
     return true;
 }
