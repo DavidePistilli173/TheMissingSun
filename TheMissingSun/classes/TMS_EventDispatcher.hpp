@@ -23,10 +23,10 @@ public:
     TMS_EventDispatcher(); // Create an empty event dispatcher.
 
     /***************** METHODS *****************/
-    bool addEntity(std::shared_ptr<TMS_Entity>& entity); // Add a single entity to the dispatcher.
-    bool addEntities(std::vector<std::shared_ptr<TMS_Entity>>& entities); // Add multiple entities to the dispatcher.
+    bool addEntity(const std::shared_ptr<TMS_Entity>& entity); // Add a single entity to the dispatcher.
+    bool addEntities(const std::vector<std::shared_ptr<TMS_Entity>>& entities); // Add multiple entities to the dispatcher.
 
-    std::optional<TMS_Action> dispatchEvent(const SDL_Event& event, std::shared_ptr<TMS_Entity>& selectedEntity);
+    std::optional<TMS_Action> dispatchEvent(const SDL_Event& event, std::shared_ptr<TMS_Entity> selectedEntity);
 
     void removeEntity(std::shared_ptr<TMS_Entity>& entity); // Remove a specific entity from the dispatcher.
 

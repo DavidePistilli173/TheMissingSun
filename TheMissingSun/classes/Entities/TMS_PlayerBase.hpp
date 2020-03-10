@@ -1,6 +1,7 @@
 #ifndef TMS_PLAYERBASE_HPP
 #define TMS_PLAYERBASE_HPP
 
+#include "../TMS_EventDispatcher.hpp"
 #include "../TMS_ResourceContainer.hpp"
 #include "TMS_Building.hpp"
 #include "TMS_Entity.hpp"
@@ -23,10 +24,8 @@ public:
     };
 
     TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-                   const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Texture>& allTextures);
-    TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-                   const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Texture>& allTextures,
-                   unsigned int i);
+                   const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders, 
+                   const TMS_ResourceContainer<TMS_Texture>& allTextures, unsigned int i = 0);
 
     /***************** CONSTANTS *****************/
     /* Size of the building grid. */
@@ -52,10 +51,14 @@ public:
 private:
     /***************** METHODS *****************/
     void _setEvents(); // Set relevant events.
+    bool _setInitialState(); // Set the initial state of the base.
+    bool _build(const std::string& buildingName, const int row, const int column);
 
     /***************** VARIABLES *****************/
-    std::optional<TMS_Building> _buildingGrid[ROW_NUM][COLUMN_NUM]; // Grid containing all possible building slots.
+    TMS_EventDispatcher _eventDispatcher; // Event handler.
+    std::shared_ptr<TMS_Building> _buildingGrid[ROW_NUM][COLUMN_NUM]; // Grid containing all possible building slots.
     tms::Rect _baseRect; // Rectangle for the whole base.
+    int _buildingWidth, _buildingHeight;
     TMS_ResourceContainer<TMS_Building> _buildingTypes; // Container for all existing building types.
 };
 

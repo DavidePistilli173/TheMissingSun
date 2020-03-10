@@ -17,13 +17,8 @@ public:
         id(0)
     {};
     /* At creation the entity must have references to all resources. */
-    TMS_Entity(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures) :
-        id(0),
-        _shaders(shaders),
-        _textures(textures)
-    {}
     TMS_Entity(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-               unsigned int i) :
+               unsigned int i = 0) :
         id(i),
         _shaders(shaders),
         _textures(textures)

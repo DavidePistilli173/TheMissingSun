@@ -214,7 +214,8 @@ bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string file)
 
 /* Building specialisation. */
 template<>
-bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, const TMS_ResourceContainer<TMS_Texture>& textures)
+bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, const TMS_ResourceContainer<TMS_Shader> shaders, 
+                                                        const TMS_ResourceContainer<TMS_Texture>& textures)
 {
     /* Load the file into memory. */
     tinyxml2::XMLDocument buildingList;
@@ -239,7 +240,19 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, 
          building != nullptr;
          building = building->NextSiblingElement())
     {
-        TMS_Building currentBuilding({ 0,0,0,0 });
+        TMS_Building currentBuilding;
+
+        /* Set the building's shaders. */
+        std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;
+        for (int i = 0; i < static_cast<int>(TMS_Building::Shader::TOT); ++i)
+        {
+            if (requiredShaders.emplace_back(shaders.get(TMS_Building::REQUIRED_SHADERS[i])) == nullptr)
+            {
+                printf("Unable to find shader %s.\n", TMS_Building::REQUIRED_SHADERS[i].c_str());
+                return false;
+            }
+        }
+        currentBuilding.setShaders(requiredShaders);
 
         /* Get the building's name. */
         std::string buildingName;

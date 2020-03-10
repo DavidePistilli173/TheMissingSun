@@ -36,6 +36,7 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     }
 
     /* Load initial entities. */
+    int currentEntity = 0;
     /* Load the background. */
     std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;
     for (int i = 0; i < static_cast<int>(TMS_Background::Shader::TOT); ++i)
@@ -49,7 +50,7 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     }
     
     tms::Rect backgroundSpan = { -_windowWidth, 0, BASE_WIDTH * _windowWidth, BACKGROUND_HEIGHT * _windowHeight };
-    _entities.push_back(std::make_unique<TMS_Background>(
+    _entities.push_back(std::make_shared<TMS_Background>(
                         TMS_Background(requiredShaders, 
                                        requiredTextures,
                                        _entities.size(),
@@ -71,11 +72,15 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
 
     int baseHeight = static_cast<int>(BACKGROUND_HEIGHT * _windowHeight);
     tms::Rect baseRect = {-_windowWidth, _windowHeight - baseHeight, BASE_WIDTH * _windowWidth, baseHeight };
-    _entities.push_back(std::make_unique<TMS_PlayerBase>(
+    _entities.push_back(std::make_shared<TMS_PlayerBase>(
                         TMS_PlayerBase(requiredBaseShaders,
                                        requiredBaseTextures,
                                        baseRect,
+                                       _shaders,
                                        _textures)));
+
+    /* Add entities to the event dispatcher. */
+    _eventDispatcher.addEntities(_entities);
 
     /* Set up the camera. */
     _camera.setBoundaries({ backgroundSpan.x, backgroundSpan.x + backgroundSpan.w, backgroundSpan.y, backgroundSpan.y + backgroundSpan.h }, 
@@ -127,7 +132,7 @@ tms::GameState TMS_Game::gameLoop(tms::window_t& window)
 
 tms::GameState TMS_Game::handleEvents()
 {
-    /* Event polling. */
+    /* High priority events. */
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0)
     {
@@ -151,6 +156,9 @@ tms::GameState TMS_Game::handleEvents()
 
     const Uint8* currentKeyState = SDL_GetKeyboardState(nullptr); // Get current keypresses.
     _moveCamera(currentKeyState);
+
+    /* Pass the event on to the event dispatcher. */
+    _eventDispatcher.dispatchEvent(event, nullptr);
 
     return tms::GameState::GAME;
 }

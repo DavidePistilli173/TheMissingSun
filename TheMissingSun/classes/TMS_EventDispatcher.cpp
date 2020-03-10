@@ -5,7 +5,7 @@ TMS_EventDispatcher::TMS_EventDispatcher() :
 {
 }
 
-bool TMS_EventDispatcher::addEntity(std::shared_ptr<TMS_Entity>& entity)
+bool TMS_EventDispatcher::addEntity(const std::shared_ptr<TMS_Entity>& entity)
 {
     /* Check that the entity is in a valid layer.*/
     int index = tms::layer_index(entity->getLayer());
@@ -21,7 +21,7 @@ bool TMS_EventDispatcher::addEntity(std::shared_ptr<TMS_Entity>& entity)
     return true;
 }
 
-bool TMS_EventDispatcher::addEntities(std::vector<std::shared_ptr<TMS_Entity>>& entities)
+bool TMS_EventDispatcher::addEntities(const std::vector<std::shared_ptr<TMS_Entity>>& entities)
 {
     for (auto& entity : entities)
     {
@@ -30,7 +30,7 @@ bool TMS_EventDispatcher::addEntities(std::vector<std::shared_ptr<TMS_Entity>>& 
     return true;
 }
 
-std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& event, std::shared_ptr<TMS_Entity>& selectedEntity)
+std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& event, std::shared_ptr<TMS_Entity> selectedEntity)
 {
     /* Convert the SDL event type into tms EventType and handle the event. */
     std::set<std::shared_ptr<TMS_Entity>>::iterator iterator;
@@ -60,10 +60,13 @@ std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& ev
         break;
     case SDL_KEYDOWN:
         /* Find the correct entity and deliver the event to it. */
-        iterator = _entities[static_cast<int>(tms::EventType::KEY_PRESS)].find(selectedEntity);
-        if (iterator != _entities[static_cast<int>(tms::EventType::KEY_PRESS)].end())
+        if (selectedEntity != nullptr)
         {
-            return (*iterator)->handleEvent(event);
+            iterator = _entities[static_cast<int>(tms::EventType::KEY_PRESS)].find(selectedEntity);
+            if (iterator != _entities[static_cast<int>(tms::EventType::KEY_PRESS)].end())
+            {
+                return (*iterator)->handleEvent(event);
+            }
         }
         break;
     }

@@ -16,8 +16,9 @@ public:
     TMS_ResourceContainer() {};
 
     bool loadResources(const std::string file); // Load the resources listed in an xml configuration file.
-    /* Load resources which require shaders and textures. */
-    bool loadResources(const std::string file, const TMS_ResourceContainer<TMS_Texture>& textures);
+    /* Load resources which require textures. */
+    bool loadResources(const std::string file, const TMS_ResourceContainer<TMS_Shader> shaders, 
+                       const TMS_ResourceContainer<TMS_Texture>& textures);
 
     /* Get the resource with the specified id. */
     std::shared_ptr<T> get(const std::string id) const

@@ -82,7 +82,7 @@
         <Name>Empty</Name>
         <BuildTime>0</BuildTime>
         <Textures>
-            <Texture>building_empty</Texture>
+            <Texture>empty</Texture>
         </Textures>
     </Building>
     <!-- Test building. -->
@@ -138,7 +138,14 @@
             </Item>
         </Storage>
         <Textures>
-            <Texture>building_default</Texture>
+            <Texture>build_default</Texture>
+        </Textures>
+    </Building>
+    <Building>
+        <Name>Entrance</Name>
+        <BuildTime>0</BuildTime>
+        <Textures>
+            <Texture>build_default</Texture>
         </Textures>
     </Building>
 </Buildings>

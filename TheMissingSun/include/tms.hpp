@@ -42,6 +42,12 @@ namespace tms
     constexpr int CODE_READ_CHUNK = 4096; // Size of a single code chunk to be read.
     constexpr int INIT_CODE_SIZE = 32768; // Initial size of the strings that contain the code.
     constexpr int SHADER_LOG_SIZE = 2048; // Size of the shader compilation error log.
+    /* Default buffer data. */
+    constexpr unsigned int EBO_QUAD_DATA[] =
+    {
+        0,1,2,
+        2,3,0
+    };
 
     /* Colours. */
     /* Default colour. */

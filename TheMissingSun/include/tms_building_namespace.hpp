@@ -6,6 +6,8 @@
 namespace tms::building
 {
     const std::string BUILDING_TYPES_FILE = "./config/buildings.xml"; // Configuration file for building types.
+    const std::string INITIAL_BUILDING = "Entrance"; // First building present in the base.
+    const std::string EMPTY_BUILDING = "Empty"; // Empty building slot.
 
     /* Different frequencies for item production/consumption. */
     enum class Frequency
