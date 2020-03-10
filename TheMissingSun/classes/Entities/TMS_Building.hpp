@@ -12,7 +12,24 @@ using TMS_ItemCost = TMS_Item; // Items that are required for production.
 class TMS_Building : public TMS_Entity
 {
 public:
-    TMS_Building(const tms::Rect span);
+    /* Shader list. */
+    enum class Shader
+    {
+        PLAIN,
+        HIGHLIGHT,
+        TOT
+    };
+
+    TMS_Building();
+    ~TMS_Building();
+    TMS_Building(const TMS_Building& oldBuilding);
+    TMS_Building& operator= (const TMS_Building& oldBuilding);
+    TMS_Building(TMS_Building&& oldBuilding) noexcept;
+    TMS_Building& operator= (TMS_Building&& oldBuilding) noexcept;
+
+
+    /***************** METHODS *****************/
+    static const std::string REQUIRED_SHADERS[];
 
     /***************** METHODS *****************/
     tms::Layer getLayer() const override; // Return the entities' depth layer.
@@ -29,6 +46,8 @@ public:
 
     /* Setters. */
     void setName(const std::string& name);
+    void setSpan(const tms::Rect& span);
+    bool setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders);
     bool setBuildTime(const int buildTime);
     void addBuildCost(const TMS_Item& item);
     void addFixedProduction(const TMS_ItemProduction& production, const std::vector<TMS_ItemCost>& cost);
@@ -47,6 +66,7 @@ private:
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _oneTimeProduction; // One-Time production of items with their costs.
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
     tms::Rect _span; // Building rectangle.
+    unsigned int _VAO, _VBO, _EBO;
 };
 
 #endif
