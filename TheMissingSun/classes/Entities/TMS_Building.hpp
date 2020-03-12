@@ -19,6 +19,12 @@ public:
         HIGHLIGHT,
         TOT
     };
+    /* Texture list. */
+    enum class Texture
+    {
+        MAIN,
+        TOT
+    };
 
     TMS_Building();
     ~TMS_Building();
@@ -66,7 +72,8 @@ private:
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _oneTimeProduction; // One-Time production of items with their costs.
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
     tms::Rect _span; // Building rectangle.
-    unsigned int _VAO, _VBO, _EBO;
+    unsigned int _VAO, _VBO, _EBO; // OpenGL buffers.
+    bool _highlighted; // True if the building is highlighted (eg. by the mouse cursor).
 };
 
 #endif

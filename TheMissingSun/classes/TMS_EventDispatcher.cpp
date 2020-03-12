@@ -42,7 +42,10 @@ std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& ev
         {
             /* Find the correct entity and deliver the event to it. */
             iterator = _entities[static_cast<int>(tms::EventType::MOUSE_LEFT_CLICK)].begin();
-            while (!(*iterator)->checkCollision(event.button.x, event.button.y)) ++iterator;
+
+            while (iterator != _entities[static_cast<int>(tms::EventType::MOUSE_LEFT_CLICK)].end() &&
+                   !(*iterator)->checkCollision(event.button.x, event.button.y)) ++iterator;
+
             if (iterator != _entities[static_cast<int>(tms::EventType::MOUSE_LEFT_CLICK)].end())
             {
                 return (*iterator)->handleEvent(event);
@@ -52,7 +55,10 @@ std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& ev
     case SDL_MOUSEMOTION:
         /* Find the correct entity and deliver the event to it. */
         iterator = _entities[static_cast<int>(tms::EventType::MOUSE_HOVER)].begin();
-        while (!(*iterator)->checkCollision(event.button.x, event.button.y)) ++iterator;
+
+        while (iterator != _entities[static_cast<int>(tms::EventType::MOUSE_HOVER)].end() &&
+               !(*iterator)->checkCollision(event.button.x, event.button.y)) ++iterator;
+
         if (iterator != _entities[static_cast<int>(tms::EventType::MOUSE_HOVER)].end())
         {
             return (*iterator)->handleEvent(event);

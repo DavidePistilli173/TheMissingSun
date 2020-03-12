@@ -50,13 +50,21 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     }
     
     tms::Rect backgroundSpan = { -_windowWidth, 0, BASE_WIDTH * _windowWidth, BACKGROUND_HEIGHT * _windowHeight };
-    _entities.push_back(std::make_shared<TMS_Background>(
-                        TMS_Background(requiredShaders, 
-                                       requiredTextures,
-                                       _entities.size(),
-                                       backgroundSpan,
-                                       _windowWidth,
-                                       _windowHeight)));
+    try
+    {
+        _entities.push_back(std::make_shared<TMS_Background>(
+                            TMS_Background(requiredShaders,
+                                           requiredTextures,
+                                           _entities.size(),
+                                           backgroundSpan,
+                                           _windowWidth,
+                                           _windowHeight)));
+    }
+    catch (std::string e)
+    {
+        printf("Unable to create the background.\n%s", e.c_str());
+        return tms::GameState::EXIT;
+    }
 
     /* Load the player's base. */
     std::vector<std::shared_ptr<TMS_Shader>> requiredBaseShaders;
@@ -70,14 +78,22 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
         requiredBaseTextures.push_back((_textures.get(TMS_PlayerBase::REQUIRED_TEXTURES[i])));
     }
 
-    int baseHeight = static_cast<int>(BACKGROUND_HEIGHT * _windowHeight);
-    tms::Rect baseRect = {-_windowWidth, _windowHeight - baseHeight, BASE_WIDTH * _windowWidth, baseHeight };
-    _entities.push_back(std::make_shared<TMS_PlayerBase>(
-                        TMS_PlayerBase(requiredBaseShaders,
-                                       requiredBaseTextures,
-                                       baseRect,
-                                       _shaders,
-                                       _textures)));
+    try
+    {
+        int baseHeight = static_cast<int>(BASE_HEIGHT * _windowHeight);
+        tms::Rect baseRect = { -_windowWidth, backgroundSpan.h - baseHeight, BASE_WIDTH * _windowWidth, baseHeight };
+        _entities.push_back(std::make_shared<TMS_PlayerBase>(
+                            TMS_PlayerBase(requiredBaseShaders,
+                                           requiredBaseTextures,
+                                            baseRect,
+                                           _shaders,
+                                           _textures)));
+    }
+    catch (std::string e)
+    {
+        printf("Unable to create the player's base.\n%s", e.c_str());
+        return tms::GameState::EXIT;
+    }
 
     /* Add entities to the event dispatcher. */
     _eventDispatcher.addEntities(_entities);

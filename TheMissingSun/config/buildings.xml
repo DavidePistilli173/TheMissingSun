@@ -77,7 +77,7 @@
 -->
 
 <Buildings>
-    <!-- Empty building for filling currently buildable cells. -->
+    <!-- Empty building for filling currently buildable cells. Mandatory. -->
     <Building>
         <Name>Empty</Name>
         <BuildTime>0</BuildTime>
@@ -141,6 +141,7 @@
             <Texture>build_default</Texture>
         </Textures>
     </Building>
+    <!-- Entrance to the base. Mandatory. -->
     <Building>
         <Name>Entrance</Name>
         <BuildTime>0</BuildTime>

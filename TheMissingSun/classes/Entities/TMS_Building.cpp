@@ -13,11 +13,36 @@ TMS_Building::TMS_Building() :
     _name(""),
     _buildTime(0),
     _span({0,0,0,0}),
-    _VAO(0), _VBO(0)
+    _highlighted(false)
 {
+    /* Create OpenGL buffers. */
+    glGenVertexArrays(1, &_VAO);
+    glBindVertexArray(_VAO);
+    glGenBuffers(1, &_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+
+    /* Set default buffer data. */
+    float vboData[] =
+    {
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f
+    };
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vboData), vboData, GL_STATIC_DRAW);
+
+    int strideSize = 5 * sizeof(float);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
+
     glGenBuffers(1, &_EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(tms::EBO_QUAD_DATA), tms::EBO_QUAD_DATA, GL_STATIC_DRAW);
+    
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -28,7 +53,8 @@ TMS_Building::~TMS_Building()
     glDeleteBuffers(1, &_EBO);
 }
 
-TMS_Building::TMS_Building(const TMS_Building& oldBuilding)
+TMS_Building::TMS_Building(const TMS_Building& oldBuilding) :
+    TMS_Entity(oldBuilding)
 {
     /* Copy basic building information. */
     _name = oldBuilding._name;
@@ -44,21 +70,48 @@ TMS_Building::TMS_Building(const TMS_Building& oldBuilding)
     {
         container.first.setAmount(0);
     }
+
     /* Reset the building's unique properties. */
     _span = { 0,0,0,0 };
-    _VAO = 0;
-    _VBO = 0;
+    
+    glGenVertexArrays(1, &_VAO);
+    glBindVertexArray(_VAO);
+    glGenBuffers(1, &_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+
+    /* Set default buffer data. */
+    float vboData[] =
+    {
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f
+    };
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vboData), vboData, GL_STATIC_DRAW);
+
+    int strideSize = 5 * sizeof(float);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
+    glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
+    glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
 
     glGenBuffers(1, &_EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(tms::EBO_QUAD_DATA), tms::EBO_QUAD_DATA, GL_STATIC_DRAW);
+    
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    _highlighted = false;
 }
 
 TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
 {
     if (this != &oldBuilding)
     {
+        TMS_Entity::operator=(oldBuilding);
+
         /* Copy basic building information. */
         _name = oldBuilding._name;
         _buildTime = oldBuilding._buildTime;
@@ -75,18 +128,42 @@ TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
         }
         /* Reset the building's unique properties. */
         _span = { 0,0,0,0 };
-        _VAO = 0;
-        _VBO = 0;
+        glGenVertexArrays(1, &_VAO);
+        glBindVertexArray(_VAO);
+        glGenBuffers(1, &_VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+
+        /* Set default buffer data. */
+        float vboData[] =
+        {
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 0.0f
+        };
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vboData), vboData, GL_STATIC_DRAW);
+
+        int strideSize = 5 * sizeof(float);
+        glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS), 3, GL_FLOAT, GL_FALSE, strideSize, 0);
+        glVertexAttribPointer(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS), 2, GL_FLOAT, GL_FALSE, strideSize, reinterpret_cast<void*>(3 * sizeof(float)));
+        glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::VERTEX_COORDS));
+        glEnableVertexAttribArray(static_cast<int>(tms::shader::AttribLocation::TEX_COORDS));
 
         glGenBuffers(1, &_EBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(tms::EBO_QUAD_DATA), tms::EBO_QUAD_DATA, GL_STATIC_DRAW);
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        _highlighted = false;
     }
     return *this;
 }
 
-TMS_Building::TMS_Building(TMS_Building&& oldBuilding) noexcept
+TMS_Building::TMS_Building(TMS_Building&& oldBuilding) noexcept :
+    TMS_Entity(oldBuilding)
 {
     /* Move basic building information. */
     _name = std::move(oldBuilding._name);
@@ -96,6 +173,7 @@ TMS_Building::TMS_Building(TMS_Building&& oldBuilding) noexcept
     _continuousProduction = std::move(oldBuilding._continuousProduction);
     _oneTimeProduction = std::move(oldBuilding._oneTimeProduction);
     _storage = std::move(oldBuilding._storage);
+    _highlighted = oldBuilding._highlighted;
 
     /* Move the building's unique properties. */
     _span = oldBuilding._span;
@@ -111,6 +189,8 @@ TMS_Building& TMS_Building::operator=(TMS_Building&& oldBuilding) noexcept
 {
     if (this != &oldBuilding)
     {
+        TMS_Entity::operator=(oldBuilding);
+
         /* Move basic building information. */
         _name = std::move(oldBuilding._name);
         _buildTime = oldBuilding._buildTime;
@@ -119,6 +199,7 @@ TMS_Building& TMS_Building::operator=(TMS_Building&& oldBuilding) noexcept
         _continuousProduction = std::move(oldBuilding._continuousProduction);
         _oneTimeProduction = std::move(oldBuilding._oneTimeProduction);
         _storage = std::move(oldBuilding._storage);
+        _highlighted = oldBuilding._highlighted;
 
         /* Move the building's unique properties. */
         _span = oldBuilding._span;
@@ -156,7 +237,15 @@ std::optional<TMS_Action> TMS_Building::handleEvent(const SDL_Event& event)
 
 void TMS_Building::render()
 {
-    
+    /* Choose the proper shader. */
+    if (_highlighted) _shaders[static_cast<int>(Shader::HIGHLIGHT)]->use();
+    else _shaders[static_cast<int>(Shader::PLAIN)]->use();
+
+    /* Render the building. */
+    _textures[static_cast<int>(Texture::MAIN)]->bind();
+    glBindVertexArray(_VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }
 
 const std::string& TMS_Building::getName() const
@@ -171,7 +260,25 @@ void TMS_Building::setName(const std::string& name)
 
 void TMS_Building::setSpan(const tms::Rect& span)
 {
+    /* Update the building's span. */
     _span = span;
+
+    /* Update the building's VBO. */
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+
+    float maxX = static_cast<float>(_span.x + _span.w);
+    float maxY = static_cast<float>(_span.y + _span.h);
+    float vboData[] =
+    {
+        static_cast<float>(_span.x), static_cast<float>(_span.y), static_cast<float>(tms::default_layer()), 0.0f, 0.0f, // Top left corner.
+        maxX,                        static_cast<float>(_span.y), static_cast<float>(tms::default_layer()), 1.0f, 0.0f, // Top right corner.
+        maxX,                        maxY,                        static_cast<float>(tms::default_layer()), 1.0f, 1.0f, // Bottom right corner.
+        static_cast<float>(_span.x), maxY,                        static_cast<float>(tms::default_layer()), 0.0f, 1.0f // Bottom left corner.
+    };
+    //glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vboData), vboData);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vboData), vboData, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 bool TMS_Building::setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders)
