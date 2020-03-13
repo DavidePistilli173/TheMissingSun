@@ -167,14 +167,15 @@ tms::GameState TMS_Game::handleEvents()
                 break;
             }
             break;
+        default:
+            /* Pass the event on to the event dispatcher. */
+            _eventDispatcher.dispatchEvent(event, nullptr);
+            break;
         }
     }
 
     const Uint8* currentKeyState = SDL_GetKeyboardState(nullptr); // Get current keypresses.
     _moveCamera(currentKeyState);
-
-    /* Pass the event on to the event dispatcher. */
-    _eventDispatcher.dispatchEvent(event, nullptr);
 
     return tms::GameState::GAME;
 }

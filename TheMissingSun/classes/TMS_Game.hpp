@@ -36,7 +36,7 @@ public:
     /***************** CONSTANTS *****************/
     static constexpr int BASE_WIDTH = 3; // Width of the base with respect to the window's width.
     static constexpr int BACKGROUND_HEIGHT = 2; // Height of the background with respect to the window's height.
-    static constexpr float BASE_HEIGHT = 1.5f; // Height of the base with respect to the window's height.
+    static constexpr float BASE_HEIGHT = 1.6f; // Height of the base with respect to the window's height.
 
 private:
     /***************** METHODS *****************/

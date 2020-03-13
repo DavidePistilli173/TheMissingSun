@@ -30,10 +30,10 @@ public:
     /***************** CONSTANTS *****************/
     /* Size of the building grid. */
     static constexpr int ROW_NUM = 4;
-    static constexpr int COLUMN_NUM = 10;
+    static constexpr int COLUMN_NUM = 8;
     /* Cell that will contain the first building. */
     static constexpr int INITIAL_BUILDING_ROW = 0;
-    static constexpr int INITIAL_BUILDING_COLUMN = 4;
+    static constexpr int INITIAL_BUILDING_COLUMN = 3;
     static const std::string REQUIRED_SHADERS[]; // List of all required shaders.
     static const std::string REQUIRED_TEXTURES[]; // List of all required textures.
 

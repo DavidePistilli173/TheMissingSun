@@ -13,7 +13,9 @@ TMS_Building::TMS_Building() :
     _name(""),
     _buildTime(0),
     _span({0,0,0,0}),
-    _highlighted(false)
+    _highlighted(false),
+    _currenTexture(0),
+    _timeStep(0)
 {
     /* Create OpenGL buffers. */
     glGenVertexArrays(1, &_VAO);
@@ -64,6 +66,7 @@ TMS_Building::TMS_Building(const TMS_Building& oldBuilding) :
     _continuousProduction = oldBuilding._continuousProduction;
     _oneTimeProduction = oldBuilding._oneTimeProduction;
     _storage = oldBuilding._storage;
+    _timeStep = oldBuilding._timeStep;
 
     /* Reset the building's storage. */
     for (auto container : _storage)
@@ -104,6 +107,7 @@ TMS_Building::TMS_Building(const TMS_Building& oldBuilding) :
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     _highlighted = false;
+    _currenTexture = 0;
 }
 
 TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
@@ -120,6 +124,7 @@ TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
         _continuousProduction = oldBuilding._continuousProduction;
         _oneTimeProduction = oldBuilding._oneTimeProduction;
         _storage = oldBuilding._storage;
+        _timeStep = oldBuilding._timeStep;
 
         /* Reset the building's storage. */
         for (auto container : _storage)
@@ -158,6 +163,7 @@ TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         _highlighted = false;
+        _currenTexture = 0;
     }
     return *this;
 }
@@ -174,6 +180,8 @@ TMS_Building::TMS_Building(TMS_Building&& oldBuilding) noexcept :
     _oneTimeProduction = std::move(oldBuilding._oneTimeProduction);
     _storage = std::move(oldBuilding._storage);
     _highlighted = oldBuilding._highlighted;
+    _currenTexture = oldBuilding._currenTexture;
+    _timeStep = oldBuilding._timeStep;
 
     /* Move the building's unique properties. */
     _span = oldBuilding._span;
@@ -200,6 +208,8 @@ TMS_Building& TMS_Building::operator=(TMS_Building&& oldBuilding) noexcept
         _oneTimeProduction = std::move(oldBuilding._oneTimeProduction);
         _storage = std::move(oldBuilding._storage);
         _highlighted = oldBuilding._highlighted;
+        _currenTexture = oldBuilding._currenTexture;
+        _timeStep = oldBuilding._timeStep;
 
         /* Move the building's unique properties. */
         _span = oldBuilding._span;
@@ -237,12 +247,19 @@ std::optional<TMS_Action> TMS_Building::handleEvent(const SDL_Event& event)
 
 void TMS_Building::render()
 {
+    /* Change animation frame if enough time has passed. */
+    if (_clock.getTime() >= _timeStep)
+    {
+        _clock.startClock();
+        _currenTexture = (_currenTexture + 1) % _textures.size();
+    }
+
     /* Choose the proper shader. */
     if (_highlighted) _shaders[static_cast<int>(Shader::HIGHLIGHT)]->use();
     else _shaders[static_cast<int>(Shader::PLAIN)]->use();
 
     /* Render the building. */
-    _textures[static_cast<int>(Texture::MAIN)]->bind();
+    _textures[_currenTexture]->bind();
     glBindVertexArray(_VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
@@ -325,4 +342,5 @@ bool TMS_Building::addStorage(const TMS_Item& item, const int maxCapacity)
 void TMS_Building::addTexture(const std::shared_ptr<TMS_Texture>& texture)
 {
     _textures.push_back(texture);
+    _timeStep = static_cast<int>(static_cast<float>(ANIMATION_TIME) / _textures.size());
 }

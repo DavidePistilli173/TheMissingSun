@@ -1,6 +1,7 @@
 #ifndef TMS_BUILDING_HPP
 #define TMS_BUILDING_HPP
 
+#include "../TMS_Clock.hpp"
 #include "TMS_Entity.hpp"
 #include "TMS_Item.hpp"
 
@@ -34,8 +35,9 @@ public:
     TMS_Building& operator= (TMS_Building&& oldBuilding) noexcept;
 
 
-    /***************** METHODS *****************/
+    /***************** CONSTANTS *****************/
     static const std::string REQUIRED_SHADERS[];
+    static constexpr int ANIMATION_TIME = 1000; // Time to display the entire animation in ms.
 
     /***************** METHODS *****************/
     tms::Layer getLayer() const override; // Return the entities' depth layer.
@@ -74,6 +76,9 @@ private:
     tms::Rect _span; // Building rectangle.
     unsigned int _VAO, _VBO, _EBO; // OpenGL buffers.
     bool _highlighted; // True if the building is highlighted (eg. by the mouse cursor).
+    int _currenTexture; // Index of the current texture.
+    TMS_Clock _clock; // Clock used for building animations.
+    int _timeStep; // Time interval between animation frames.
 };
 
 #endif

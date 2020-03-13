@@ -11,6 +11,7 @@ TMS_Camera::TMS_Camera() :
     _minX(0), _maxX(0), _minY(0), _maxY(0),
     _speedX(0), _speedY(0)
 {
+    _lookAtMat = glm::lookAt(_cameraPos, _cameraTarget, _cameraUp);
 }
 
 glm::mat4 TMS_Camera::getView()

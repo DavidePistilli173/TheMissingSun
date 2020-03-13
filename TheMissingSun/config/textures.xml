@@ -1,30 +1,49 @@
 <!-- List of all game textures with names and corresponding files. -->
 
 <Textures>
+    <!-- Texture used for testing. -->
     <Texture>
         <Name>test</Name>
         <File>./resources/textures/test/container.jpg</File>
     </Texture>
+    <!-- Skybox. -->
     <Texture>
         <Name>sky</Name>
         <File>./resources/textures/background/sky.png</File>
     </Texture>
+    <!-- Upper part of the underground texture. -->
     <Texture>
         <Name>surface</Name>
         <File>./resources/textures/background/surface.png</File>
     </Texture>
+    <!-- Underground texture. -->
     <Texture>
         <Name>underground</Name>
         <File>./resources/textures/background/underground.png</File>
     </Texture>
+    <!-- Default building textures. -->
     <Texture>
-        <Name>build_default</Name>
-        <File>./resources/textures/buildings/default.png</File>
+        <Name>b_def_1</Name>
+        <File>./resources/textures/buildings/default/default1.png</File>
     </Texture>
+    <Texture>
+        <Name>b_def_2</Name>
+        <File>./resources/textures/buildings/default/default2.png</File>
+    </Texture>
+    <Texture>
+        <Name>b_def_3</Name>
+        <File>./resources/textures/buildings/default/default3.png</File>
+    </Texture>
+    <Texture>
+        <Name>b_def_4</Name>
+        <File>./resources/textures/buildings/default/default4.png</File>
+    </Texture>
+    <!-- Texture used for buildable slots. -->
     <Texture>
         <Name>empty</Name>
         <File>./resources/textures/buildings/empty.png</File>
     </Texture>
+    <!-- Default item texture. -->
     <Texture>
         <Name>item_default</Name>
         <File>./resources/textures/items/default.png</File>
