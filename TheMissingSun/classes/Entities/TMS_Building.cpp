@@ -13,6 +13,7 @@ TMS_Building::TMS_Building() :
     _name(""),
     _buildTime(0),
     _span({0,0,0,0}),
+    _selected(false),
     _highlighted(false),
     _currenTexture(0),
     _timeStep(0)
@@ -46,6 +47,10 @@ TMS_Building::TMS_Building() :
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    /* Set relevant events. */
+    _relevantEvents.push_back(tms::EventType::MOUSE_LEFT_CLICK);
+    _relevantEvents.push_back(tms::EventType::MOUSE_HOVER);
 }
 
 TMS_Building::~TMS_Building()
@@ -106,6 +111,7 @@ TMS_Building::TMS_Building(const TMS_Building& oldBuilding) :
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+    _selected = false;
     _highlighted = false;
     _currenTexture = 0;
 }
@@ -162,6 +168,7 @@ TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+        _selected = false;
         _highlighted = false;
         _currenTexture = 0;
     }
@@ -179,6 +186,7 @@ TMS_Building::TMS_Building(TMS_Building&& oldBuilding) noexcept :
     _continuousProduction = std::move(oldBuilding._continuousProduction);
     _oneTimeProduction = std::move(oldBuilding._oneTimeProduction);
     _storage = std::move(oldBuilding._storage);
+    _selected = oldBuilding._selected;
     _highlighted = oldBuilding._highlighted;
     _currenTexture = oldBuilding._currenTexture;
     _timeStep = oldBuilding._timeStep;
@@ -207,6 +215,7 @@ TMS_Building& TMS_Building::operator=(TMS_Building&& oldBuilding) noexcept
         _continuousProduction = std::move(oldBuilding._continuousProduction);
         _oneTimeProduction = std::move(oldBuilding._oneTimeProduction);
         _storage = std::move(oldBuilding._storage);
+        _selected = oldBuilding._selected;
         _highlighted = oldBuilding._highlighted;
         _currenTexture = oldBuilding._currenTexture;
         _timeStep = oldBuilding._timeStep;
@@ -240,9 +249,17 @@ bool TMS_Building::checkCollision(const int x, const int y) const
     return false;
 }
 
-std::optional<TMS_Action> TMS_Building::handleEvent(const SDL_Event& event)
+void TMS_Building::handleEvent(const SDL_Event& event)
 {
-    return std::optional<TMS_Action>();
+    switch (event.type)
+    {
+    case SDL_MOUSEBUTTONDOWN:
+        if (event.button.button == SDL_BUTTON_LEFT) _selected = true;
+        break;
+    case SDL_MOUSEMOTION:
+        _highlighted = true;
+        break;
+    }
 }
 
 void TMS_Building::render()
@@ -255,7 +272,7 @@ void TMS_Building::render()
     }
 
     /* Choose the proper shader. */
-    if (_highlighted) _shaders[static_cast<int>(Shader::HIGHLIGHT)]->use();
+    if (_selected || _highlighted) _shaders[static_cast<int>(Shader::HIGHLIGHT)]->use();
     else _shaders[static_cast<int>(Shader::PLAIN)]->use();
 
     /* Render the building. */
@@ -343,4 +360,14 @@ void TMS_Building::addTexture(const std::shared_ptr<TMS_Texture>& texture)
 {
     _textures.push_back(texture);
     _timeStep = static_cast<int>(static_cast<float>(ANIMATION_TIME) / _textures.size());
+}
+
+void TMS_Building::nSelect()
+{
+    _selected = false;
+}
+
+void TMS_Building::nHighlight()
+{
+    _highlighted = false;
 }

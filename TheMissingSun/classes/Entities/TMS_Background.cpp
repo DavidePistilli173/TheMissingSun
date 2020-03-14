@@ -145,9 +145,8 @@ std::vector<tms::EventType>& TMS_Background::getRelevantEvents()
     return _relevantEvents;
 }
 
-std::optional<TMS_Action> TMS_Background::handleEvent(const SDL_Event& event)
+void TMS_Background::handleEvent(const SDL_Event& event)
 {
-    return std::optional<TMS_Action>();
 }
 
 void TMS_Background::render()

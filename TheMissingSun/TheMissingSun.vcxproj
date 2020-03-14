@@ -165,7 +165,7 @@
     <ClInclude Include="classes\TMS_Base.hpp" />
     <ClInclude Include="classes\TMS_Camera.hpp" />
     <ClInclude Include="classes\TMS_Clock.hpp" />
-    <ClInclude Include="classes\TMS_Event.hpp" />
+    <ClInclude Include="classes\TMS_EventData.hpp" />
     <ClInclude Include="classes\TMS_EventDispatcher.hpp" />
     <ClInclude Include="classes\TMS_Game.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />

@@ -24,9 +24,8 @@ bool TMS_Item::checkCollision(const int x, const int y) const
     return false;
 }
 
-std::optional<TMS_Action> TMS_Item::handleEvent(const SDL_Event& event)
+void TMS_Item::handleEvent(const SDL_Event& event)
 {
-    return std::optional<TMS_Action>();
 }
 
 void TMS_Item::render()

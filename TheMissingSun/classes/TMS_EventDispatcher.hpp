@@ -1,10 +1,13 @@
 #ifndef TMS_EVENTDISPATCHER_HPP
 #define TMS_EVENTDISPATCHER_HPP
 
+#include <glm.hpp>
 #include <set>
 
 #include "../include/tms.hpp"
 #include "./Entities/TMS_Entity.hpp"
+#include "TMS_Action.hpp"
+#include "TMS_EventData.hpp"
 
 /* Class that dispatches incoming events to the appropriate entities. */
 class TMS_EventDispatcher
@@ -26,7 +29,8 @@ public:
     bool addEntity(const std::shared_ptr<TMS_Entity>& entity); // Add a single entity to the dispatcher.
     bool addEntities(const std::vector<std::shared_ptr<TMS_Entity>>& entities); // Add multiple entities to the dispatcher.
 
-    std::optional<TMS_Action> dispatchEvent(const SDL_Event& event, std::shared_ptr<TMS_Entity> selectedEntity);
+    std::optional<TMS_Action> dispatchEvent(const SDL_Event& event, const TMS_EventData& eventData,
+                                            const glm::ivec2 cameraPos);
 
     void removeEntity(std::shared_ptr<TMS_Entity>& entity); // Remove a specific entity from the dispatcher.
 

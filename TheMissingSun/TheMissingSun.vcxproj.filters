@@ -125,9 +125,6 @@
     <ClInclude Include="classes\TMS_EventDispatcher.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classes\TMS_Event.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classes\TMS_Game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -154,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="classes\Entities\TMS_Item.hpp">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\TMS_EventData.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

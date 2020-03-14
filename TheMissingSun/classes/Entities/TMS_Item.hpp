@@ -14,7 +14,7 @@ public:
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const int x, const int y) const override;
     /* Handle each event passed to this entity. */
-    std::optional<TMS_Action> handleEvent(const SDL_Event& event) override;
+    void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
     void render() override;
 

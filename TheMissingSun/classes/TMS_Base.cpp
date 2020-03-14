@@ -28,10 +28,14 @@ bool TMS_Base::init()
     /* Set core profile for OpenGL. */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
+    /* Get the resolution of the main display. */
+    SDL_DisplayMode dispMode;
+    SDL_GetCurrentDisplayMode(0, &dispMode);
+
     /* Create main window. */
     _window = tms::window_t
         (
-            SDL_CreateWindow(tms::GAME_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, tms::W_DEF_WIDTH, tms::W_DEF_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP),
+            SDL_CreateWindow(tms::GAME_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, dispMode.w, dispMode.h, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS),
             [](SDL_Window* win) {SDL_DestroyWindow(win); }
         );
     if (_window == nullptr)

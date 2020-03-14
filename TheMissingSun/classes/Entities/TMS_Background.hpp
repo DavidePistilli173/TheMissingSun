@@ -41,7 +41,7 @@ public:
     tms::Layer getLayer() const override;
     bool checkCollision(const int x, const int y) const override;
     std::vector<tms::EventType>& getRelevantEvents() override;
-    std::optional<TMS_Action> handleEvent(const SDL_Event& event) override;
+    void handleEvent(const SDL_Event& event) override;
     void render() override;
 
 private:

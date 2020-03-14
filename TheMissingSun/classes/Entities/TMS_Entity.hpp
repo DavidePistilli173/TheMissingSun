@@ -3,8 +3,6 @@
 
 #include <optional>
 
-#include "../TMS_Action.hpp"
-#include "../TMS_Event.hpp"
 #include "../TMS_Shader.hpp"
 #include "../TMS_Texture.hpp"
 
@@ -27,7 +25,7 @@ public:
     /* Entities are ordered base on their rendering layer. */
     bool operator> (const TMS_Entity& rightEntity)
     {
-        return rightEntity.getLayer() > this->getLayer();
+        return this->getLayer() > rightEntity.getLayer();
     }
 
     /* Getters. */
@@ -36,7 +34,7 @@ public:
     /* Check whether (x,y) is inside the current entity or not. */
     virtual bool checkCollision(const int x, const int y) const = 0;
     /* Handle each event passed to this entity. */
-    virtual std::optional<TMS_Action> handleEvent(const SDL_Event& event) = 0;
+    virtual void handleEvent(const SDL_Event& event) = 0;
     /* Render the object on screen. */
     virtual void render() = 0;
 

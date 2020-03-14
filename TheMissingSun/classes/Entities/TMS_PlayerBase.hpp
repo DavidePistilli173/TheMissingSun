@@ -1,6 +1,7 @@
 #ifndef TMS_PLAYERBASE_HPP
 #define TMS_PLAYERBASE_HPP
 
+#include "../TMS_Camera.hpp"
 #include "../TMS_EventDispatcher.hpp"
 #include "../TMS_ResourceContainer.hpp"
 #include "TMS_Building.hpp"
@@ -25,7 +26,7 @@ public:
 
     TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
                    const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders, 
-                   const TMS_ResourceContainer<TMS_Texture>& allTextures, unsigned int i = 0);
+                   const TMS_ResourceContainer<TMS_Texture>& allTextures, const TMS_Camera& camera, unsigned int i = 0);
 
     /***************** CONSTANTS *****************/
     /* Size of the building grid. */
@@ -44,7 +45,7 @@ public:
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const int x, const int y) const override;
     /* Handle each event passed to this entity. */
-    std::optional<TMS_Action> handleEvent(const SDL_Event& event) override;
+    void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
     void render() override;
 
@@ -60,6 +61,9 @@ private:
     tms::Rect _baseRect; // Rectangle for the whole base.
     int _buildingWidth, _buildingHeight;
     TMS_ResourceContainer<TMS_Building> _buildingTypes; // Container for all existing building types.
+    std::shared_ptr<TMS_Building> _selectedBuilding; // Currently selected building / building slot.
+    std::shared_ptr<TMS_Building> _highlightedBuilding; // Currently highlighted building / building slot.
+    const TMS_Camera& _camera; // Reference to the game camera, used to get the camera's coordinates.
 };
 
 #endif

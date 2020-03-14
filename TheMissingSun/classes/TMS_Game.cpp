@@ -87,7 +87,8 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
                                            requiredBaseTextures,
                                             baseRect,
                                            _shaders,
-                                           _textures)));
+                                           _textures,
+                                           _camera)));
     }
     catch (std::string e)
     {
@@ -120,10 +121,16 @@ tms::GameState TMS_Game::gameLoop(tms::window_t& window)
     glm::mat4 visualMatrix = _orthoMat * viewMat * modelMat;
 
     /* Set initial shader uniforms. */
+    /* Plain shader. */
     auto shader = _shaders.get(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]);
     shader->use();
     shader->setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(visualMatrix));
     shader->setUniform(static_cast<int>(tms::shader::Plain::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
+    /* Highlight shader. */
+    shader = _shaders.get(tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]);
+    shader->use();
+    shader->setUniform(static_cast<int>(tms::shader::Highlight::CAMERA_MATRIX), glm::value_ptr(_orthoMat * _camera.getView()));
+    shader->setUniform(static_cast<int>(tms::shader::Highlight::TEXTURE), static_cast<int>(tms::texture::Layer::LAYER_0));
 
     _clock.startClock();
     while (true)
@@ -169,7 +176,7 @@ tms::GameState TMS_Game::handleEvents()
             break;
         default:
             /* Pass the event on to the event dispatcher. */
-            _eventDispatcher.dispatchEvent(event, nullptr);
+            _eventDispatcher.dispatchEvent(event, TMS_EventData(), _camera.getPosition());
             break;
         }
     }
@@ -227,5 +234,9 @@ void TMS_Game::_moveCamera(const Uint8* currentKeyState)
         auto shader = _shaders.get(tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]);
         shader->use();
         shader->setUniform(static_cast<int>(tms::shader::Plain::CAMERA_MATRIX), glm::value_ptr(_orthoMat * _camera.getView()));
+
+        shader = _shaders.get(tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]);
+        shader->use();
+        shader->setUniform(static_cast<int>(tms::shader::Highlight::CAMERA_MATRIX), glm::value_ptr(_orthoMat * _camera.getView()));
     }
 }

@@ -16,11 +16,12 @@ const std::string TMS_PlayerBase::REQUIRED_TEXTURES[] =
 
 TMS_PlayerBase::TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
                                const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders,
-                               const TMS_ResourceContainer<TMS_Texture>& allTextures, unsigned int i) :
+                               const TMS_ResourceContainer<TMS_Texture>& allTextures, const TMS_Camera& camera, unsigned int i) :
     TMS_Entity(shaders, textures, i),
     _baseRect(baseRect),
     _buildingWidth(baseRect.w / COLUMN_NUM),
-    _buildingHeight(baseRect.h / ROW_NUM)
+    _buildingHeight(baseRect.h / ROW_NUM),
+    _camera(camera)
 {
     if (_shaders.size() != static_cast<int>(Shader::TOT)) throw std::string("Wrong number of shaders for player base initialisation.\n");
     if (_textures.size() != static_cast<int>(Texture::TOT)) throw std::string("Wrong number of textures for player base initialisation.\n");
@@ -45,9 +46,47 @@ bool TMS_PlayerBase::checkCollision(const int x, const int y) const
         y >= _baseRect.y && y <= _baseRect.y + _baseRect.h) return true;
 }
 
-std::optional<TMS_Action> TMS_PlayerBase::handleEvent(const SDL_Event& event)
+void TMS_PlayerBase::handleEvent(const SDL_Event& event)
 {
-    return std::optional<TMS_Action>();
+    /* Deliver the event to the relevant entity. */
+    TMS_EventData eventData;
+    eventData.selectedEntity = _selectedBuilding;
+    eventData.highlightedEntity = _highlightedBuilding;
+    std::optional<TMS_Action> action = _eventDispatcher.dispatchEvent(event, eventData, _camera.getPosition());
+
+    /* Perform any required action. */
+    if (action.has_value())
+    {
+        switch (action.value().action)
+        {
+        /* Select a building. */
+        case TMS_Action::ActionType::SELECT:
+            if (_selectedBuilding != nullptr)
+            {
+                if (_selectedBuilding != action.value().entity1) _selectedBuilding->nSelect();
+            }
+            _selectedBuilding = std::static_pointer_cast<TMS_Building>(action.value().entity1);
+            break;
+        /* Deselect the currently selected building. */
+        case TMS_Action::ActionType::N_SELECT:
+            if (_selectedBuilding != nullptr) _selectedBuilding->nSelect();
+            _selectedBuilding = nullptr;
+            break;
+        /* Highlight a building. */
+        case TMS_Action::ActionType::HIGHLIGHT:
+            if (_highlightedBuilding != nullptr)
+            {
+                if (_highlightedBuilding != action.value().entity1) _highlightedBuilding->nHighlight();
+            }
+            _highlightedBuilding = std::static_pointer_cast<TMS_Building>(action.value().entity1);
+            break;
+        /* Remove highlighting from the currently highlighted building. */
+        case TMS_Action::ActionType::N_HIGHLIGHT:
+            if (_highlightedBuilding != nullptr) _highlightedBuilding->nHighlight();
+            _highlightedBuilding = nullptr;
+            break;
+        }
+    }
 }
 
 void TMS_PlayerBase::render()

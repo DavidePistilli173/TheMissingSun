@@ -19,6 +19,11 @@ glm::mat4 TMS_Camera::getView()
     return _lookAtMat;
 }
 
+glm::ivec2 TMS_Camera::getPosition() const
+{
+    return glm::ivec2(static_cast<int>(_cameraPos.x), static_cast<int>(_cameraPos.y));
+}
+
 void TMS_Camera::setBoundaries(const tms::Rect limits, const int winW, const int winH)
 {
     /* Set horizontal and vertical limits. */

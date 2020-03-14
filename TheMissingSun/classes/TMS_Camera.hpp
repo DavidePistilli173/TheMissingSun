@@ -27,6 +27,7 @@ public:
 
     /***************** METHODS *****************/
     glm::mat4 getView(); // Return the view matrix.
+    glm::ivec2 getPosition() const; // Return a 2D vector with the camera's position converted to int.
     void setBoundaries(const tms::Rect limits, const int winW, const int winH); // Set the coordinate limits for camera movement.
     void move(Direction dir);
 

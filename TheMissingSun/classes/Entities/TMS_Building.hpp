@@ -45,7 +45,7 @@ public:
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const int x, const int y) const override;
     /* Handle each event passed to this entity. */
-    std::optional<TMS_Action> handleEvent(const SDL_Event& event) override;
+    void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
     void render() override;
 
@@ -64,6 +64,10 @@ public:
     bool addStorage(const TMS_Item& item, const int maxCapacity);
     void addTexture(const std::shared_ptr<TMS_Texture>& texture);
 
+    /* Building selection and highlighting. */
+    void nSelect(); // Deselect the building.
+    void nHighlight(); // Remove highlighting from the building.
+
 private:
     /***************** VARIABLES *****************/
     std::string _name; // Name of the building.
@@ -75,6 +79,7 @@ private:
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
     tms::Rect _span; // Building rectangle.
     unsigned int _VAO, _VBO, _EBO; // OpenGL buffers.
+    bool _selected; // True if the building is selected.
     bool _highlighted; // True if the building is highlighted (eg. by the mouse cursor).
     int _currenTexture; // Index of the current texture.
     TMS_Clock _clock; // Clock used for building animations.
