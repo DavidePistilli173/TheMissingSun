@@ -84,6 +84,12 @@
     <ClCompile Include="classes\Entities\TMS_Item.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_UIList.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_UIElement.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -154,6 +160,12 @@
     </ClInclude>
     <ClInclude Include="classes\TMS_EventData.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_UIList.hpp">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\TMS_UIElement.hpp">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

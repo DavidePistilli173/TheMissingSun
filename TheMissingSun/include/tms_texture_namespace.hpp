@@ -38,6 +38,10 @@ namespace tms::texture
         UNDERGROUND,
         BUILD_DEFAULT,
         ITEM_DEFAULT,
+        UI_LIST_BACKGROUND,
+        UI_ELEMENT,
+        UI_SCROLL_BACKGROUND,
+        UI_SCROLL_BAR,
         TOT
     };
     /* List of texture names. */
@@ -48,7 +52,11 @@ namespace tms::texture
         "surface",
         "underground",
         "build_default",
-        "item_default"
+        "item_default",
+        "ui_lst_bckgrnd",
+        "ui_elm",
+        "ui_scrll_bckgrnd",
+        "ui_scrll_bar"
     };
 }
 

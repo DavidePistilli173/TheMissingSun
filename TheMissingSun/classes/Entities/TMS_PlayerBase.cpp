@@ -44,6 +44,7 @@ bool TMS_PlayerBase::checkCollision(const int x, const int y) const
 {
     if (x >= _baseRect.x && x <= _baseRect.x + _baseRect.w &&
         y >= _baseRect.y && y <= _baseRect.y + _baseRect.h) return true;
+    return false;
 }
 
 void TMS_PlayerBase::handleEvent(const SDL_Event& event)

@@ -67,11 +67,11 @@ TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders
 
 TMS_Background::~TMS_Background()
 {
-    glDeleteBuffers(1, &_skyVAO);
+    glDeleteVertexArrays(1, &_skyVAO);
     glDeleteBuffers(1, &_skyVBO);
-    glDeleteBuffers(1, &_surfaceVAO);
+    glDeleteVertexArrays(1, &_surfaceVAO);
     glDeleteBuffers(1, &_surfaceVBO);
-    glDeleteBuffers(1, &_undergroundVAO);
+    glDeleteVertexArrays(1, &_undergroundVAO);
     glDeleteBuffers(1, &_undergroundVBO);
     glDeleteBuffers(1, &_EBO);
 }
