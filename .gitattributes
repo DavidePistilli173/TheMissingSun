@@ -2,8 +2,8 @@
 * text=auto
 
 # Remove language detection from external dependencies.
-./include/glad/* linguist-vendored
-./include/KHR/* linguist-vendored
-./tinyxml2.h linguist-vendored
-./src/glad.c linguist-vendored
-./src/tinyxml2 linguist-vendored
+TheMissingSun/include/glad/* linguist-vendored
+TheMissingSun/include/KHR/* linguist-vendored
+TheMissingSun/tinyxml2.h linguist-vendored
+TheMissingSun/src/glad.c linguist-vendored
+TheMissingSun/src/tinyxml2 linguist-vendored
