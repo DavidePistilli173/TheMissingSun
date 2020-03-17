@@ -90,6 +90,9 @@
     <ClCompile Include="classes\Entities\TMS_UIElement.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="classes\TMS_GLVAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -166,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="classes\Entities\TMS_UIElement.hpp">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\TMS_GLBuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\TMS_GLVAO.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
