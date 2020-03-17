@@ -32,7 +32,7 @@ public:
     virtual tms::Layer getLayer() const = 0; // Return the entities' depth layer.
     virtual std::vector<tms::EventType>& getRelevantEvents() = 0; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
-    virtual bool checkCollision(const int x, const int y) const = 0;
+    virtual bool checkCollision(const float x, const float y) const = 0;
     /* Handle each event passed to this entity. */
     virtual void handleEvent(const SDL_Event& event) = 0;
     /* Render the object on screen. */

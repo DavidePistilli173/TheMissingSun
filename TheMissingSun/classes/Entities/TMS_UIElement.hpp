@@ -12,7 +12,7 @@ public:
                   std::shared_ptr<T> element) :
         TMS_Entity(shaders, textures),
         _element(*element),
-        _span({ 0,0,0,0 })
+        _span({ 0.0f,0.0f,0.0f,0.0f })
     {}
     ~TMS_UIElement()
     {
@@ -26,23 +26,23 @@ public:
     }
 
     /***************** METHODS *****************/
-    void setPosition(const int x, const int y)
+    void setPosition(const float x, const float y)
     {
 
     }
-    void setSize(const int w, const int h)
+    void setSize(const float w, const float h)
     {
         _span.w = w;
         _span.h = h;
     }
-    void setSpan(const tms::Rect span)
+    void setSpan(const tms::Rect<float> span)
     {
         _span = span;
     }
 
 private:
     T _element; // Data to be displayed.
-    tms::Rect _span;
+    tms::Rect<float> _span;
     /* OpenGL buffers. */
     unsigned int _EBO;
     unsigned int _elementVAO, _elementVBO; // Buffers for the whole element.

@@ -9,7 +9,8 @@
 class TMS_Quad
 {
 public:
-    TMS_Quad(const tms::Rect rect, const tms::Layer layer, const GLenum usage = GL_STATIC_DRAW);
+    TMS_Quad(const tms::Rect<float> coords, const tms::Layer layer,
+             const GLenum usage = GL_STATIC_DRAW, const tms::Rect<float> texCoords = {0.0f, 0.0f, 1.0f, 1.0f});
 
     /***************** CONSTANTS *****************/
     static constexpr int VBO_COORD_COMPS = 3; // Number of coordinate components for each vertex.
@@ -19,13 +20,16 @@ public:
     static constexpr int VBO_SIZE = (VBO_COORD_COMPS + VBO_TEX_COMPS) * VERTEX_NUM; // Size of the VBO in elements.
 
     /***************** METHODS *****************/
-    void draw();
+    void draw(); // Draw the quad with the currently bound shader and texture.
 
 private:
+    /* OpenGL buffers. */
     TMS_GLBuffer<unsigned int> _ebo;
-    float _vboData[VBO_SIZE]; // Raw VBO data.
-    TMS_GLVAO _vao;
     TMS_GLBuffer<float> _vbo;
+    TMS_GLVAO _vao;
+
+    float _vboData[VBO_SIZE]; // Raw VBO data.
+
 };
 
 #endif

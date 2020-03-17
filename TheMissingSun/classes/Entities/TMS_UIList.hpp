@@ -30,7 +30,7 @@ public:
     TMS_UIList(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
                const TMS_Camera& camera) :
         TMS_Entity(shaders, textures),
-        _span({0,0,0,0})
+        _span({0.0f,0.0f,0.0f,0.0f})
     {
         /* Check that there is the right amount of shaders and textures. */
         if (_shaders.size() != static_cast<int>(Shader::TOT)) throw std::string("Wrong number of shaders for UIList.\n");
@@ -46,7 +46,7 @@ public:
 
     /***************** METHODS *****************/
     /* Check whether (x,y) is inside the current entity or not. */
-    bool checkCollision(const int x, const int y)
+    bool checkCollision(const float x, const float y)
     {
         if (x >= _span.x && x <= _span.x + _span.w &&
             y >= _span.y && y <= _span.y + _span.h) return true;
@@ -74,14 +74,14 @@ public:
 
     }
     /* Set position and size of the list. */
-    void setSpan(const tms::Rect span)
+    void setSpan(const tms::Rect<float> span)
     {
         _span = span;
     }
 
 private:
     std::vector<TMS_UIElement<T>> _contents; // Contents of the list.
-    tms::Rect _span; // Position and size of the list.
+    tms::Rect<float> _span; // Position and size of the list.
 };
 
 /* Definition of static variables. */

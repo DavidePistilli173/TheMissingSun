@@ -5,9 +5,9 @@ TMS_Button::TMS_Button() :
     label(""),
     vao(0), vbo(0), ebo(0),
     labelVAO(0), labelVBO(0),
-    _defaultBackRect({0,0,0,0}),
-    _currentBackRect({0,0,0,0}),
-    _labelRect({0,0,0,0}),
+    _defaultBackRect({0.0f,0.0f,0.0f,0.0f}),
+    _currentBackRect({0.0f,0.0f,0.0f,0.0f}),
+    _labelRect({0.0f,0.0f,0.0f,0.0f}),
     _labelColour({0,0,0,0}),
     _labelLenFraction(0)
 {
@@ -16,10 +16,10 @@ TMS_Button::TMS_Button() :
 
 TMS_Button::~TMS_Button()
 {
-    glDeleteBuffers(1, &vao);
+    glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
-    glDeleteBuffers(1, &labelVAO);
+    glDeleteVertexArrays(1, &labelVAO);
     glDeleteBuffers(1, &labelVBO);
 }
 
@@ -69,24 +69,24 @@ TMS_Button& TMS_Button::operator=(TMS_Button&& oldButton) noexcept
     return *this;
 }
 
-void TMS_Button::setDefaultX(const int x) { _defaultBackRect.x = x; }
+void TMS_Button::setDefaultX(const float x) { _defaultBackRect.x = x; }
 
-void TMS_Button::setDefaultY(const int y) { _defaultBackRect.y = y; }
+void TMS_Button::setDefaultY(const float y) { _defaultBackRect.y = y; }
 
-void TMS_Button::setDefaultW(const int w) { _defaultBackRect.w = w; }
+void TMS_Button::setDefaultW(const float w) { _defaultBackRect.w = w; }
 
-void TMS_Button::setDefaultH(const int h) { _defaultBackRect.h = h; }
+void TMS_Button::setDefaultH(const float h) { _defaultBackRect.h = h; }
 
-void TMS_Button::setX(const int x)
+void TMS_Button::setX(const float x)
 {
     _currentBackRect.x = x;
-    int horizontalMargin = static_cast<int>(HORIZONTAL_BORDER * _currentBackRect.w);
+    float horizontalMargin = HORIZONTAL_BORDER * _currentBackRect.w;
     _labelRect.x = x + horizontalMargin + _labelLenFraction * (_currentBackRect.w - horizontalMargin)/2;
 
     setRenderingBuffers();
 }
 
-void TMS_Button::setY(const int y)
+void TMS_Button::setY(const float y)
 {
     _currentBackRect.y = y;
     _labelRect.y = y + VERTICAL_BORDER * _currentBackRect.h;
@@ -94,16 +94,16 @@ void TMS_Button::setY(const int y)
     setRenderingBuffers();
 }
 
-void TMS_Button::setW(const int w)
+void TMS_Button::setW(const float w)
 {
     _currentBackRect.w = w;
-    int horizontalMargin = static_cast<int>(HORIZONTAL_BORDER * w);
+    float horizontalMargin = HORIZONTAL_BORDER * w;
     _labelRect.w = w - 2 * horizontalMargin - 2 * _labelLenFraction * (w - horizontalMargin)/2;
 
     setRenderingBuffers();
 }
 
-void TMS_Button::setH(const int h)
+void TMS_Button::setH(const float h)
 {
     _currentBackRect.h = h;
     _labelRect.h = h - 2 * VERTICAL_BORDER * h;
@@ -119,21 +119,21 @@ void TMS_Button::setColour(const int r, const int g, const int b, const int a)
     _labelColour.a = a;
 }
 
-int TMS_Button::getDefaultX() const { return _defaultBackRect.x; }
+float TMS_Button::getDefaultX() const { return _defaultBackRect.x; }
 
-int TMS_Button::getDefaultY() const { return _defaultBackRect.y; }
+float TMS_Button::getDefaultY() const { return _defaultBackRect.y; }
 
-int TMS_Button::getDefaultW() const { return _defaultBackRect.w; }
+float TMS_Button::getDefaultW() const { return _defaultBackRect.w; }
 
-int TMS_Button::getDefaultH() const { return _defaultBackRect.h; }
+float TMS_Button::getDefaultH() const { return _defaultBackRect.h; }
 
-int TMS_Button::getX() const { return _currentBackRect.x; }
+float TMS_Button::getX() const { return _currentBackRect.x; }
 
-int TMS_Button::getY() const { return _currentBackRect.y; }
+float TMS_Button::getY() const { return _currentBackRect.y; }
 
-int TMS_Button::getW() const { return _currentBackRect.w; }
+float TMS_Button::getW() const { return _currentBackRect.w; }
 
-int TMS_Button::getH() const { return _currentBackRect.h; }
+float TMS_Button::getH() const { return _currentBackRect.h; }
 
 SDL_Color TMS_Button::getColour()
 {
@@ -247,12 +247,12 @@ bool TMS_Button::setLabelTexture(tms::font_t& font)
         return false;
     }
 
-    _labelLenFraction = 1.0f - static_cast<float>(labelTexture.getW()) / MAX_TEXT_LEN;
+    _labelLenFraction = 1.0f - labelTexture.getW() / MAX_TEXT_LEN;
     
     return true;
 }
 
-bool TMS_Button::checkCollision(const int x, const int y) const
+bool TMS_Button::checkCollision(const float x, const float y) const
 {
     if (x < _currentBackRect.x || x > _currentBackRect.x + _currentBackRect.w) return false;
     if (y < _currentBackRect.y || y > _currentBackRect.y + _currentBackRect.h) return false;

@@ -23,7 +23,7 @@ TMS_Menu::TMS_Menu() :
 
 TMS_Menu::~TMS_Menu()
 {
-    glDeleteBuffers(1, &_backgroundVAO);
+    glDeleteVertexArrays(1, &_backgroundVAO);
     glDeleteBuffers(1, &_backgroundVBO);
     glDeleteBuffers(1, &_backgroundEBO);
 }
@@ -265,17 +265,17 @@ bool TMS_Menu::_loadLayout(const int windowWidth, const int windowHeight)
             /* Get button label. */
             button.label = buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_LABEL)->FirstChild()->Value();
             /* Get button dimensions. */
-            int width, height;
-            width = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth);
-            height = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_HEIGHT)->FirstChild()->Value()) * windowHeight);
+            float width, height;
+            width = std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_WIDTH)->FirstChild()->Value()) * windowWidth;
+            height = std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_HEIGHT)->FirstChild()->Value()) * windowHeight;
             button.setDefaultW(width);
             button.setW(width);
             button.setDefaultH(height);
             button.setH(height);
             /* Get button coordinates. */
-            int x, y;
-            x = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth);
-            y = static_cast<int>(std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight);
+            float x, y;
+            x = std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_X)->FirstChild()->Value()) * windowWidth;
+            y = std::atof(buttonElement->FirstChildElement(tms::CONFIG_MM_TAG_Y)->FirstChild()->Value()) * windowHeight;
             button.setDefaultX(x);
             button.setX(x);
             button.setDefaultY(y);

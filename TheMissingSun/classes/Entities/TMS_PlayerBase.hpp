@@ -25,7 +25,7 @@ public:
     };
 
     TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-                   const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders, 
+                   const tms::Rect<float> baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders, 
                    const TMS_ResourceContainer<TMS_Texture>& allTextures, const TMS_Camera& camera, unsigned int i = 0);
 
     /***************** CONSTANTS *****************/
@@ -43,7 +43,7 @@ public:
     tms::Layer getLayer() const override; // Return the entities' depth layer.
     std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
-    bool checkCollision(const int x, const int y) const override;
+    bool checkCollision(const float x, const float y) const override;
     /* Handle each event passed to this entity. */
     void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
@@ -58,8 +58,8 @@ private:
     /***************** VARIABLES *****************/
     TMS_EventDispatcher _eventDispatcher; // Event handler.
     std::shared_ptr<TMS_Building> _buildingGrid[ROW_NUM][COLUMN_NUM]; // Grid containing all possible building slots.
-    tms::Rect _baseRect; // Rectangle for the whole base.
-    int _buildingWidth, _buildingHeight;
+    tms::Rect<float> _baseRect; // Rectangle for the whole base.
+    float _buildingWidth, _buildingHeight;
     TMS_ResourceContainer<TMS_Building> _buildingTypes; // Container for all existing building types.
     std::shared_ptr<TMS_Building> _selectedBuilding; // Currently selected building / building slot.
     std::shared_ptr<TMS_Building> _highlightedBuilding; // Currently highlighted building / building slot.

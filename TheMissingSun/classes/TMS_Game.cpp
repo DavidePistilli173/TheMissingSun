@@ -49,16 +49,16 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
         requiredTextures.push_back((_textures.get(TMS_Background::REQUIRED_TEXTURES[i])));
     }
     
-    tms::Rect backgroundSpan = { -_windowWidth, 0, BASE_WIDTH * _windowWidth, BACKGROUND_HEIGHT * _windowHeight };
+    tms::Rect<float> backgroundSpan = { -_windowWidth, 0.0f, BASE_WIDTH * _windowWidth, BACKGROUND_HEIGHT * _windowHeight };
     try
     {
         _entities.push_back(std::make_shared<TMS_Background>(
                             TMS_Background(requiredShaders,
                                            requiredTextures,
-                                           _entities.size(),
                                            backgroundSpan,
                                            _windowWidth,
-                                           _windowHeight)));
+                                           _windowHeight,
+                                           _entities.size())));
     }
     catch (std::string e)
     {
@@ -80,8 +80,8 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
 
     try
     {
-        int baseHeight = static_cast<int>(BASE_HEIGHT * _windowHeight);
-        tms::Rect baseRect = { -_windowWidth, backgroundSpan.h - baseHeight, BASE_WIDTH * _windowWidth, baseHeight };
+        float baseHeight = BASE_HEIGHT * _windowHeight;
+        tms::Rect<float> baseRect = { -_windowWidth, backgroundSpan.h - baseHeight, BASE_WIDTH * _windowWidth, baseHeight };
         _entities.push_back(std::make_shared<TMS_PlayerBase>(
                             TMS_PlayerBase(requiredBaseShaders,
                                            requiredBaseTextures,

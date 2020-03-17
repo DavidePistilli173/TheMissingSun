@@ -12,7 +12,7 @@ TMS_Building::TMS_Building() :
     TMS_Entity(),
     _name(""),
     _buildTime(0),
-    _span({0,0,0,0}),
+    _span({0.0f,0.0f,0.0f,0.0f}),
     _selected(false),
     _highlighted(false),
     _currenTexture(0),
@@ -55,7 +55,7 @@ TMS_Building::TMS_Building() :
 
 TMS_Building::~TMS_Building()
 {
-    glDeleteBuffers(1, &_VAO);
+    glDeleteVertexArrays(1, &_VAO);
     glDeleteBuffers(1, &_VBO);
     glDeleteBuffers(1, &_EBO);
 }
@@ -242,7 +242,7 @@ std::vector<tms::EventType>& TMS_Building::getRelevantEvents()
     return _relevantEvents;
 }
 
-bool TMS_Building::checkCollision(const int x, const int y) const
+bool TMS_Building::checkCollision(const float x, const float y) const
 {
     if (x >= _span.x && x <= _span.x + _span.w &&
         y >= _span.y && y <= _span.y + _span.h) return true;
@@ -292,7 +292,7 @@ void TMS_Building::setName(const std::string& name)
     _name = name;
 }
 
-void TMS_Building::setSpan(const tms::Rect& span)
+void TMS_Building::setSpan(const tms::Rect<float>& span)
 {
     /* Update the building's span. */
     _span = span;
@@ -300,14 +300,14 @@ void TMS_Building::setSpan(const tms::Rect& span)
     /* Update the building's VBO. */
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 
-    float maxX = static_cast<float>(_span.x + _span.w);
-    float maxY = static_cast<float>(_span.y + _span.h);
+    float maxX = _span.x + _span.w;
+    float maxY = _span.y + _span.h;
     float vboData[] =
     {
-        static_cast<float>(_span.x), static_cast<float>(_span.y), static_cast<float>(tms::default_layer()), 0.0f, 0.0f, // Top left corner.
-        maxX,                        static_cast<float>(_span.y), static_cast<float>(tms::default_layer()), 1.0f, 0.0f, // Top right corner.
-        maxX,                        maxY,                        static_cast<float>(tms::default_layer()), 1.0f, 1.0f, // Bottom right corner.
-        static_cast<float>(_span.x), maxY,                        static_cast<float>(tms::default_layer()), 0.0f, 1.0f // Bottom left corner.
+        _span.x, _span.y, static_cast<float>(tms::default_layer()), 0.0f, 0.0f, // Top left corner.
+        maxX,    _span.y, static_cast<float>(tms::default_layer()), 1.0f, 0.0f, // Top right corner.
+        maxX,    maxY,    static_cast<float>(tms::default_layer()), 1.0f, 1.0f, // Bottom right corner.
+        _span.x, maxY,    static_cast<float>(tms::default_layer()), 0.0f, 1.0f // Bottom left corner.
     };
     //glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vboData), vboData);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vboData), vboData, GL_STATIC_DRAW);

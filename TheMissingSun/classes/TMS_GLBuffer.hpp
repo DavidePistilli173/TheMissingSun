@@ -9,7 +9,7 @@ class TMS_GLBuffer
 {
 public:
     TMS_GLBuffer(const GLenum target, const GLenum usage = GL_STATIC_DRAW);
-    TMS_GLBuffer(const GLenum target, const T data[], const GLenum usage = GL_STATIC_DRAW);
+    TMS_GLBuffer(const GLenum target, const T data[], const size_t elemNum, const GLenum usage = GL_STATIC_DRAW);
     ~TMS_GLBuffer();
     TMS_GLBuffer(const TMS_GLBuffer& otherBuffer) = delete;
     TMS_GLBuffer& operator= (const TMS_GLBuffer& otherBuffer) = delete;
@@ -18,7 +18,7 @@ public:
 
     /***************** METHODS *****************/
     void bind() const; // Bind the buffer to the stored target.
-    void setData(const T data[]); // Set the buffer's data.
+    void setData(const T data[], const size_t elemNum); // Set the buffer's data.
     void setTarget(const GLenum target); // Set the binding target.
 
 private:
@@ -39,11 +39,11 @@ inline TMS_GLBuffer<T>::TMS_GLBuffer(const GLenum target, const GLenum usage) :
 }
 
 template <typename T>
-inline TMS_GLBuffer<T>::TMS_GLBuffer(const GLenum target, const T data[], const GLenum usage) :
+inline TMS_GLBuffer<T>::TMS_GLBuffer(const GLenum target, const T data[], const size_t elemNum, const GLenum usage) :
     _target(target),
     _usage(usage)
 {
-    _size = sizeof(data); // Store the size of the data,
+    _size = elemNum * sizeof(T); // Store the size of the data,
     /* Generate the buffer and store the data. */
     glGenBuffers(1, &_id);
     glBindBuffer(_target, _id);
@@ -90,16 +90,17 @@ inline void TMS_GLBuffer<T>::bind() const
 }
 
 template <typename T>
-inline void TMS_GLBuffer<T>::setData(const T data[])
+inline void TMS_GLBuffer<T>::setData(const T data[], const size_t elemNum)
 {
     glBindBuffer(_target, _id);
     /* Store the new data. Reallocate the buffer if necessary. */
-    if (sizeof(data) > _size)
+    size_t dataSize = elemNum * sizeof(T);
+    if (dataSize > _size)
     {
-        _size = sizeof(data);
+        _size = dataSize;
         glBufferData(_target, _size, data, _usage);
     }
-    else glBufferSubData(_target, 0, sizeof(data), data);
+    else glBufferSubData(_target, 0, dataSize, data);
 
     glBindBuffer(_target, 0);
 }

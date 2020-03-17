@@ -15,7 +15,7 @@ const std::string TMS_PlayerBase::REQUIRED_TEXTURES[] =
 };
 
 TMS_PlayerBase::TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
-                               const tms::Rect baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders,
+                               const tms::Rect<float> baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders,
                                const TMS_ResourceContainer<TMS_Texture>& allTextures, const TMS_Camera& camera, unsigned int i) :
     TMS_Entity(shaders, textures, i),
     _baseRect(baseRect),
@@ -40,7 +40,7 @@ std::vector<tms::EventType>& TMS_PlayerBase::getRelevantEvents()
     return _relevantEvents;
 }
 
-bool TMS_PlayerBase::checkCollision(const int x, const int y) const
+bool TMS_PlayerBase::checkCollision(const float x, const float y) const
 {
     if (x >= _baseRect.x && x <= _baseRect.x + _baseRect.w &&
         y >= _baseRect.y && y <= _baseRect.y + _baseRect.h) return true;

@@ -12,7 +12,7 @@ public:
     tms::Layer getLayer() const override; // Return the entities' depth layer.
     std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
-    bool checkCollision(const int x, const int y) const override;
+    bool checkCollision(const float x, const float y) const override;
     /* Handle each event passed to this entity. */
     void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
@@ -26,13 +26,13 @@ public:
     void setName(const std::string& name);
     void setTexture(const std::shared_ptr<TMS_Texture>& texture); // Set the item's texture.
     bool setAmount(const int amount); // Change the number of items.
-    void setRect(const tms::Rect span); // Set the item's position.
+    void setRect(const tms::Rect<float> span); // Set the item's position.
 
 private:
     /***************** VARIABLES *****************/
     std::string _name; // Item name.
     int _amount; // Number of items in this stack.
-    tms::Rect _span; // Item rectangle.
+    tms::Rect<float> _span; // Item rectangle.
 };
 
 #endif

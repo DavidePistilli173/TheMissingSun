@@ -43,7 +43,7 @@ public:
     tms::Layer getLayer() const override; // Return the entities' depth layer.
     std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
-    bool checkCollision(const int x, const int y) const override;
+    bool checkCollision(const float x, const float y) const override;
     /* Handle each event passed to this entity. */
     void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
@@ -54,7 +54,7 @@ public:
 
     /* Setters. */
     void setName(const std::string& name);
-    void setSpan(const tms::Rect& span);
+    void setSpan(const tms::Rect<float>& span);
     bool setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders);
     bool setBuildTime(const int buildTime);
     void addBuildCost(const TMS_Item& item);
@@ -77,7 +77,7 @@ private:
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _continuousProduction; // Continuous production of items with their costs.
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _oneTimeProduction; // One-Time production of items with their costs.
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
-    tms::Rect _span; // Building rectangle.
+    tms::Rect<float> _span; // Building rectangle.
     unsigned int _VAO, _VBO, _EBO; // OpenGL buffers.
     bool _selected; // True if the building is selected.
     bool _highlighted; // True if the building is highlighted (eg. by the mouse cursor).

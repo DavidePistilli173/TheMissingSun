@@ -21,7 +21,7 @@ public:
     static constexpr float HORIZONTAL_BORDER = 0.12f;
     static constexpr float VERTICAL_BORDER = 0.2f;
     /* Maximum length of the button's label. */
-    static constexpr int MAX_TEXT_LEN = 1000;
+    static constexpr float MAX_TEXT_LEN = 1000;
     /* Number of bytes required for a single vertex. */
     static constexpr int STRIDE_SIZE = 5 * sizeof(float);
     /* EBO data for all buttons. */
@@ -33,25 +33,25 @@ public:
 
     /**************** METHODS ****************/
     /* Setters. */
-    void setDefaultX(const int x);
-    void setDefaultY(const int y);
-    void setDefaultW(const int w);
-    void setDefaultH(const int h);
+    void setDefaultX(const float x);
+    void setDefaultY(const float y);
+    void setDefaultW(const float w);
+    void setDefaultH(const float h);
     /* When moving and resizing the button, keep the label centered.*/
-    void setX(const int x);
-    void setY(const int y);
-    void setW(const int w);
-    void setH(const int h);
+    void setX(const float x);
+    void setY(const float y);
+    void setW(const float w);
+    void setH(const float h);
     void setColour(const int r, const int g, const int b, const int a);
     /* Getters. */
-    int getDefaultX() const;
-    int getDefaultY() const;
-    int getDefaultW() const;
-    int getDefaultH() const;
-    int getX() const;
-    int getY() const;
-    int getW() const;
-    int getH() const;
+    float getDefaultX() const;
+    float getDefaultY() const;
+    float getDefaultW() const;
+    float getDefaultH() const;
+    float getX() const;
+    float getY() const;
+    float getW() const;
+    float getH() const;
     SDL_Color getColour();
 
     /* Reset the button position to the default value. */
@@ -62,7 +62,7 @@ public:
     bool setLabelTexture(tms::font_t& font);
 
     /* Check whether x and y fall inside the button. */
-    bool checkCollision(const int x, const int y) const;
+    bool checkCollision(const float x, const float y) const;
 
 
     /**************** VARIABLES ****************/
@@ -72,10 +72,10 @@ public:
     TMS_Texture labelTexture; // Texture generated from the button's label.
 
 private:
-    tms::Rect _defaultBackRect; // Default button rectangle.
-    tms::Rect _currentBackRect; // Current button rectangle.
+    tms::Rect<float> _defaultBackRect; // Default button rectangle.
+    tms::Rect<float> _currentBackRect; // Current button rectangle.
 
-    tms::Rect _labelRect; // Rectangle for the button's label.
+    tms::Rect<float> _labelRect; // Rectangle for the button's label.
     SDL_Color _labelColour; // Colour information for the button's label.
     float _labelLenFraction; // Label texture length over max label length.
 };

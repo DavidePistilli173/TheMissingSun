@@ -3,7 +3,7 @@
 TMS_Item::TMS_Item() :
     TMS_Entity(),
     _amount(0),
-    _span({0,0,0,0})
+    _span({0.0f,0.0f,0.0f,0.0f})
 {
 }
 
@@ -17,7 +17,7 @@ std::vector<tms::EventType>& TMS_Item::getRelevantEvents()
     return _relevantEvents;
 }
 
-bool TMS_Item::checkCollision(const int x, const int y) const
+bool TMS_Item::checkCollision(const float x, const float y) const
 {
     if (x >= _span.x && x <= _span.x + _span.w &&
         y >= _span.y && y <= _span.y + _span.h) return true;
@@ -61,7 +61,7 @@ bool TMS_Item::setAmount(const int amount)
     return true;
 }
 
-void TMS_Item::setRect(const tms::Rect span)
+void TMS_Item::setRect(const tms::Rect<float> span)
 {
     _span = span;
 }

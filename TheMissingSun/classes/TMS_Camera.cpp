@@ -8,8 +8,8 @@ TMS_Camera::TMS_Camera() :
     _cameraPos(tms::DEFAULT_CAMERA_POSITION),
     _cameraTarget(tms::DEFAULT_CAMERA_TARGET),
     _cameraUp(tms::DEFAULT_CAMERA_UP),
-    _minX(0), _maxX(0), _minY(0), _maxY(0),
-    _speedX(0), _speedY(0)
+    _minX(0.0f), _maxX(0.0f), _minY(0.0f), _maxY(0.0f),
+    _speedX(0.0f), _speedY(0.0f)
 {
     _lookAtMat = glm::lookAt(_cameraPos, _cameraTarget, _cameraUp);
 }
@@ -19,12 +19,12 @@ glm::mat4 TMS_Camera::getView()
     return _lookAtMat;
 }
 
-glm::ivec2 TMS_Camera::getPosition() const
+glm::fvec2 TMS_Camera::getPosition() const
 {
-    return glm::ivec2(static_cast<int>(_cameraPos.x), static_cast<int>(_cameraPos.y));
+    return glm::fvec2(_cameraPos.x, _cameraPos.y);
 }
 
-void TMS_Camera::setBoundaries(const tms::Rect limits, const int winW, const int winH)
+void TMS_Camera::setBoundaries(const tms::Rect<float> limits, const int winW, const int winH)
 {
     /* Set horizontal and vertical limits. */
     _minX = limits.minX;
