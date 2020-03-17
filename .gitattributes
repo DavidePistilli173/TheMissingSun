@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Remove language detection from external dependencies.
+./include/glad/* -linguist-vendored
+./include/KHR/* -linguist-vendored
+./tinyxml2.h -linguist-vendored
+./src/glad.c -linguist-vendored
+./src/tinyxml2 -linguist-vendored
