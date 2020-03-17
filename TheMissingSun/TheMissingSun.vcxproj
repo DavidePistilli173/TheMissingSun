@@ -144,6 +144,7 @@
     <ClCompile Include="classes\TMS_GLVAO.cpp" />
     <ClCompile Include="classes\TMS_Menu.cpp" />
     <ClCompile Include="classes\TMS_MenuPage.cpp" />
+    <ClCompile Include="classes\TMS_Quad.cpp" />
     <ClCompile Include="classes\TMS_ResourceContainer.cpp" />
     <ClCompile Include="classes\TMS_Shader.cpp" />
     <ClCompile Include="classes\TMS_Texture.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="classes\TMS_GLVAO.hpp" />
     <ClInclude Include="classes\TMS_Menu.hpp" />
     <ClInclude Include="classes\TMS_MenuPage.hpp" />
+    <ClInclude Include="classes\TMS_Quad.hpp" />
     <ClInclude Include="classes\TMS_ResourceContainer.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
