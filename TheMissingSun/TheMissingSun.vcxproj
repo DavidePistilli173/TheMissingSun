@@ -147,6 +147,7 @@
     <ClCompile Include="classes\TMS_Quad.cpp" />
     <ClCompile Include="classes\TMS_ResourceContainer.cpp" />
     <ClCompile Include="classes\TMS_Shader.cpp" />
+    <ClCompile Include="classes\TMS_Sprite.cpp" />
     <ClCompile Include="classes\TMS_Texture.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\tinyxml2.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="classes\TMS_Quad.hpp" />
     <ClInclude Include="classes\TMS_ResourceContainer.hpp" />
     <ClInclude Include="classes\TMS_Shader.hpp" />
+    <ClInclude Include="classes\TMS_Sprite.hpp" />
     <ClInclude Include="classes\TMS_Texture.hpp" />
     <ClInclude Include="include\tms_building_namespace.hpp" />
     <ClInclude Include="include\tms_shader_namespace.hpp" />

@@ -9,8 +9,9 @@
 class TMS_Quad
 {
 public:
+    TMS_Quad(const GLenum usage = GL_STATIC_DRAW);
     TMS_Quad(const tms::Rect<float> coords, const tms::Layer layer,
-             const GLenum usage = GL_STATIC_DRAW, const tms::Rect<float> texCoords = {0.0f, 0.0f, 1.0f, 1.0f});
+             const GLenum usage = GL_STATIC_DRAW, const tms::Rect<float> texCoords = tms::DEFAULT_TEX_COORDS);
 
     /***************** CONSTANTS *****************/
     static constexpr int VBO_COORD_COMPS = 3; // Number of coordinate components for each vertex.
@@ -21,7 +22,9 @@ public:
 
     /***************** METHODS *****************/
     void draw(); // Draw the quad with the currently bound shader and texture.
-    void move(const tms::Rect<float> coords); // Move the quad. 
+    void move(const float x, const float y); // Move the quad.
+    void resize(const tms::Rect<float> coords); // Resize the quad.
+    void set(const tms::Rect<float> coords, tms::Layer layer, const tms::Rect<float> texCoords); // Set all the quad's data.
 
 private:
     /***************** VARIABLES *****************/

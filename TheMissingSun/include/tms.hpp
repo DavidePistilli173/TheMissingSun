@@ -48,6 +48,7 @@ namespace tms
         0,1,2,
         2,3,0
     };
+    constexpr Rect<float> DEFAULT_TEX_COORDS = { 0.0f, 0.0f, 1.0f, 1.0f };
 
     /* Colours. */
     /* Default colour. */
@@ -167,7 +168,7 @@ namespace tms
         /* Upper left corner and dimensions. */
         struct
         {
-            T x, y; // x and y coordinates.
+            T x, y; // x and y coordinates of the top-left corner.
             T w, h; // Width and height respectively.
         };
         /* Vertical and horizontal limits. */

@@ -144,7 +144,7 @@ void TMS_Building::setSpan(const tms::Rect<float>& span)
 {
     /* Update the building's span. */
     _span = span;
-    _drawQuad.move(span);
+    _drawQuad.resize(span);
 }
 
 bool TMS_Building::setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders)
