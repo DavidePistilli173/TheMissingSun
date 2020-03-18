@@ -17,6 +17,29 @@ namespace tms
     using surface_t = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>; // SDL_Surface image.
     using font_t = std::unique_ptr<TTF_Font, void(*)(TTF_Font*)>; // SDL true type font.
 
+    /***************** STRUCTS *****************/
+    /* Data for a rectangle. */
+    template <typename T>
+    union Rect
+    {
+        constexpr Rect() {}
+        constexpr Rect(T a, T b, T c, T d) :
+            x(a), y(b), w(c), h(d) {}
+
+        /* Upper left corner and dimensions. */
+        struct
+        {
+            T x, y; // x and y coordinates of the top-left corner.
+            T w, h; // Width and height respectively.
+        };
+        /* Vertical and horizontal limits. */
+        struct
+        {
+            T minX, maxX; // Left and right limits of the rectangle.
+            T minY, maxY; // Upper and lower limits of the rectangle.
+        };
+    };
+
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
     constexpr char GAME_NAME[] = "The Missing Sun";
@@ -155,29 +178,6 @@ namespace tms
                                 GLsizei length,
                                 const GLchar* message,
                                 const void* userParam);
-
-    /***************** STRUCTS *****************/
-    /* Data for a rectangle. */
-    template <typename T>
-    union Rect
-    {
-        constexpr Rect() {}
-        constexpr Rect(T a, T b, T c, T d) :
-            x(a), y(b), w(c), h(d) {}
-
-        /* Upper left corner and dimensions. */
-        struct
-        {
-            T x, y; // x and y coordinates of the top-left corner.
-            T w, h; // Width and height respectively.
-        };
-        /* Vertical and horizontal limits. */
-        struct
-        {
-            T minX, maxX; // Left and right limits of the rectangle.
-            T minY, maxY; // Upper and lower limits of the rectangle.
-        };
-    };
 }
 
 #endif

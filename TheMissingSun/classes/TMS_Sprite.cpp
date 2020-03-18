@@ -1,7 +1,7 @@
 #include "../include/tms.hpp"
 #include "TMS_Sprite.hpp"
 
-TMS_Sprite::TMS_Sprite(const tms::Rect<float> span, const tms::Layer layer, const std::shared_ptr<TMS_Texture>& texture, 
+TMS_Sprite::TMS_Sprite(const tms::Rect<float> span, const tms::Layer layer, const TMS_Texture* texture, 
                        GLenum usage, TexMode texMode) :
     _span(span),
     _maxSpan(span),
@@ -32,7 +32,7 @@ void TMS_Sprite::setSpan(const tms::Rect<float> span)
     _quad.resize(_span);
 }
 
-bool TMS_Sprite::setTexture(const std::shared_ptr<TMS_Texture>& texture)
+bool TMS_Sprite::setTexture(const TMS_Texture* texture)
 {
     if (texture == nullptr) return false;
     _texture = texture;

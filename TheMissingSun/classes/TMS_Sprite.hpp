@@ -1,8 +1,6 @@
 #ifndef TMS_SPRITE_HPP
 #define TMS_SPRITE_HPP
 
-#include <memory>
-
 #include "../include/tms.hpp"
 #include "TMS_Texture.hpp"
 #include "TMS_Quad.hpp"
@@ -18,13 +16,13 @@ public:
         FILL // Fill the maximum span with the texture.
     };
 
-    TMS_Sprite(const tms::Rect<float> span, const tms::Layer layer, const std::shared_ptr<TMS_Texture>& texture,
+    TMS_Sprite(const tms::Rect<float> span, const tms::Layer layer, const TMS_Texture* texture,
                GLenum usage = GL_STATIC_DRAW, TexMode texMode = TexMode::FIT);
 
     /***************** METHODS *****************/
     void setPosition(const float x, const float y); // Change the sprite's coordinates.
     void setSpan(const tms::Rect<float> span); // Change both position and size of the sprite.
-    bool setTexture(const std::shared_ptr<TMS_Texture>& texture); // Change the sprite's texture.
+    bool setTexture(const TMS_Texture* texture); // Change the sprite's texture.
 
 private:
     /***************** METHODS *****************/
@@ -33,7 +31,7 @@ private:
     /***************** VARIABLES *****************/
     tms::Rect<float> _span, _maxSpan; // Current and maximum shapes of the sprite.
     TexMode _texMode; // Current draw mode of the sprite.
-    std::shared_ptr<TMS_Texture> _texture;
+    const TMS_Texture* _texture;
     TMS_Quad _quad;
 };
 
