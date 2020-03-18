@@ -21,8 +21,10 @@ public:
 
     /***************** METHODS *****************/
     void draw(); // Draw the quad with the currently bound shader and texture.
+    void move(const tms::Rect<float> coords); // Move the quad. 
 
 private:
+    /***************** VARIABLES *****************/
     /* OpenGL buffers. */
     TMS_GLBuffer<unsigned int> _ebo;
     TMS_GLBuffer<float> _vbo;

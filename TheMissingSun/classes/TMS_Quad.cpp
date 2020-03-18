@@ -46,3 +46,25 @@ void TMS_Quad::draw()
     _vao.bind();
     glDrawElements(GL_TRIANGLES, EBO_ELEMS, GL_UNSIGNED_INT, 0);
 }
+
+void TMS_Quad::move(const tms::Rect<float> coords)
+{
+    float maxX = coords.x + coords.w;
+    float maxY = coords.y + coords.h;
+
+    /* Top left corner. */
+    _vboData[0] = coords.x;
+    _vboData[1] = coords.y;
+    /* Top right corner. */
+    _vboData[5] = maxX;
+    _vboData[6] = coords.y;
+    /* Bottom right corner. */
+    _vboData[10] = maxX;
+    _vboData[11] = maxY;
+    /* Bottom left corner. */
+    _vboData[15] = coords.x;
+    _vboData[16] = maxY;
+
+    /* Send the data to the buffer. */
+    _vbo.setData(_vboData, VBO_SIZE);
+}

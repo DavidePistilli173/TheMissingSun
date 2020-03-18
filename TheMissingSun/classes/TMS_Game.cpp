@@ -49,7 +49,10 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
         requiredTextures.push_back((_textures.get(TMS_Background::REQUIRED_TEXTURES[i])));
     }
     
-    tms::Rect<float> backgroundSpan = { -_windowWidth, 0.0f, BASE_WIDTH * _windowWidth, BACKGROUND_HEIGHT * _windowHeight };
+    tms::Rect<float> backgroundSpan = { static_cast<float>(-_windowWidth),
+                                        0.0f,
+                                        static_cast<float>(BASE_WIDTH * _windowWidth), 
+                                        static_cast<float>(BACKGROUND_HEIGHT * _windowHeight) };
     try
     {
         _entities.push_back(std::make_shared<TMS_Background>(
@@ -81,7 +84,10 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     try
     {
         float baseHeight = BASE_HEIGHT * _windowHeight;
-        tms::Rect<float> baseRect = { -_windowWidth, backgroundSpan.h - baseHeight, BASE_WIDTH * _windowWidth, baseHeight };
+        tms::Rect<float> baseRect = { static_cast<float>(-_windowWidth),
+                                      backgroundSpan.h - baseHeight, 
+                                      static_cast<float>(BASE_WIDTH * _windowWidth), 
+                                      baseHeight };
         _entities.push_back(std::make_shared<TMS_PlayerBase>(
                             TMS_PlayerBase(requiredBaseShaders,
                                            requiredBaseTextures,

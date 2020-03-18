@@ -13,8 +13,8 @@ public:
     ~TMS_GLBuffer();
     TMS_GLBuffer(const TMS_GLBuffer& otherBuffer) = delete;
     TMS_GLBuffer& operator= (const TMS_GLBuffer& otherBuffer) = delete;
-    TMS_GLBuffer(TMS_GLBuffer&& otherBuffer);
-    TMS_GLBuffer& operator= (TMS_GLBuffer&& otherBuffer);
+    TMS_GLBuffer(TMS_GLBuffer&& otherBuffer) noexcept;
+    TMS_GLBuffer& operator= (TMS_GLBuffer&& otherBuffer) noexcept;
 
     /***************** METHODS *****************/
     void bind() const; // Bind the buffer to the stored target.
@@ -58,7 +58,7 @@ inline TMS_GLBuffer<T>::~TMS_GLBuffer()
 }
 
 template <typename T>
-inline TMS_GLBuffer<T>::TMS_GLBuffer(TMS_GLBuffer&& otherBuffer) :
+inline TMS_GLBuffer<T>::TMS_GLBuffer(TMS_GLBuffer&& otherBuffer) noexcept :
     _size(otherBuffer._size),
     _target(otherBuffer._target),
     _usage(otherBuffer._usage)
@@ -68,9 +68,9 @@ inline TMS_GLBuffer<T>::TMS_GLBuffer(TMS_GLBuffer&& otherBuffer) :
 }
 
 template <typename T>
-inline TMS_GLBuffer<T>& TMS_GLBuffer<T>::operator=(TMS_GLBuffer&& otherBuffer)
+inline TMS_GLBuffer<T>& TMS_GLBuffer<T>::operator=(TMS_GLBuffer&& otherBuffer) noexcept
 {
-    if (otherBuffer != *this)
+    if (this != &otherBuffer)
     {
         glDeleteBuffers(1, &_id);
         _id = otherBuffer._id;

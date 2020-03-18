@@ -62,6 +62,7 @@ TMS_Texture& TMS_Texture::operator=(TMS_Texture&& oldTexture) noexcept
     if (&oldTexture != this)
     {
         /* Move texture id. */
+        glDeleteTextures(1, &_id);
         _id = oldTexture._id;
         oldTexture._id = 0;
 

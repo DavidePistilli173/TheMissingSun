@@ -31,7 +31,7 @@ bool TMS_EventDispatcher::addEntities(const std::vector<std::shared_ptr<TMS_Enti
 }
 
 std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& event, const TMS_EventData& eventData,
-                                                             const glm::ivec2 cameraPos)
+                                                             const glm::fvec2 cameraPos)
 {
     /* Convert the SDL event type into tms EventType and handle the event. */
     std::set<std::shared_ptr<TMS_Entity>>::iterator iterator;

@@ -138,9 +138,9 @@ namespace tms
         return static_cast<int>(Layer::MIN_LAYER) - static_cast<int>(layer);
     }
     /* Convert a float in range [0,1] to an int in range [0,255]. */
-    constexpr int to_SDL_colour(float colour)
+    constexpr Uint8 to_SDL_colour(float colour)
     {
-        return static_cast<int>(colour * 255);
+        return static_cast<Uint8>(colour * 255);
     }
 
     /***************** FUNCTIONS *****************/
@@ -160,6 +160,10 @@ namespace tms
     template <typename T>
     union Rect
     {
+        constexpr Rect() {}
+        constexpr Rect(T a, T b, T c, T d) :
+            x(a), y(b), w(c), h(d) {}
+
         /* Upper left corner and dimensions. */
         struct
         {

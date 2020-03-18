@@ -42,7 +42,7 @@ public:
     void setY(const float y);
     void setW(const float w);
     void setH(const float h);
-    void setColour(const int r, const int g, const int b, const int a);
+    void setColour(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a);
     /* Getters. */
     float getDefaultX() const;
     float getDefaultY() const;

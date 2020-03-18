@@ -2,6 +2,7 @@
 #define TMS_BUILDING_HPP
 
 #include "../TMS_Clock.hpp"
+#include "../TMS_Quad.hpp"
 #include "TMS_Entity.hpp"
 #include "TMS_Item.hpp"
 
@@ -28,11 +29,11 @@ public:
     };
 
     TMS_Building();
-    ~TMS_Building();
+    ~TMS_Building() = default;
     TMS_Building(const TMS_Building& oldBuilding);
     TMS_Building& operator= (const TMS_Building& oldBuilding);
-    TMS_Building(TMS_Building&& oldBuilding) noexcept;
-    TMS_Building& operator= (TMS_Building&& oldBuilding) noexcept;
+    TMS_Building(TMS_Building&& oldBuilding) noexcept = default;
+    TMS_Building& operator= (TMS_Building&& oldBuilding) noexcept = default;
 
 
     /***************** CONSTANTS *****************/
@@ -78,7 +79,7 @@ private:
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _oneTimeProduction; // One-Time production of items with their costs.
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
     tms::Rect<float> _span; // Building rectangle.
-    unsigned int _VAO, _VBO, _EBO; // OpenGL buffers.
+    TMS_Quad _drawQuad; // Quad for drawing the building.
     bool _selected; // True if the building is selected.
     bool _highlighted; // True if the building is highlighted (eg. by the mouse cursor).
     int _currenTexture; // Index of the current texture.

@@ -111,7 +111,7 @@ void TMS_Button::setH(const float h)
     setRenderingBuffers();
 }
 
-void TMS_Button::setColour(const int r, const int g, const int b, const int a)
+void TMS_Button::setColour(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
 {
     _labelColour.r = r;
     _labelColour.g = g;

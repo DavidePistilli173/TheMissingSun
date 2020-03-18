@@ -30,7 +30,7 @@ public:
     bool addEntities(const std::vector<std::shared_ptr<TMS_Entity>>& entities); // Add multiple entities to the dispatcher.
 
     std::optional<TMS_Action> dispatchEvent(const SDL_Event& event, const TMS_EventData& eventData,
-                                            const glm::ivec2 cameraPos);
+                                            const glm::fvec2 cameraPos);
 
     void removeEntity(std::shared_ptr<TMS_Entity>& entity); // Remove a specific entity from the dispatcher.
 
