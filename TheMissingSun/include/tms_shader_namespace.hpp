@@ -1,12 +1,14 @@
 #ifndef TMS_SHADER_NAMESPACE_HPP
 #define TMS_SHADER_NAMESPACE_HPP
 
+#include <string_view>
+
 #include "tms.hpp"
 
 namespace tms::shader
 {
     /***************** RESOURCE LIST *****************/
-    const std::string LIST_FILE = "./config/shaders.xml";
+    constexpr std::string_view LIST_FILE = "./config/shaders.xml";
     constexpr char LIST_ROOT[] = "Shaders";
     constexpr char LIST_ELEMENT[] = "Shader";
     constexpr char LIST_ELEMENT_NAME[] = "Name";
@@ -24,9 +26,9 @@ namespace tms::shader
 
     /***************** MENU SHADER PATHS *****************/
     /* Common. */
-    const std::string PLAIN_VERTEX = "./shaders/common/plainVertex.glsl";
-    const std::string PLAIN_FRAGMENT = "./shaders/common/plainFragment.glsl";
-    const std::string HIGHLIGHT_FRAGMENT = "./shaders/common/highlightFragment.glsl";
+    constexpr std::string_view PLAIN_VERTEX = "./shaders/common/plainVertex.glsl";
+    constexpr std::string_view PLAIN_FRAGMENT = "./shaders/common/plainFragment.glsl";
+    constexpr std::string_view HIGHLIGHT_FRAGMENT = "./shaders/common/highlightFragment.glsl";
 
     /***************** UNFIORMS *****************/
     /* Common. */
@@ -60,7 +62,7 @@ namespace tms::shader
         TOT
     };
     /* List of shader names. */
-    const std::string NAMES[] =
+    constexpr std::string_view NAMES[] =
     {
         "plain",
         "highlight"

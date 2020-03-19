@@ -37,7 +37,11 @@ public:
 
 
     /***************** CONSTANTS *****************/
-    static const std::string REQUIRED_SHADERS[];
+    static constexpr std::string_view REQUIRED_SHADERS[] = 
+    {
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)],
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]
+    };
     static constexpr int ANIMATION_TIME = 1000; // Time to display the entire animation in ms.
 
     /***************** METHODS *****************/

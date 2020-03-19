@@ -1,13 +1,6 @@
 #include "../../include/tms_shader_namespace.hpp"
 #include "TMS_Building.hpp"
 
-/* Defitions of static variables. */
-const std::string TMS_Building::REQUIRED_SHADERS[] =
-{
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)],
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]
-};
-
 TMS_Building::TMS_Building() :
     TMS_Entity(),
     _name(""),

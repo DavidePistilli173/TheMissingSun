@@ -1,18 +1,5 @@
 #include "../../include/tms_building_namespace.hpp"
-#include "../../include/tms_shader_namespace.hpp"
-#include "../../include/tms_texture_namespace.hpp"
 #include "TMS_PlayerBase.hpp"
-
-/* Defitions of static variables. */
-const std::string TMS_PlayerBase::REQUIRED_SHADERS[] =
-{
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)],
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]
-};
-const std::string TMS_PlayerBase::REQUIRED_TEXTURES[] =
-{
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::TEST)]
-};
 
 TMS_PlayerBase::TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
                                const tms::Rect<float> baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders,
@@ -113,7 +100,7 @@ bool TMS_PlayerBase::_setInitialState()
     std::shared_ptr<TMS_Building> emptyBuilding = _buildingTypes.get(tms::building::EMPTY_BUILDING);
     if (emptyBuilding == nullptr)
     {
-        printf("Missing emtpy building (%s).\n", tms::building::EMPTY_BUILDING.c_str());
+        printf("Missing emtpy building (%s).\n", tms::building::EMPTY_BUILDING.data());
         return false;
     }
     _buildingGrid[INITIAL_BUILDING_ROW][INITIAL_BUILDING_COLUMN] = std::make_shared<TMS_Building>(*emptyBuilding);
@@ -129,7 +116,7 @@ bool TMS_PlayerBase::_setInitialState()
     return true;
 }
 
-bool TMS_PlayerBase::_build(const std::string& buildingName, const int row, const int column)
+bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, const int column)
 {
     /* If this is not a buildable slot, return. */
     if (row < 0 || row >= ROW_NUM || column < 0 || column >= COLUMN_NUM ||
@@ -143,7 +130,7 @@ bool TMS_PlayerBase::_build(const std::string& buildingName, const int row, cons
     std::shared_ptr<TMS_Building> emptyBuilding = _buildingTypes.get(tms::building::EMPTY_BUILDING);
     if (emptyBuilding == nullptr)
     {
-        printf("Missing empty building (%s).\n", tms::building::EMPTY_BUILDING.c_str());
+        printf("Missing empty building (%s).\n", tms::building::EMPTY_BUILDING.data());
         return false;
     }
 
@@ -151,7 +138,7 @@ bool TMS_PlayerBase::_build(const std::string& buildingName, const int row, cons
     _buildingGrid[row][column] = std::make_shared<TMS_Building>(*_buildingTypes.get(buildingName));
     if (_buildingGrid[row][column] == nullptr)
     {
-        printf("Could not find building %s.\n", buildingName.c_str());
+        printf("Could not find building %s.\n", buildingName.data());
         return false;
     }
     _buildingGrid[row][column]->setSpan({ _baseRect.x + column * _buildingWidth, 

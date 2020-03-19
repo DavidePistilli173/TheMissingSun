@@ -1,18 +1,4 @@
-#include "../../include/tms_shader_namespace.hpp"
-#include "../../include/tms_texture_namespace.hpp"
 #include "TMS_Background.hpp"
-
-/* Defitions of static variables. */
-const std::string TMS_Background::REQUIRED_SHADERS[] =
-{
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]
-};
-const std::string TMS_Background::REQUIRED_TEXTURES[] =
-{
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::SKY)],
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::SURFACE)],
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::UNDERGROUND)]
-};
 
 /* Build a two-level background: first level has the sky/surface, the second one has the underground. */
 TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,

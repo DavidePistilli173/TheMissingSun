@@ -1,6 +1,8 @@
 #ifndef TMS_BACKGROUND_HPP
 #define TMS_BACKGROUND_HPP
 
+#include "../../include/tms_shader_namespace.hpp"
+#include "../../include/tms_texture_namespace.hpp"
 #include "../TMS_Quad.hpp"
 #include "TMS_Entity.hpp"
 
@@ -26,8 +28,18 @@ public:
 
     /***************** CONSTANTS *****************/
     static constexpr float LEVEL_HEIGHT_FRACTION = 0.5f;
-    static const std::string REQUIRED_SHADERS[]; // List of all required shaders.
-    static const std::string REQUIRED_TEXTURES[]; // List of all required textures.
+    /* List of all required shaders. */
+    static constexpr std::string_view REQUIRED_SHADERS[] =
+    {
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)]
+    };
+    /* List of all required textures. */
+    static constexpr std::string_view REQUIRED_TEXTURES[] = 
+    {
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::SKY)],
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::SURFACE)],
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::UNDERGROUND)]
+    }; 
 
     /***************** METHODS *****************/
     /* Base class methods. */

@@ -1,6 +1,8 @@
 #ifndef TMS_PLAYERBASE_HPP
 #define TMS_PLAYERBASE_HPP
 
+#include "../../include/tms_shader_namespace.hpp"
+#include "../../include/tms_texture_namespace.hpp"
 #include "../TMS_Camera.hpp"
 #include "../TMS_EventDispatcher.hpp"
 #include "../TMS_ResourceContainer.hpp"
@@ -35,8 +37,17 @@ public:
     /* Cell that will contain the first building. */
     static constexpr int INITIAL_BUILDING_ROW = 0;
     static constexpr int INITIAL_BUILDING_COLUMN = 3;
-    static const std::string REQUIRED_SHADERS[]; // List of all required shaders.
-    static const std::string REQUIRED_TEXTURES[]; // List of all required textures.
+    /* List of all required shaders. */
+    static constexpr std::string_view REQUIRED_SHADERS[] = 
+    {
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)],
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]
+    };
+    /* List of all required textures. */
+    static constexpr std::string_view REQUIRED_TEXTURES[] = 
+    {
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::TEST)]
+    };
 
     /***************** METHODS *****************/
     /* Getters. */
@@ -53,7 +64,7 @@ private:
     /***************** METHODS *****************/
     void _setEvents(); // Set relevant events.
     bool _setInitialState(); // Set the initial state of the base.
-    bool _build(const std::string& buildingName, const int row, const int column);
+    bool _build(const std::string_view buildingName, const int row, const int column);
 
     /***************** VARIABLES *****************/
     TMS_EventDispatcher _eventDispatcher; // Event handler.

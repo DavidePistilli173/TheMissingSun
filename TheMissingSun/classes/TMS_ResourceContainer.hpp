@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "TMS_Shader.hpp"
 #include "TMS_Texture.hpp"
@@ -15,17 +16,17 @@ class TMS_ResourceContainer
 public:
     TMS_ResourceContainer() {};
 
-    bool loadResources(const std::string file); // Load the resources listed in an xml configuration file.
+    bool loadResources(const std::string_view file); // Load the resources listed in an xml configuration file.
     /* Load resources which require textures. */
-    bool loadResources(const std::string file, const TMS_ResourceContainer<TMS_Shader> shaders, 
+    bool loadResources(const std::string_view file, const TMS_ResourceContainer<TMS_Shader> shaders, 
                        const TMS_ResourceContainer<TMS_Texture>& textures);
 
     /* Get the resource with the specified id. */
-    std::shared_ptr<T> get(const std::string id) const
+    std::shared_ptr<T> get(const std::string_view id) const
     {
-        auto requiredData = _data.find(id);
+        auto requiredData = _data.find(id.data());
         if (requiredData == _data.end()) return nullptr;
-        return _data.find(id)->second;
+        return requiredData->second;
     }
 
 private:

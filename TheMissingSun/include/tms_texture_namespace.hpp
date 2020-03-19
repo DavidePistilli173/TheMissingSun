@@ -1,6 +1,8 @@
 #ifndef TMS_TEXTURE_NAMESPACE_HPP
 #define TMS_TEXTURE_NAMESPACE_HPP
 
+#include <string_view>
+
 #include "tms.hpp"
 
 namespace tms::texture
@@ -17,16 +19,16 @@ namespace tms::texture
     constexpr GLenum DEFAULT_MAG_FILTER = GL_LINEAR;
 
     /***************** RESOURCE LIST *****************/
-    const std::string LIST_FILE = "./config/textures.xml";
+    constexpr std::string_view LIST_FILE = "./config/textures.xml";
     constexpr char LIST_ROOT[] = "Textures";
     constexpr char LIST_ELEMENT[] = "Texture";
     constexpr char LIST_ELEMENT_NAME[] = "Name";
     constexpr char LIST_ELEMENT_FILE[] = "File";
 
     /***************** MENU *****************/
-    const std::string TEST = "./resources/textures/test/container.jpg";
-    const std::string MENU_BACKGROUND = "./resources/textures/main_menu/background.png";
-    const std::string MENU_BUTTON = "./resources/textures/main_menu/button.png";
+    constexpr std::string_view TEST = "./resources/textures/test/container.jpg";
+    constexpr std::string_view MENU_BACKGROUND = "./resources/textures/main_menu/background.png";
+    constexpr std::string_view MENU_BUTTON = "./resources/textures/main_menu/button.png";
 
     /***************** GAME *****************/
     /* List of all game textures. */
@@ -45,7 +47,7 @@ namespace tms::texture
         TOT
     };
     /* List of texture names. */
-    const std::string NAMES[] =
+    constexpr std::string_view NAMES[] =
     {
         "test",
         "sky",

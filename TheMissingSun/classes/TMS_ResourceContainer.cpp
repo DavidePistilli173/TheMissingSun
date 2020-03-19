@@ -7,7 +7,7 @@
 
 /***************** HELPER FUNCTIONS *****************/
 /* Set a cost list for a building. */
-std::optional<TMS_Item> getItem(tinyxml2::XMLElement* itemRoot, const std::string& buildingName, 
+std::optional<TMS_Item> getItem(tinyxml2::XMLElement* itemRoot, const std::string_view buildingName, 
                                 const TMS_ResourceContainer<TMS_Texture>& textures)
 {
     TMS_Item item;
@@ -16,7 +16,7 @@ std::optional<TMS_Item> getItem(tinyxml2::XMLElement* itemRoot, const std::strin
     if (auto name = itemRoot->FirstChildElement(tms::building::LIST_NAME);
         name == nullptr)
     {
-        printf("Missing item name in the cost list for building %s.\n", buildingName.c_str());
+        printf("Missing item name in the cost list for building %s.\n", buildingName.data());
         return std::optional<TMS_Item>();
     }
     else
@@ -28,7 +28,7 @@ std::optional<TMS_Item> getItem(tinyxml2::XMLElement* itemRoot, const std::strin
     if (auto amount = itemRoot->FirstChildElement(tms::building::LIST_AMOUNT);
         amount == nullptr)
     {
-        printf("Missing item amount in the cost list for building %s.\n", buildingName.c_str());
+        printf("Missing item amount in the cost list for building %s.\n", buildingName.data());
         return std::optional<TMS_Item>();
     }
     else
@@ -52,7 +52,7 @@ std::optional<TMS_Item> getItem(tinyxml2::XMLElement* itemRoot, const std::strin
     return std::optional<TMS_Item>(item);
 }
 
-std::optional<std::pair<TMS_Item, std::vector<TMS_Item>>> getProductionItem(tinyxml2::XMLElement* itemRoot, const std::string& buildingName,
+std::optional<std::pair<TMS_Item, std::vector<TMS_Item>>> getProductionItem(tinyxml2::XMLElement* itemRoot, const std::string_view buildingName,
                                                                             const TMS_ResourceContainer<TMS_Texture>& textures)
 {
     /* Get the item to be produced. */
@@ -67,7 +67,7 @@ std::optional<std::pair<TMS_Item, std::vector<TMS_Item>>> getProductionItem(tiny
         auto costItemRoot = costListRoot->FirstChildElement(tms::building::LIST_ITEM);
         if (costItemRoot == nullptr)
         {
-            printf("Empty cost list for building %s.\n", buildingName.c_str());
+            printf("Empty cost list for building %s.\n", buildingName.data());
             return std::optional<std::pair<TMS_Item, std::vector<TMS_Item>>>();
         }
         while (costItemRoot != nullptr)
@@ -84,14 +84,14 @@ std::optional<std::pair<TMS_Item, std::vector<TMS_Item>>> getProductionItem(tiny
 
 /* Shader specialisation. */
 template<>
-bool TMS_ResourceContainer<TMS_Shader>::loadResources(const std::string file)
+bool TMS_ResourceContainer<TMS_Shader>::loadResources(const std::string_view file)
 {
     /* Load the list of resources. */
     tinyxml2::XMLDocument resourceList;
-    resourceList.LoadFile(file.c_str());
+    resourceList.LoadFile(file.data());
     if (resourceList.Error())
     {
-        printf("Unable to load %s.\n", file.c_str());
+        printf("Unable to load %s.\n", file.data());
         printf("%s\n", resourceList.ErrorIDToName(resourceList.ErrorID()));
         return false;
     }
@@ -101,14 +101,14 @@ bool TMS_ResourceContainer<TMS_Shader>::loadResources(const std::string file)
     tinyxml2::XMLElement* root = resourceList.FirstChildElement(tms::shader::LIST_ROOT);
     if (root == nullptr)
     {
-        printf("Wrong format for file %s.\n", file.c_str());
+        printf("Wrong format for file %s.\n", file.data());
         return false;
     }
     /* Find the first shader. */
     tinyxml2::XMLElement* shader = root->FirstChildElement(tms::shader::LIST_ELEMENT);
     if (shader == nullptr)
     {
-        printf("No shaders found in file %s.\n", file.c_str());
+        printf("No shaders found in file %s.\n", file.data());
         return false;
     }
 
@@ -159,14 +159,14 @@ bool TMS_ResourceContainer<TMS_Shader>::loadResources(const std::string file)
 
 /* Texture specialisation. */
 template<>
-bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string file)
+bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string_view file)
 {
     /* Load the list of resources. */
     tinyxml2::XMLDocument resourceList;
-    resourceList.LoadFile(file.c_str());
+    resourceList.LoadFile(file.data());
     if (resourceList.Error())
     {
-        printf("Unable to load %s.\n", file.c_str());
+        printf("Unable to load %s.\n", file.data());
         printf("%s\n", resourceList.ErrorIDToName(resourceList.ErrorID()));
         return false;
     }
@@ -176,14 +176,14 @@ bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string file)
     tinyxml2::XMLElement* root = resourceList.FirstChildElement(tms::texture::LIST_ROOT);
     if (root == nullptr)
     {
-        printf("Wrong format for file %s.\n", file.c_str());
+        printf("Wrong format for file %s.\n", file.data());
         return false;
     }
     /* Find the first texture. */
     tinyxml2::XMLElement* texture = root->FirstChildElement(tms::texture::LIST_ELEMENT);
     if (texture == nullptr)
     {
-        printf("No textures found in file %s.\n", file.c_str());
+        printf("No textures found in file %s.\n", file.data());
         return false;
     }
 
@@ -214,15 +214,15 @@ bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string file)
 
 /* Building specialisation. */
 template<>
-bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, const TMS_ResourceContainer<TMS_Shader> shaders, 
+bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view file, const TMS_ResourceContainer<TMS_Shader> shaders, 
                                                         const TMS_ResourceContainer<TMS_Texture>& textures)
 {
     /* Load the file into memory. */
     tinyxml2::XMLDocument buildingList;
-    buildingList.LoadFile(file.c_str());
+    buildingList.LoadFile(file.data());
     if (buildingList.Error())
     {
-        printf("Unable to load %s.\n", file.c_str());
+        printf("Unable to load %s.\n", file.data());
         printf("%s\n", buildingList.ErrorIDToName(buildingList.ErrorID()));
         return false;
     }
@@ -231,7 +231,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, 
     tinyxml2::XMLElement* root = buildingList.FirstChildElement(tms::building::LIST_ROOT);
     if (root == nullptr)
     {
-        printf("Wrong format for file %s.\n", file.c_str());
+        printf("Wrong format for file %s.\n", file.data());
         return false;
     }
 
@@ -248,7 +248,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, 
         {
             if (requiredShaders.emplace_back(shaders.get(TMS_Building::REQUIRED_SHADERS[i])) == nullptr)
             {
-                printf("Unable to find shader %s.\n", TMS_Building::REQUIRED_SHADERS[i].c_str());
+                printf("Unable to find shader %s.\n", TMS_Building::REQUIRED_SHADERS[i].data());
                 return false;
             }
         }
@@ -259,7 +259,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string file, 
         if (auto name = building->FirstChildElement(tms::building::LIST_NAME);
             building == nullptr)
         {
-            printf("Missing building name in file %s.\n", file.c_str());
+            printf("Missing building name in file %s.\n", file.data());
             return false;
         }
         else
