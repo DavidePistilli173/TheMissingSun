@@ -1,12 +1,12 @@
 #include "../../include/tms_shader_namespace.hpp"
 #include "TMS_Building.hpp"
 
-TMS_Building::TMS_Building() :
+TMS_Building::TMS_Building(const TMS_Texture* noTexture) :
     TMS_Entity(),
     _name(""),
     _buildTime(0),
     _span({0.0f,0.0f,0.0f,0.0f}),
-    _drawQuad(_span, this->getLayer(), GL_STATIC_DRAW),
+    _drawSprite(_span, this->getLayer(), noTexture, GL_STATIC_DRAW),
     _selected(false),
     _highlighted(false),
     _currenTexture(0),
@@ -20,7 +20,7 @@ TMS_Building::TMS_Building() :
 TMS_Building::TMS_Building(const TMS_Building& oldBuilding) :
     TMS_Entity(oldBuilding),
     _span({0.0f,0.0f,0.0f,0.0f}),
-    _drawQuad(_span, this->getLayer(), GL_STATIC_DRAW)
+    _drawSprite(_span, this->getLayer(), _textures[0].get(), GL_STATIC_DRAW)
 {
     /* Copy basic building information. */
     _name = oldBuilding._name;
@@ -67,7 +67,7 @@ TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
         }
         /* Reset the building's unique properties. */
         _span = { 0,0,0,0 };
-        _drawQuad = TMS_Quad(_span, this->getLayer(), GL_STATIC_DRAW);
+        _drawSprite = TMS_Sprite(_span, this->getLayer(), _textures[0].get(), GL_STATIC_DRAW);
         _selected = false;
         _highlighted = false;
         _currenTexture = 0;
@@ -119,8 +119,8 @@ void TMS_Building::render()
     else _shaders[static_cast<int>(Shader::PLAIN)]->use();
 
     /* Render the building. */
-    _textures[_currenTexture]->bind();
-    _drawQuad.draw();
+    _drawSprite.setTexture(_textures[_currenTexture].get());
+    _drawSprite.draw();
 }
 
 const std::string& TMS_Building::getName() const
@@ -137,7 +137,7 @@ void TMS_Building::setSpan(const tms::Rect<float>& span)
 {
     /* Update the building's span. */
     _span = span;
-    _drawQuad.resize(span);
+    _drawSprite.setSpan(span);
 }
 
 bool TMS_Building::setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders)

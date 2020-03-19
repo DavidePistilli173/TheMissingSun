@@ -217,6 +217,14 @@ template<>
 bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view file, const TMS_ResourceContainer<TMS_Shader> shaders, 
                                                         const TMS_ResourceContainer<TMS_Texture>& textures)
 {
+    /* Load the "missing texture" texture. */
+    const TMS_Texture* noTexture = textures.get(tms::texture::NAMES[static_cast<int>(tms::texture::Name::MISSING_TEXTURE)]).get();
+    if (noTexture == nullptr)
+    {
+        printf("Unable to find texture %s\n", tms::texture::NAMES[static_cast<int>(tms::texture::Name::MISSING_TEXTURE)].data());
+        return false;
+    }
+
     /* Load the file into memory. */
     tinyxml2::XMLDocument buildingList;
     buildingList.LoadFile(file.data());
@@ -240,7 +248,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
          building != nullptr;
          building = building->NextSiblingElement())
     {
-        TMS_Building currentBuilding;
+        TMS_Building currentBuilding(noTexture);
 
         /* Set the building's shaders. */
         std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;

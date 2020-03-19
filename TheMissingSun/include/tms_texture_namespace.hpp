@@ -35,6 +35,7 @@ namespace tms::texture
     enum class Name
     {
         TEST,
+        MISSING_TEXTURE,
         SKY,
         SURFACE,
         UNDERGROUND,
@@ -50,6 +51,7 @@ namespace tms::texture
     constexpr std::string_view NAMES[] =
     {
         "test",
+        "no_tex",
         "sky",
         "surface",
         "underground",

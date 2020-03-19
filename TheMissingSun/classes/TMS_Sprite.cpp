@@ -15,6 +15,12 @@ TMS_Sprite::TMS_Sprite(const tms::Rect<float> span, const tms::Layer layer, cons
     _quad.set(_span, layer, tms::DEFAULT_TEX_COORDS);
 }
 
+void TMS_Sprite::draw()
+{
+    _texture->bind();
+    _quad.draw();
+}
+
 void TMS_Sprite::setPosition(const float x, const float y)
 {
     _span.x = x;
@@ -34,10 +40,8 @@ void TMS_Sprite::setSpan(const tms::Rect<float> span)
 
 bool TMS_Sprite::setTexture(const TMS_Texture* texture)
 {
-    if (texture == nullptr) return false;
     _texture = texture;
     if (_texMode == TexMode::FIT) _fitTexture();
-    _quad.resize(_span);
     return true;
 }
 
@@ -50,11 +54,18 @@ void TMS_Sprite::_fitTexture()
     if (texAspectRatio > spanAspectRatio)
     {
         _span.h = _maxSpan.w / texAspectRatio;
-        _span.y += (_maxSpan.h - _span.h) / 2;
+        _span.y = _maxSpan.y + (_maxSpan.h - _span.h) / 2;
+        _quad.resize(_span);
     }
     else if (texAspectRatio < spanAspectRatio)
     {
         _span.w = _maxSpan.h * texAspectRatio;
-        _span.x += (_maxSpan.w - _span.w) / 2;
+        _span.x = _maxSpan.x + (_maxSpan.w - _span.w) / 2;
+        _quad.resize(_span);
+    }
+    else if (spanAspectRatio - (_span.w / _span.h) != 0)
+    {
+        _span = _maxSpan;
+        _quad.resize(_span);
     }
 }

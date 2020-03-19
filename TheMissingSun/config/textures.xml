@@ -6,6 +6,11 @@
         <Name>test</Name>
         <File>./resources/textures/test/container.jpg</File>
     </Texture>
+    <!-- Texture to use when the correct one is missing. -->
+    <Texture>
+        <Name>no_tex</Name>
+        <File>./resources/textures/core/missing_tex.png</File>
+    </Texture>
     <!-- Skybox. -->
     <Texture>
         <Name>sky</Name>

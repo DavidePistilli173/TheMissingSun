@@ -40,10 +40,11 @@ public:
     void setWrapX(const GLenum setting);
     void setWrapY(const GLenum setting);
     /* Bind the current texture. */
-    void bind()
+    void bind() const
     {
         glBindTexture(GL_TEXTURE_2D, _id);
     }
+
 private:
     /**************** METHODS ****************/
     void _loadTexture(tms::surface_t& textureSurface, DataFormat format);
