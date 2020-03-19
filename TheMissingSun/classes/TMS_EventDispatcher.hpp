@@ -37,7 +37,7 @@ public:
 private:
     int _totalEntities; // Total number of entities in the lists.
     /* One set for each event type. Each set is ordered with respect to each entity's layer. */
-    std::set<std::shared_ptr<TMS_Entity>, EntityComparator> _entities[static_cast<int>(tms::EventType::TOT)];
+    std::multiset<std::shared_ptr<TMS_Entity>, EntityComparator> _entities[static_cast<int>(tms::EventType::TOT)];
 };
 
 #endif

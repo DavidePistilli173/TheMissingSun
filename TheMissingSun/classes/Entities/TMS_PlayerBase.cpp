@@ -156,7 +156,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
     if (upRow >= 0 && _buildingGrid[upRow][column] == nullptr)
     {
         _buildingGrid[upRow][column] = std::make_shared<TMS_Building>(*emptyBuilding);
-        _buildingGrid[row][column]->setSpan({ _baseRect.x + column * _buildingWidth,
+        _buildingGrid[upRow][column]->setSpan({ _baseRect.x + column * _buildingWidth,
                                               _baseRect.y + upRow * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
@@ -165,7 +165,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
     if (downRow < ROW_NUM && _buildingGrid[downRow][column] == nullptr)
     {
         _buildingGrid[downRow][column] = std::make_shared<TMS_Building>(*emptyBuilding);
-        _buildingGrid[row][column]->setSpan({ _baseRect.x + column * _buildingWidth,
+        _buildingGrid[downRow][column]->setSpan({ _baseRect.x + column * _buildingWidth,
                                               _baseRect.y + downRow * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
@@ -174,7 +174,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
     if (leftColumn >= 0 && _buildingGrid[row][leftColumn] == nullptr)
     {
         _buildingGrid[row][leftColumn] = std::make_shared<TMS_Building>(*emptyBuilding);
-        _buildingGrid[row][column]->setSpan({ _baseRect.x + leftColumn * _buildingWidth,
+        _buildingGrid[row][leftColumn]->setSpan({ _baseRect.x + leftColumn * _buildingWidth,
                                               _baseRect.y + row * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
@@ -183,7 +183,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
     if (rightColumn < COLUMN_NUM && _buildingGrid[row][rightColumn] == nullptr)
     {
         _buildingGrid[row][rightColumn] = std::make_shared<TMS_Building>(*emptyBuilding);
-        _buildingGrid[row][column]->setSpan({ _baseRect.x + rightColumn * _buildingWidth,
+        _buildingGrid[row][rightColumn]->setSpan({ _baseRect.x + rightColumn * _buildingWidth,
                                               _baseRect.y + row * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
