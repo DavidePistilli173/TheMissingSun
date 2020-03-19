@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <string_view>
 
 #include "../include/glad/glad.h"
 #include "../include/tms.hpp"
@@ -18,8 +19,8 @@ public:
     };
 
     TMS_Texture(); // Create an empty texture.
-    TMS_Texture(const std::string fileName); // Load a texture from file.
-    TMS_Texture(const std::string text, const SDL_Color textColour, const tms::font_t& font); // Generate a texture from text.
+    TMS_Texture(const std::string_view fileName); // Load a texture from file.
+    TMS_Texture(const std::string_view text, const SDL_Color textColour, const tms::font_t& font); // Generate a texture from text.
     ~TMS_Texture()
     {
         glDeleteTextures(1, &_id);

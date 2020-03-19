@@ -2,6 +2,7 @@
 #define TMS_SHADER_HPP
 
 #include <vector>
+#include <string_view>
 
 #include "../include/tms.hpp"
 
@@ -17,7 +18,7 @@ public:
 
     TMS_Shader(); // Build an empty shader.
     /* Build a shader from source files. Throws std::string in case of error. */
-    TMS_Shader(const std::string vertexShader, const std::string fragmentShader); 
+    TMS_Shader(const std::string_view vertexShader, const std::string_view fragmentShader); 
     ~TMS_Shader(); // Correctly destroy the shader.
     /* Shader class cannot be copied. */
     TMS_Shader(const TMS_Shader& oldShader) = delete;

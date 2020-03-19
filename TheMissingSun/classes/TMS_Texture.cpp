@@ -17,24 +17,24 @@ TMS_Texture::TMS_Texture() :
 {
 }
 
-TMS_Texture::TMS_Texture(const std::string fileName)
+TMS_Texture::TMS_Texture(const std::string_view fileName)
 {
     /* Load the file into an SDL surface. */
     tms::surface_t textureSurface(
-        IMG_Load(fileName.c_str()),
+        IMG_Load(fileName.data()),
         [](SDL_Surface* surf) { SDL_FreeSurface(surf); }
     );
-    if (textureSurface == nullptr) throw "Failed to load texture " + fileName + "\n " + IMG_GetError();
+    if (textureSurface == nullptr) throw std::string("Failed to load texture ") + fileName.data() + "\n " + IMG_GetError();
     _loadTexture(textureSurface, DataFormat::PNG_JPG);
 }
 
-TMS_Texture::TMS_Texture(const std::string text, const SDL_Color textColour, const tms::font_t& font)
+TMS_Texture::TMS_Texture(const std::string_view text, const SDL_Color textColour, const tms::font_t& font)
 {
     tms::surface_t textureSurface(
-        TTF_RenderUTF8_Blended(font.get(), text.c_str(), textColour),
+        TTF_RenderUTF8_Blended(font.get(), text.data(), textColour),
         [](SDL_Surface* surf) { SDL_FreeSurface(surf); }
     );
-    if (textureSurface == nullptr) throw "Failed to generate texture from text " + text + "\n " + TTF_GetError();
+    if (textureSurface == nullptr) throw std::string("Failed to generate texture from text ") + text.data() + "\n " + TTF_GetError();
     _loadTexture(textureSurface, DataFormat::BLENDED_TEXT);
 }
 

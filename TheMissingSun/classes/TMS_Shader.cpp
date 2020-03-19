@@ -8,21 +8,21 @@ TMS_Shader::TMS_Shader() :
     _id(0)
 {}
 
-TMS_Shader::TMS_Shader(const std::string vertexShader, const std::string fragmentShader)
+TMS_Shader::TMS_Shader(const std::string_view vertexShader, const std::string_view fragmentShader)
 {
     /* Open the vertex shader source code. */
     tms::file_t vertexShaderFile(
-        SDL_RWFromFile(vertexShader.c_str(), "r"),
+        SDL_RWFromFile(vertexShader.data(), "r"),
         [](SDL_RWops* file) {SDL_RWclose(file); }
     );
-    if (vertexShaderFile == nullptr) throw ("Failed to open vertex shader " + vertexShader + "\n" + SDL_GetError());
+    if (vertexShaderFile == nullptr) throw std::string("Failed to open vertex shader ") + vertexShader.data() + "\n" + SDL_GetError();
 
     /* Open the fragment shader source code. */
     tms::file_t fragmentShaderFile(
-        SDL_RWFromFile(fragmentShader.c_str(), "r"),
+        SDL_RWFromFile(fragmentShader.data(), "r"),
         [](SDL_RWops* file) {SDL_RWclose(file); }
     );
-    if (fragmentShaderFile == nullptr) throw ("Failed to open fragment shader " + fragmentShader + "\n" + SDL_GetError());
+    if (fragmentShaderFile == nullptr) throw std::string("Failed to open fragment shader ") + fragmentShader.data() + "\n" + SDL_GetError();
 
     /* Strings that will contain the shader code. */
     std::string vertexShaderCode, fragmentShaderCode;
@@ -94,7 +94,7 @@ TMS_Shader::TMS_Shader(const std::string vertexShader, const std::string fragmen
         glGetShaderInfoLog(vertexShaderId, tms::SHADER_LOG_SIZE, nullptr, log);
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
-        throw ("Failed to compile vertex shader " + vertexShader + "\n" + log);
+        throw std::string("Failed to compile vertex shader ") + vertexShader.data() + "\n" + log;
     }
 
     /* Compile the fragment shader. */
@@ -105,7 +105,7 @@ TMS_Shader::TMS_Shader(const std::string vertexShader, const std::string fragmen
         glGetShaderInfoLog(fragmentShaderId, tms::SHADER_LOG_SIZE, nullptr, log);
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
-        throw ("Failed to compile fragment shader " + fragmentShader + "\n" + log);
+        throw std::string("Failed to compile fragment shader ") + fragmentShader.data() + "\n" + log;
     }
 
     /* Attach shaders and link shader program. */
@@ -120,7 +120,7 @@ TMS_Shader::TMS_Shader(const std::string vertexShader, const std::string fragmen
         glDeleteProgram(_id);
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
-        throw ("Failed to link shader from vertex shader " + vertexShader + " and fragment shader " + fragmentShader + "\n" + log);
+        throw std::string("Failed to link shader from vertex shader ") + vertexShader.data() + " and fragment shader " + fragmentShader.data() + "\n" + log;
     }
 
     glDetachShader(_id, vertexShaderId);
