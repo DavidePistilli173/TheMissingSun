@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{04480054-975b-40db-af19-487a54152300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\UI">
+      <UniqueIdentifier>{a48d7f4b-9a22-430e-adc7-fd8a1c751670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\UI">
+      <UniqueIdentifier>{6638df7d-d03d-4ad0-988a-9eb894db9bae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="classes\TMS_Base.cpp">
@@ -84,12 +90,6 @@
     <ClCompile Include="classes\Entities\TMS_Item.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="classes\Entities\TMS_UIList.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\Entities\TMS_UIElement.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="classes\TMS_GLVAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="classes\TMS_Sprite.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\UI\TMS_UIElement.cpp">
+      <Filter>Source Files\Entities\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\UI\TMS_UIList.cpp">
+      <Filter>Source Files\Entities\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,12 +176,6 @@
     <ClInclude Include="classes\TMS_EventData.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classes\Entities\TMS_UIList.hpp">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\Entities\TMS_UIElement.hpp">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="classes\TMS_GLBuffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -187,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="classes\TMS_Sprite.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\UI\TMS_UIElement.hpp">
+      <Filter>Header Files\Entities\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\UI\TMS_UIList.hpp">
+      <Filter>Header Files\Entities\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

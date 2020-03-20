@@ -1,20 +1,29 @@
 #include "TMS_Quad.hpp"
 
 TMS_Quad::TMS_Quad(const GLenum usage) :
-    _ebo(TMS_GLBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tms::EBO_QUAD_DATA, usage)),
+    _ebo(TMS_GLBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tms::EBO_QUAD_DATA, GL_STATIC_DRAW)),
     _vbo(GL_ARRAY_BUFFER, usage),
-    _vao(_vbo, _ebo, VBO_COORD_COMPS, VBO_TEX_COMPS)
+    _vao(_vbo, _ebo, VBO_COORD_COMPS, VBO_TEX_COMPS),
+    _usage(usage)
 {
 }
 
 TMS_Quad::TMS_Quad(const tms::Rect<float> coords, const tms::Layer layer,
                    const GLenum usage, const tms::Rect<float> texCoords) :
-    _ebo(TMS_GLBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tms::EBO_QUAD_DATA, usage)),
+    _ebo(TMS_GLBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tms::EBO_QUAD_DATA, GL_STATIC_DRAW)),
     _vbo(TMS_GLBuffer<float>(GL_ARRAY_BUFFER, usage)),
-    _vao(_vbo, _ebo, VBO_COORD_COMPS, VBO_TEX_COMPS)
+    _vao(_vbo, _ebo, VBO_COORD_COMPS, VBO_TEX_COMPS),
+    _usage(usage)
 {
     set(coords, layer, texCoords);
 }
+
+TMS_Quad::TMS_Quad(const TMS_Quad& otherQuad) :
+    _ebo(TMS_GLBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tms::EBO_QUAD_DATA, GL_STATIC_DRAW)),
+    _vbo(TMS_GLBuffer<float>(GL_ARRAY_BUFFER, otherQuad._vboData, VBO_SIZE, otherQuad._usage)),
+    _vao(_vbo, _ebo, VBO_COORD_COMPS, VBO_TEX_COMPS),
+    _usage(otherQuad._usage)
+{}
 
 void TMS_Quad::draw()
 {

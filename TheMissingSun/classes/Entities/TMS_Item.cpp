@@ -31,7 +31,7 @@ int TMS_Item::getAmount() const
     return _amount;
 }
 
-const std::string& TMS_Item::getName() const
+std::string_view TMS_Item::getName() const
 {
     return _name;
 }
@@ -54,7 +54,7 @@ bool TMS_Item::setAmount(const int amount)
     return true;
 }
 
-void TMS_Item::setRect(const tms::Rect<float> span)
+void TMS_Item::setSpan(const tms::Rect<float> span)
 {
     _span = span;
 }

@@ -21,6 +21,11 @@ void TMS_Sprite::draw()
     _quad.draw();
 }
 
+tms::Rect<float> TMS_Sprite::getSpan() const
+{
+    return _span;
+}
+
 void TMS_Sprite::setPosition(const float x, const float y)
 {
     _span.x = x;

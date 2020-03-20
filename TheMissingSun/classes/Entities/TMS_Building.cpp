@@ -115,7 +115,7 @@ void TMS_Building::render()
     _drawSprite.draw();
 }
 
-const std::string& TMS_Building::getName() const
+std::string_view TMS_Building::getName() const
 {
     return _name;
 }
@@ -125,7 +125,7 @@ void TMS_Building::setName(const std::string& name)
     _name = name;
 }
 
-void TMS_Building::setSpan(const tms::Rect<float>& span)
+void TMS_Building::setSpan(const tms::Rect<float> span)
 {
     /* Update the building's span. */
     _span = span;

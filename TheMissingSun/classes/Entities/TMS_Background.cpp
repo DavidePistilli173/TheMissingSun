@@ -24,6 +24,11 @@ TMS_Background::TMS_Background(std::vector<const TMS_Shader*>& shaders, std::vec
     _setEvents();
 }
 
+std::string_view TMS_Background::getName() const
+{
+    return std::string_view();
+}
+
 tms::Layer TMS_Background::getLayer() const
 {
     return tms::Layer::BACKGROUND_LAYER;
@@ -60,6 +65,10 @@ void TMS_Background::render()
     _undergroundQuad.draw();
 
     glBindVertexArray(0);
+}
+
+void TMS_Background::setSpan(tms::Rect<float> span)
+{
 }
 
 void TMS_Background::_setEvents()

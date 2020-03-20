@@ -55,11 +55,11 @@ public:
     void render() override;
 
     /* Getters. */
-    const std::string& getName() const;
+    std::string_view getName() const override;
 
     /* Setters. */
     void setName(const std::string& name);
-    void setSpan(const tms::Rect<float>& span);
+    void setSpan(const tms::Rect<float> span) override;
     bool setShaders(const std::vector<const TMS_Shader*>& shaders);
     bool setBuildTime(const int buildTime);
     void addBuildCost(const TMS_Item& item);

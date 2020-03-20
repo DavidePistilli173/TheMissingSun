@@ -32,15 +32,16 @@ public:
         return this->getLayer() >= rightEntity.getLayer();
     }
 
-    /* Getters. */
-    virtual tms::Layer getLayer() const = 0; // Return the entities' depth layer.
-    virtual std::vector<tms::EventType>& getRelevantEvents() = 0; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
     virtual bool checkCollision(const float x, const float y) const = 0;
+    virtual tms::Layer getLayer() const = 0; // Return the entity's depth layer.
+    virtual std::string_view getName() const = 0; // Return the entity's name.
+    virtual std::vector<tms::EventType>& getRelevantEvents() = 0; // Return the events relevant for the current entity.
     /* Handle each event passed to this entity. */
     virtual void handleEvent(const SDL_Event& event) = 0;
     /* Render the object on screen. */
     virtual void render() = 0;
+    virtual void setSpan(tms::Rect<float> span) = 0; // Set the entity's boundaries.
 
     unsigned int id; // ID given by the owner class.
 

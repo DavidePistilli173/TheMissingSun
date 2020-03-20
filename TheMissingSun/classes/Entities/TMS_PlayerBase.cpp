@@ -17,6 +17,11 @@ TMS_PlayerBase::TMS_PlayerBase(std::vector<const TMS_Shader*>& shaders, std::vec
     _setEvents();
 }
 
+std::string_view TMS_PlayerBase::getName() const
+{
+    return std::string_view();
+}
+
 tms::Layer TMS_PlayerBase::getLayer() const
 {
     return tms::default_layer();
@@ -86,6 +91,10 @@ void TMS_PlayerBase::render()
             if (_buildingGrid[i][j] != nullptr) _buildingGrid[i][j]->render();
         }
     }
+}
+
+void TMS_PlayerBase::setSpan(tms::Rect<float> span)
+{
 }
 
 void TMS_PlayerBase::_setEvents()

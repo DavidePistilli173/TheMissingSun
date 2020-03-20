@@ -1,10 +1,10 @@
 #ifndef TMS_UILIST_HPP
 #define TMS_UILIST_HPP
 
-#include "../../include/tms_shader_namespace.hpp"
-#include "../../include/tms_texture_namespace.hpp"
-#include "../TMS_Camera.hpp"
-#include "TMS_Entity.hpp"
+#include "../../../include/tms_shader_namespace.hpp"
+#include "../../../include/tms_texture_namespace.hpp"
+#include "../../TMS_Camera.hpp"
+#include "../TMS_Entity.hpp"
 #include "TMS_UIElement.hpp"
 
 template <typename T>
@@ -80,7 +80,7 @@ public:
     }
 
 private:
-    std::vector<TMS_UIElement<T>> _contents; // Contents of the list.
+    //std::vector<TMS_UIElement<T>> _contents; // Contents of the list.
     tms::Rect<float> _span; // Position and size of the list.
 };
 

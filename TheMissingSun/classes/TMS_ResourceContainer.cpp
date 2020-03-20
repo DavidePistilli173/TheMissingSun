@@ -300,7 +300,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
             auto costItem = costRoot->FirstChildElement(tms::building::LIST_ITEM);
             if (costItem == nullptr)
             {
-                printf("Empty cost list for building %s.\n", currentBuilding.getName().c_str());
+                printf("Empty cost list for building %s.\n", currentBuilding.getName().data());
                 return false;
             }
             while (costItem != nullptr)
@@ -319,7 +319,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
             auto itemRoot = fixedProductionRoot->FirstChildElement(tms::building::LIST_ITEM);
             if (itemRoot == nullptr)
             {
-                printf("Empty fixed production list for building %s.\n", currentBuilding.getName().c_str());
+                printf("Empty fixed production list for building %s.\n", currentBuilding.getName().data());
                 return false;
             }
             while (itemRoot != nullptr)
@@ -340,7 +340,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
             auto itemRoot = continuousProductionRoot->FirstChildElement(tms::building::LIST_ITEM);
             if (itemRoot == nullptr)
             {
-                printf("Empty continuous production list for building %s.\n", currentBuilding.getName().c_str());
+                printf("Empty continuous production list for building %s.\n", currentBuilding.getName().data());
                 return false;
             }
             while (itemRoot != nullptr)
@@ -361,7 +361,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
             auto itemRoot = oneTimeProductionRoot->FirstChildElement(tms::building::LIST_ITEM);
             if (itemRoot == nullptr)
             {
-                printf("Empty one-time production list for building %s.\n", currentBuilding.getName().c_str());
+                printf("Empty one-time production list for building %s.\n", currentBuilding.getName().data());
                 return false;
             }
             while (itemRoot != nullptr)
@@ -382,7 +382,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
             auto itemRoot = storageRoot->FirstChildElement(tms::building::LIST_ITEM);
             if (itemRoot == nullptr)
             {
-                printf("Empty storage list for building %s.\n", currentBuilding.getName().c_str());
+                printf("Empty storage list for building %s.\n", currentBuilding.getName().data());
                 return false;
             }
             while (itemRoot != nullptr)
@@ -404,7 +404,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
             auto textureElement = textureListRoot->FirstChildElement(tms::building::LIST_TEXTURE_ELEMENT);
             if (textureElement == nullptr)
             {
-                printf("Empty texture list for building %s.\n", currentBuilding.getName().c_str());
+                printf("Empty texture list for building %s.\n", currentBuilding.getName().data());
                 return false;
             }
             while (textureElement != nullptr)

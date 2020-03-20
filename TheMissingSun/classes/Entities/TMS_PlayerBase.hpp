@@ -51,6 +51,7 @@ public:
 
     /***************** METHODS *****************/
     /* Getters. */
+    std::string_view getName() const override;
     tms::Layer getLayer() const override; // Return the entities' depth layer.
     std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
@@ -59,6 +60,7 @@ public:
     void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
     void render() override;
+    void setSpan(tms::Rect<float> span) override;
 
 private:
     /***************** METHODS *****************/

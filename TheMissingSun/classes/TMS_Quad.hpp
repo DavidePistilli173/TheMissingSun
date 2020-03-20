@@ -12,6 +12,11 @@ public:
     TMS_Quad(const GLenum usage = GL_STATIC_DRAW);
     TMS_Quad(const tms::Rect<float> coords, const tms::Layer layer,
              const GLenum usage = GL_STATIC_DRAW, const tms::Rect<float> texCoords = tms::DEFAULT_TEX_COORDS);
+    ~TMS_Quad() = default;
+    TMS_Quad(const TMS_Quad& otherQuad);
+    TMS_Quad& operator=(const TMS_Quad& otherQuad) = delete;
+    TMS_Quad(TMS_Quad&& otherQuad) = default;
+    TMS_Quad& operator=(TMS_Quad&& otherQuad) = default;
 
     /***************** CONSTANTS *****************/
     static constexpr int VBO_COORD_COMPS = 3; // Number of coordinate components for each vertex.
@@ -32,6 +37,7 @@ private:
     TMS_GLBuffer<unsigned int> _ebo;
     TMS_GLBuffer<float> _vbo;
     TMS_GLVAO _vao;
+    GLenum _usage;
 
     float _vboData[VBO_SIZE] = {}; // Raw VBO data.
 

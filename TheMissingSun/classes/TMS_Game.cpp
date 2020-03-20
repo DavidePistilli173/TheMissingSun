@@ -36,7 +36,6 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     }
 
     /* Load initial entities. */
-    int currentEntity = 0;
     /* Load the background. */
     std::vector<const TMS_Shader*> requiredShaders;
     for (int i = 0; i < static_cast<int>(TMS_Background::Shader::TOT); ++i)
