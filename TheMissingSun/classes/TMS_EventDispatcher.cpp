@@ -5,7 +5,7 @@ TMS_EventDispatcher::TMS_EventDispatcher() :
 {
 }
 
-bool TMS_EventDispatcher::addEntity(const std::shared_ptr<TMS_Entity>& entity)
+bool TMS_EventDispatcher::addEntity(TMS_Entity* entity)
 {
     /* Check that the entity is in a valid layer.*/
     int index = tms::layer_index(entity->getLayer());
@@ -21,7 +21,7 @@ bool TMS_EventDispatcher::addEntity(const std::shared_ptr<TMS_Entity>& entity)
     return true;
 }
 
-bool TMS_EventDispatcher::addEntities(const std::vector<std::shared_ptr<TMS_Entity>>& entities)
+bool TMS_EventDispatcher::addEntities(const std::vector<TMS_Entity*>& entities)
 {
     for (auto& entity : entities)
     {
@@ -34,7 +34,7 @@ std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& ev
                                                              const glm::fvec2 cameraPos)
 {
     /* Convert the SDL event type into tms EventType and handle the event. */
-    std::set<std::shared_ptr<TMS_Entity>>::iterator iterator;
+    std::set<TMS_Entity*>::iterator iterator;
     std::optional<TMS_Action> action = std::optional<TMS_Action>(TMS_Action()); // Return value;
     switch (event.type)
     {
@@ -99,7 +99,7 @@ std::optional<TMS_Action> TMS_EventDispatcher::dispatchEvent(const SDL_Event& ev
     return std::optional<TMS_Action>();
 }
 
-void TMS_EventDispatcher::removeEntity(std::shared_ptr<TMS_Entity>& entity)
+void TMS_EventDispatcher::removeEntity(TMS_Entity* entity)
 {
     /* Remove the entity from each set it is in. */
     std::vector<tms::EventType> relevantEvents = entity->getRelevantEvents();

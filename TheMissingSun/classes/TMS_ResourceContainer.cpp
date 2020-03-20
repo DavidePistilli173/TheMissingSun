@@ -122,10 +122,10 @@ bool TMS_ResourceContainer<TMS_Shader>::loadResources(const std::string_view fil
         std::string fragmentFile = shader->FirstChildElement(tms::shader::LIST_ELEMENT_FRAGMENT)->FirstChild()->Value();
 
         /* Create the shader. */
-        std::shared_ptr<TMS_Shader> shaderPtr;
+        std::unique_ptr<TMS_Shader> shaderPtr;
         try
         {
-            shaderPtr = std::make_shared<TMS_Shader>(TMS_Shader(vertexFile, fragmentFile));
+            shaderPtr = std::make_unique<TMS_Shader>(TMS_Shader(vertexFile, fragmentFile));
         }
         catch (std::string e)
         {
@@ -149,7 +149,7 @@ bool TMS_ResourceContainer<TMS_Shader>::loadResources(const std::string_view fil
         }
 
         /* Add the shader to the container. */
-        _data.insert(std::pair<std::string, std::shared_ptr<TMS_Shader>>(name, shaderPtr));
+        _data.insert(std::move(std::make_pair(name, std::move(shaderPtr))));
 
         shader = shader->NextSiblingElement();
     }
@@ -194,11 +194,10 @@ bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string_view fi
         std::string name = texture->FirstChildElement(tms::texture::LIST_ELEMENT_NAME)->FirstChild()->Value();
         std::string file = texture->FirstChildElement(tms::texture::LIST_ELEMENT_FILE)->FirstChild()->Value();
         /* Create the texture and add it to the container. */
-        std::shared_ptr<TMS_Texture> texturePtr;
         try
         {
-            texturePtr = std::make_shared<TMS_Texture>(TMS_Texture(file));
-            _data.insert(std::pair<std::string, std::shared_ptr<TMS_Texture>>(name, texturePtr));
+            std::unique_ptr<TMS_Texture> texturePtr = std::make_unique<TMS_Texture>(TMS_Texture(file));
+            _data.insert(std::move(std::make_pair(name, std::move(texturePtr))));
         }
         catch (std::string e)
         {
@@ -214,11 +213,11 @@ bool TMS_ResourceContainer<TMS_Texture>::loadResources(const std::string_view fi
 
 /* Building specialisation. */
 template<>
-bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view file, const TMS_ResourceContainer<TMS_Shader> shaders, 
+bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view file, const TMS_ResourceContainer<TMS_Shader>& shaders, 
                                                         const TMS_ResourceContainer<TMS_Texture>& textures)
 {
     /* Load the "missing texture" texture. */
-    const TMS_Texture* noTexture = textures.get(tms::texture::NAMES[static_cast<int>(tms::texture::Name::MISSING_TEXTURE)]).get();
+    const TMS_Texture* noTexture = textures.get(tms::texture::NAMES[static_cast<int>(tms::texture::Name::MISSING_TEXTURE)]);
     if (noTexture == nullptr)
     {
         printf("Unable to find texture %s\n", tms::texture::NAMES[static_cast<int>(tms::texture::Name::MISSING_TEXTURE)].data());
@@ -251,7 +250,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
         TMS_Building currentBuilding(noTexture);
 
         /* Set the building's shaders. */
-        std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;
+        std::vector<const TMS_Shader*> requiredShaders;
         for (int i = 0; i < static_cast<int>(TMS_Building::Shader::TOT); ++i)
         {
             if (requiredShaders.emplace_back(shaders.get(TMS_Building::REQUIRED_SHADERS[i])) == nullptr)
@@ -426,7 +425,7 @@ bool TMS_ResourceContainer<TMS_Building>::loadResources(const std::string_view f
         }
 
         /* Add the building to the container. */
-        _data.insert(std::make_pair(currentBuilding.getName(), std::make_shared<TMS_Building>(currentBuilding)));
+        _data.insert(std::move(std::make_pair(currentBuilding.getName(), std::make_unique<TMS_Building>(currentBuilding))));
     }
 
     return true;

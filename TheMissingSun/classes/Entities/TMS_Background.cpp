@@ -1,7 +1,7 @@
 #include "TMS_Background.hpp"
 
 /* Build a two-level background: first level has the sky/surface, the second one has the underground. */
-TMS_Background::TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
+TMS_Background::TMS_Background(std::vector<const TMS_Shader*>& shaders, std::vector<const TMS_Texture*>& textures,
                                const tms::Rect<float> span, const int winW, const int winH, const unsigned int i) :
     TMS_Entity(shaders, textures, i),
     _skyQuad({ span.x, span.y, span.w, span.h * LEVEL_HEIGHT_FRACTION }, 

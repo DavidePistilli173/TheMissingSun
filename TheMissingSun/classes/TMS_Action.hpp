@@ -16,7 +16,7 @@ struct TMS_Action
     };
 
     ActionType action; // Action to perform.
-    std::shared_ptr<TMS_Entity> entity1; // Target entity.
+    TMS_Entity* entity1 = nullptr; // Target entity.
 };
 
 #endif

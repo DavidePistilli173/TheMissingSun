@@ -15,7 +15,7 @@ public:
         id(0)
     {};
     /* At creation the entity must have references to all resources. */
-    TMS_Entity(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
+    TMS_Entity(std::vector<const TMS_Shader*>& shaders, std::vector<const TMS_Texture*>& textures,
                unsigned int i = 0) :
         id(i),
         _shaders(shaders),
@@ -23,9 +23,13 @@ public:
     {}
 
     /* Entities are ordered base on their rendering layer. */
-    bool operator> (const TMS_Entity& rightEntity)
+    bool operator> (const TMS_Entity& rightEntity) const
     {
         return this->getLayer() > rightEntity.getLayer();
+    }
+    bool operator>= (const TMS_Entity& rightEntity) const
+    {
+        return this->getLayer() >= rightEntity.getLayer();
     }
 
     /* Getters. */
@@ -41,8 +45,8 @@ public:
     unsigned int id; // ID given by the owner class.
 
 protected:
-    std::vector<std::shared_ptr<TMS_Shader>> _shaders; // Vector containing all game shaders.
-    std::vector<std::shared_ptr<TMS_Texture>> _textures; // Vector containing all game textures.
+    std::vector<const TMS_Shader*> _shaders; // Vector containing all game shaders.
+    std::vector<const TMS_Texture*> _textures; // Vector containing all game textures.
     std::vector<tms::EventType> _relevantEvents; // Vector containing all relevant events for the current entity.
 };
 

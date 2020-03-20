@@ -1,7 +1,7 @@
 #include "../../include/tms_building_namespace.hpp"
 #include "TMS_PlayerBase.hpp"
 
-TMS_PlayerBase::TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
+TMS_PlayerBase::TMS_PlayerBase(std::vector<const TMS_Shader*>& shaders, std::vector<const TMS_Texture*>& textures,
                                const tms::Rect<float> baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders,
                                const TMS_ResourceContainer<TMS_Texture>& allTextures, const TMS_Camera& camera, unsigned int i) :
     TMS_Entity(shaders, textures, i),
@@ -53,7 +53,7 @@ void TMS_PlayerBase::handleEvent(const SDL_Event& event)
             {
                 if (_selectedBuilding != action.value().entity1) _selectedBuilding->nSelect();
             }
-            _selectedBuilding = std::static_pointer_cast<TMS_Building>(action.value().entity1);
+            _selectedBuilding = static_cast<TMS_Building*>(action.value().entity1);
             break;
         /* Deselect the currently selected building. */
         case TMS_Action::ActionType::N_SELECT:
@@ -66,7 +66,7 @@ void TMS_PlayerBase::handleEvent(const SDL_Event& event)
             {
                 if (_highlightedBuilding != action.value().entity1) _highlightedBuilding->nHighlight();
             }
-            _highlightedBuilding = std::static_pointer_cast<TMS_Building>(action.value().entity1);
+            _highlightedBuilding = static_cast<TMS_Building*>(action.value().entity1);
             break;
         /* Remove highlighting from the currently highlighted building. */
         case TMS_Action::ActionType::N_HIGHLIGHT:
@@ -97,13 +97,13 @@ void TMS_PlayerBase::_setEvents()
 bool TMS_PlayerBase::_setInitialState()
 {
     /* Set the first buildable spot. */
-    std::shared_ptr<TMS_Building> emptyBuilding = _buildingTypes.get(tms::building::EMPTY_BUILDING);
+    const TMS_Building* emptyBuilding = _buildingTypes.get(tms::building::EMPTY_BUILDING);
     if (emptyBuilding == nullptr)
     {
         printf("Missing emtpy building (%s).\n", tms::building::EMPTY_BUILDING.data());
         return false;
     }
-    _buildingGrid[INITIAL_BUILDING_ROW][INITIAL_BUILDING_COLUMN] = std::make_shared<TMS_Building>(*emptyBuilding);
+    _buildingGrid[INITIAL_BUILDING_ROW][INITIAL_BUILDING_COLUMN] = std::make_unique<TMS_Building>(*emptyBuilding);
     _buildingGrid[INITIAL_BUILDING_ROW][INITIAL_BUILDING_COLUMN]->setSpan({ _baseRect.x + INITIAL_BUILDING_COLUMN * _buildingWidth, 
                                                                             _baseRect.y + INITIAL_BUILDING_ROW * _buildingHeight, 
                                                                             _buildingWidth, 
@@ -127,7 +127,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
     }
 
     /* If there is no empty building return. */
-    std::shared_ptr<TMS_Building> emptyBuilding = _buildingTypes.get(tms::building::EMPTY_BUILDING);
+    const TMS_Building* emptyBuilding = _buildingTypes.get(tms::building::EMPTY_BUILDING);
     if (emptyBuilding == nullptr)
     {
         printf("Missing empty building (%s).\n", tms::building::EMPTY_BUILDING.data());
@@ -135,7 +135,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
     }
 
     /* Add the building to the grid. */
-    _buildingGrid[row][column] = std::make_shared<TMS_Building>(*_buildingTypes.get(buildingName));
+    _buildingGrid[row][column] = std::make_unique<TMS_Building>(*_buildingTypes.get(buildingName));
     if (_buildingGrid[row][column] == nullptr)
     {
         printf("Could not find building %s.\n", buildingName.data());
@@ -145,7 +145,7 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
                                           _baseRect.y + row * _buildingHeight, 
                                           _buildingWidth, 
                                           _buildingHeight });
-    _eventDispatcher.addEntity(_buildingGrid[row][column]);
+    _eventDispatcher.addEntity(_buildingGrid[row][column].get());
 
     /* Set the nearby cells as buildable. */
     int upRow = row - 1;
@@ -155,39 +155,39 @@ bool TMS_PlayerBase::_build(const std::string_view buildingName, const int row, 
 
     if (upRow >= 0 && _buildingGrid[upRow][column] == nullptr)
     {
-        _buildingGrid[upRow][column] = std::make_shared<TMS_Building>(*emptyBuilding);
+        _buildingGrid[upRow][column] = std::make_unique<TMS_Building>(*emptyBuilding);
         _buildingGrid[upRow][column]->setSpan({ _baseRect.x + column * _buildingWidth,
                                               _baseRect.y + upRow * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
-        _eventDispatcher.addEntity(_buildingGrid[upRow][column]);
+        _eventDispatcher.addEntity(_buildingGrid[upRow][column].get());
     }
     if (downRow < ROW_NUM && _buildingGrid[downRow][column] == nullptr)
     {
-        _buildingGrid[downRow][column] = std::make_shared<TMS_Building>(*emptyBuilding);
+        _buildingGrid[downRow][column] = std::make_unique<TMS_Building>(*emptyBuilding);
         _buildingGrid[downRow][column]->setSpan({ _baseRect.x + column * _buildingWidth,
                                               _baseRect.y + downRow * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
-        _eventDispatcher.addEntity(_buildingGrid[downRow][column]);
+        _eventDispatcher.addEntity(_buildingGrid[downRow][column].get());
     }
     if (leftColumn >= 0 && _buildingGrid[row][leftColumn] == nullptr)
     {
-        _buildingGrid[row][leftColumn] = std::make_shared<TMS_Building>(*emptyBuilding);
+        _buildingGrid[row][leftColumn] = std::make_unique<TMS_Building>(*emptyBuilding);
         _buildingGrid[row][leftColumn]->setSpan({ _baseRect.x + leftColumn * _buildingWidth,
                                               _baseRect.y + row * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
-        _eventDispatcher.addEntity(_buildingGrid[row][leftColumn]);
+        _eventDispatcher.addEntity(_buildingGrid[row][leftColumn].get());
     }
     if (rightColumn < COLUMN_NUM && _buildingGrid[row][rightColumn] == nullptr)
     {
-        _buildingGrid[row][rightColumn] = std::make_shared<TMS_Building>(*emptyBuilding);
+        _buildingGrid[row][rightColumn] = std::make_unique<TMS_Building>(*emptyBuilding);
         _buildingGrid[row][rightColumn]->setSpan({ _baseRect.x + rightColumn * _buildingWidth,
                                               _baseRect.y + row * _buildingHeight,
                                               _buildingWidth,
                                               _buildingHeight });
-        _eventDispatcher.addEntity(_buildingGrid[row][rightColumn]);
+        _eventDispatcher.addEntity(_buildingGrid[row][rightColumn].get());
     }
 
     return true;

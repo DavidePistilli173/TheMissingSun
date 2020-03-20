@@ -54,7 +54,7 @@ private:
 
     TMS_ResourceContainer<TMS_Shader> _shaders; // All game shaders.
     TMS_ResourceContainer<TMS_Texture> _textures; // All game textures.
-    std::vector<std::shared_ptr<TMS_Entity>> _entities; // Vector containing active game entities.
+    std::vector<std::unique_ptr<TMS_Entity>> _entities; // Vector containing active game entities.
 
     int _windowWidth, _windowHeight; // Dimensions of the window.
 };

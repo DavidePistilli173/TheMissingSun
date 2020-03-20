@@ -26,7 +26,7 @@ public:
         TOT
     };
 
-    TMS_PlayerBase(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
+    TMS_PlayerBase(std::vector<const TMS_Shader*>& shaders, std::vector<const TMS_Texture*>& textures,
                    const tms::Rect<float> baseRect, const TMS_ResourceContainer<TMS_Shader>& allShaders, 
                    const TMS_ResourceContainer<TMS_Texture>& allTextures, const TMS_Camera& camera, unsigned int i = 0);
 
@@ -68,12 +68,12 @@ private:
 
     /***************** VARIABLES *****************/
     TMS_EventDispatcher _eventDispatcher; // Event handler.
-    std::shared_ptr<TMS_Building> _buildingGrid[ROW_NUM][COLUMN_NUM]; // Grid containing all possible building slots.
+    std::unique_ptr<TMS_Building> _buildingGrid[ROW_NUM][COLUMN_NUM]; // Grid containing all possible building slots.
     tms::Rect<float> _baseRect; // Rectangle for the whole base.
     float _buildingWidth, _buildingHeight;
     TMS_ResourceContainer<TMS_Building> _buildingTypes; // Container for all existing building types.
-    std::shared_ptr<TMS_Building> _selectedBuilding; // Currently selected building / building slot.
-    std::shared_ptr<TMS_Building> _highlightedBuilding; // Currently highlighted building / building slot.
+    TMS_Building* _selectedBuilding = nullptr; // Currently selected building / building slot.
+    TMS_Building* _highlightedBuilding = nullptr; // Currently highlighted building / building slot.
     const TMS_Camera& _camera; // Reference to the game camera, used to get the camera's coordinates.
 };
 

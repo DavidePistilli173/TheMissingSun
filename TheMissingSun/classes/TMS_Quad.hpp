@@ -33,7 +33,7 @@ private:
     TMS_GLBuffer<float> _vbo;
     TMS_GLVAO _vao;
 
-    float _vboData[VBO_SIZE]; // Raw VBO data.
+    float _vboData[VBO_SIZE] = {}; // Raw VBO data.
 
 };
 

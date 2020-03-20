@@ -28,7 +28,7 @@ public:
 
     /**************** METHODS ****************/
     /* Use the shader program. */
-    void use()
+    void use() const
     {
         glUseProgram(_id);
     }
@@ -37,12 +37,12 @@ public:
 
     /* Uniform setters. */
     /* Set an integer uniform. */
-    void setUniform(const int uniformId, const int i)
+    void setUniform(const int uniformId, const int i) const
     {
         glUniform1i(_uniforms[uniformId].location, i);
     }
     /* Set a Mat4 uniform. */
-    void setUniform(const int uniformId, const GLfloat* matrix)
+    void setUniform(const int uniformId, const GLfloat* matrix) const
     {
         glUniformMatrix4fv(_uniforms[uniformId].location, 1, GL_FALSE, matrix);
     }

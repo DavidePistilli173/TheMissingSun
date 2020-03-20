@@ -38,12 +38,12 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     /* Load initial entities. */
     int currentEntity = 0;
     /* Load the background. */
-    std::vector<std::shared_ptr<TMS_Shader>> requiredShaders;
+    std::vector<const TMS_Shader*> requiredShaders;
     for (int i = 0; i < static_cast<int>(TMS_Background::Shader::TOT); ++i)
     {
         requiredShaders.push_back(_shaders.get(TMS_Background::REQUIRED_SHADERS[i]));
     }
-    std::vector<std::shared_ptr<TMS_Texture>> requiredTextures;
+    std::vector<const TMS_Texture*> requiredTextures;
     for (int i = 0; i < static_cast<int>(TMS_Background::Texture::TOT); ++i)
     {
         requiredTextures.push_back((_textures.get(TMS_Background::REQUIRED_TEXTURES[i])));
@@ -55,7 +55,7 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
                                         static_cast<float>(BACKGROUND_HEIGHT * _windowHeight) };
     try
     {
-        _entities.push_back(std::make_shared<TMS_Background>(
+        _entities.push_back(std::make_unique<TMS_Background>(
                             TMS_Background(requiredShaders,
                                            requiredTextures,
                                            backgroundSpan,
@@ -70,12 +70,12 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     }
 
     /* Load the player's base. */
-    std::vector<std::shared_ptr<TMS_Shader>> requiredBaseShaders;
+    std::vector<const TMS_Shader*> requiredBaseShaders;
     for (int i = 0; i < static_cast<int>(TMS_PlayerBase::Shader::TOT); ++i)
     {
         requiredBaseShaders.push_back(_shaders.get(TMS_PlayerBase::REQUIRED_SHADERS[i]));
     }
-    std::vector<std::shared_ptr<TMS_Texture>> requiredBaseTextures;
+    std::vector<const TMS_Texture*> requiredBaseTextures;
     for (int i = 0; i < static_cast<int>(TMS_PlayerBase::Texture::TOT); ++i)
     {
         requiredBaseTextures.push_back((_textures.get(TMS_PlayerBase::REQUIRED_TEXTURES[i])));
@@ -88,7 +88,7 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
                                       backgroundSpan.h - baseHeight, 
                                       static_cast<float>(BASE_WIDTH * _windowWidth), 
                                       baseHeight };
-        _entities.push_back(std::make_shared<TMS_PlayerBase>(
+        _entities.push_back(std::make_unique<TMS_PlayerBase>(
                             TMS_PlayerBase(requiredBaseShaders,
                                            requiredBaseTextures,
                                             baseRect,
@@ -103,7 +103,10 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
     }
 
     /* Add entities to the event dispatcher. */
-    _eventDispatcher.addEntities(_entities);
+    for (const auto& entity : _entities)
+    {
+        _eventDispatcher.addEntity(entity.get());
+    }
 
     /* Set up the camera. */
     _camera.setBoundaries({ backgroundSpan.x, backgroundSpan.x + backgroundSpan.w, backgroundSpan.y, backgroundSpan.y + backgroundSpan.h }, 

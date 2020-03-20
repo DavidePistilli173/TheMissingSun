@@ -60,14 +60,14 @@ public:
     /* Setters. */
     void setName(const std::string& name);
     void setSpan(const tms::Rect<float>& span);
-    bool setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders);
+    bool setShaders(const std::vector<const TMS_Shader*>& shaders);
     bool setBuildTime(const int buildTime);
     void addBuildCost(const TMS_Item& item);
     void addFixedProduction(const TMS_ItemProduction& production, const std::vector<TMS_ItemCost>& cost);
     void addContinuousProduction(const TMS_ItemProduction& production, const std::vector<TMS_ItemCost>& cost);
     void addOneTimeProduction(const TMS_ItemProduction& production, const std::vector<TMS_ItemCost>& cost);
     bool addStorage(const TMS_Item& item, const int maxCapacity);
-    void addTexture(const std::shared_ptr<TMS_Texture>& texture);
+    void addTexture(const TMS_Texture* texture);
 
     /* Building selection and highlighting. */
     void nSelect(); // Deselect the building.
@@ -76,19 +76,19 @@ public:
 private:
     /***************** VARIABLES *****************/
     std::string _name; // Name of the building.
-    int _buildTime; // Build time in seconds.
+    int _buildTime = 0; // Build time in seconds.
     std::vector<TMS_ItemCost> _buildCost; // Items required for construction.
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _fixedProduction; // Fixed production of items with their fixed costs.
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _continuousProduction; // Continuous production of items with their costs.
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _oneTimeProduction; // One-Time production of items with their costs.
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
-    tms::Rect<float> _span; // Building rectangle.
+    tms::Rect<float> _span = { 0.0f, 0.0f, 0.0f, 0.0f }; // Building rectangle.
     TMS_Sprite _drawSprite; // Quad for drawing the building.
-    bool _selected; // True if the building is selected.
-    bool _highlighted; // True if the building is highlighted (eg. by the mouse cursor).
-    int _currenTexture; // Index of the current texture.
+    bool _selected = false; // True if the building is selected.
+    bool _highlighted = false; // True if the building is highlighted (eg. by the mouse cursor).
+    int _currenTexture = 0; // Index of the current texture.
     TMS_Clock _clock; // Clock used for building animations.
-    int _timeStep; // Time interval between animation frames.
+    int _timeStep = 0; // Time interval between animation frames.
 };
 
 #endif

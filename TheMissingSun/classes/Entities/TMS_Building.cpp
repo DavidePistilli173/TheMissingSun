@@ -3,14 +3,7 @@
 
 TMS_Building::TMS_Building(const TMS_Texture* noTexture) :
     TMS_Entity(),
-    _name(""),
-    _buildTime(0),
-    _span({0.0f,0.0f,0.0f,0.0f}),
-    _drawSprite(_span, this->getLayer(), noTexture, GL_STATIC_DRAW),
-    _selected(false),
-    _highlighted(false),
-    _currenTexture(0),
-    _timeStep(0)
+    _drawSprite(_span, this->getLayer(), noTexture, GL_STATIC_DRAW)
 {
     /* Set relevant events. */
     _relevantEvents.push_back(tms::EventType::MOUSE_LEFT_CLICK);
@@ -19,8 +12,7 @@ TMS_Building::TMS_Building(const TMS_Texture* noTexture) :
 
 TMS_Building::TMS_Building(const TMS_Building& oldBuilding) :
     TMS_Entity(oldBuilding),
-    _span({0.0f,0.0f,0.0f,0.0f}),
-    _drawSprite(_span, this->getLayer(), _textures[0].get(), GL_STATIC_DRAW)
+    _drawSprite(_span, this->getLayer(), _textures[0], GL_STATIC_DRAW)
 {
     /* Copy basic building information. */
     _name = oldBuilding._name;
@@ -67,7 +59,7 @@ TMS_Building& TMS_Building::operator=(const TMS_Building& oldBuilding)
         }
         /* Reset the building's unique properties. */
         _span = { 0,0,0,0 };
-        _drawSprite = TMS_Sprite(_span, this->getLayer(), _textures[0].get(), GL_STATIC_DRAW);
+        _drawSprite = TMS_Sprite(_span, this->getLayer(), _textures[0], GL_STATIC_DRAW);
         _selected = false;
         _highlighted = false;
         _currenTexture = 0;
@@ -119,7 +111,7 @@ void TMS_Building::render()
     else _shaders[static_cast<int>(Shader::PLAIN)]->use();
 
     /* Render the building. */
-    _drawSprite.setTexture(_textures[_currenTexture].get());
+    _drawSprite.setTexture(_textures[_currenTexture]);
     _drawSprite.draw();
 }
 
@@ -140,7 +132,7 @@ void TMS_Building::setSpan(const tms::Rect<float>& span)
     _drawSprite.setSpan(span);
 }
 
-bool TMS_Building::setShaders(const std::vector<std::shared_ptr<TMS_Shader>>& shaders)
+bool TMS_Building::setShaders(const std::vector<const TMS_Shader*>& shaders)
 {
     if (shaders.size() != static_cast<int>(Shader::TOT)) return false;
     _shaders = shaders;
@@ -181,7 +173,7 @@ bool TMS_Building::addStorage(const TMS_Item& item, const int maxCapacity)
     return true;
 }
 
-void TMS_Building::addTexture(const std::shared_ptr<TMS_Texture>& texture)
+void TMS_Building::addTexture(const TMS_Texture* texture)
 {
     _textures.push_back(texture);
     _timeStep = static_cast<int>(static_cast<float>(ANIMATION_TIME) / _textures.size());

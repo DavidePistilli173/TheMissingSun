@@ -23,7 +23,7 @@ public:
         TOT
     };
 
-    TMS_Background(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
+    TMS_Background(std::vector<const TMS_Shader*>& shaders, std::vector<const TMS_Texture*>& textures,
                    const tms::Rect<float> span, const int winW, const int winH, const unsigned int id = 0);
 
     /***************** CONSTANTS *****************/

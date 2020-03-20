@@ -23,7 +23,7 @@ public:
 
 private:
     GLuint _id; // Buffer ID.
-    size_t _size; // Capacity of the buffer.
+    size_t _size = 0; // Capacity of the buffer.
     GLenum _target; // Buffer binding target.
     GLenum _usage; // Usage of the buffer (static/dynamic draw).
 };
@@ -31,7 +31,6 @@ private:
 /***************** DEFINITIONS *****************/
 template <typename T>
 inline TMS_GLBuffer<T>::TMS_GLBuffer(const GLenum target, const GLenum usage) :
-    _size(0),
     _target(target),
     _usage(usage)
 {

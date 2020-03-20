@@ -6,8 +6,8 @@
 /* Data needed to correctly interpret SDL events. */
 struct TMS_EventData
 {
-    std::shared_ptr<TMS_Entity> selectedEntity = nullptr; // Currently selected entity.
-    std::shared_ptr<TMS_Entity> highlightedEntity = nullptr; // Currently highlighted entity.
+    TMS_Entity* selectedEntity = nullptr; // Currently selected entity.
+    TMS_Entity* highlightedEntity = nullptr; // Currently highlighted entity.
 };
 
 #endif

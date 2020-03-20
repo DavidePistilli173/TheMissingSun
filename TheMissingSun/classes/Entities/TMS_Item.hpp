@@ -6,7 +6,7 @@
 class TMS_Item : TMS_Entity
 {
 public:
-    TMS_Item();
+    TMS_Item() = default;
 
     /***************** METHODS *****************/
     tms::Layer getLayer() const override; // Return the entities' depth layer.
@@ -24,15 +24,15 @@ public:
 
     /* Setters. */
     void setName(const std::string& name);
-    void setTexture(const std::shared_ptr<TMS_Texture>& texture); // Set the item's texture.
+    void setTexture(const TMS_Texture* texture); // Set the item's texture.
     bool setAmount(const int amount); // Change the number of items.
     void setRect(const tms::Rect<float> span); // Set the item's position.
 
 private:
     /***************** VARIABLES *****************/
     std::string _name; // Item name.
-    int _amount; // Number of items in this stack.
-    tms::Rect<float> _span; // Item rectangle.
+    int _amount = 0; // Number of items in this stack.
+    tms::Rect<float> _span = { 0.0f, 0.0f, 0.0f, 0.0f }; // Item rectangle.
 };
 
 #endif

@@ -1,12 +1,5 @@
 #include "TMS_Item.hpp"
 
-TMS_Item::TMS_Item() :
-    TMS_Entity(),
-    _amount(0),
-    _span({0.0f,0.0f,0.0f,0.0f})
-{
-}
-
 tms::Layer TMS_Item::getLayer() const
 {
     return tms::default_layer();
@@ -48,7 +41,7 @@ void TMS_Item::setName(const std::string& name)
     _name = name;
 }
 
-void TMS_Item::setTexture(const std::shared_ptr<TMS_Texture>& texture)
+void TMS_Item::setTexture(const TMS_Texture* texture)
 {
     if (_textures.size() == 0) _textures.push_back(texture);
     else _textures[0] = texture;
