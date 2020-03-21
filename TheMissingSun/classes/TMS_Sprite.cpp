@@ -26,13 +26,13 @@ tms::Rect<float> TMS_Sprite::getSpan() const
     return _span;
 }
 
-void TMS_Sprite::setPosition(const float x, const float y)
+void TMS_Sprite::setPosition(tms::Point2D<float> pos)
 {
-    _span.x = x;
-    _maxSpan.x = x;
-    _span.y = y;
-    _maxSpan.y = y;
-    _quad.move(x, y);
+    _span.x = pos.x;
+    _maxSpan.x = pos.x;
+    _span.y = pos.y;
+    _maxSpan.y = pos.y;
+    _quad.move(pos.x, pos.y);
 }
 
 void TMS_Sprite::setSpan(const tms::Rect<float> span)

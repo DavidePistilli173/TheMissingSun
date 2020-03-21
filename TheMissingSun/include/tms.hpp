@@ -39,6 +39,24 @@ namespace tms
             T minY, maxY; // Upper and lower limits of the rectangle.
         };
     };
+    /* Data for a 2D point. */
+    template <typename T>
+    struct Point2D
+    {
+        constexpr Point2D() {}
+        constexpr Point2D(T a, T b) :
+            x(a), y(b) {}
+        T x, y;
+    };
+    /* Numeric range. */
+    template <typename T>
+    struct Range
+    {
+        constexpr Range() {}
+        constexpr Range(T a, T b) :
+            min(a), max(b) {}
+        T min, max;
+    };
 
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */
@@ -132,7 +150,9 @@ namespace tms
     enum class EventType
     {
         MOUSE_LEFT_CLICK,
+        MOUSE_LEFT_CLICK_UP,
         MOUSE_HOVER,
+        MOUSE_WHEEL,
         KEY_PRESS,
         TOT
     };

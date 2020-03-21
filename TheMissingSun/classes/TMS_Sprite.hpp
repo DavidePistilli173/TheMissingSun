@@ -22,7 +22,7 @@ public:
     /***************** METHODS *****************/
     void draw(); // Draw the sprite.
     tms::Rect<float> getSpan() const;
-    void setPosition(const float x, const float y); // Change the sprite's coordinates.
+    void setPosition(tms::Point2D<float> pos); // Change the sprite's coordinates.
     void setSpan(const tms::Rect<float> span); // Change both position and size of the sprite.
     bool setTexture(const TMS_Texture* texture); // Change the sprite's texture.
 

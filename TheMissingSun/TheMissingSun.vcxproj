@@ -137,6 +137,7 @@
     <ClCompile Include="classes\Entities\TMS_PlayerBase.cpp" />
     <ClCompile Include="classes\Entities\UI\TMS_UIElement.cpp" />
     <ClCompile Include="classes\Entities\UI\TMS_UIList.cpp" />
+    <ClCompile Include="classes\Entities\UI\TMS_UIScrollBar.cpp" />
     <ClCompile Include="classes\TMS_Button.cpp" />
     <ClCompile Include="classes\TMS_Base.cpp" />
     <ClCompile Include="classes\TMS_Camera.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="classes\Entities\TMS_PlayerBase.hpp" />
     <ClInclude Include="classes\Entities\UI\TMS_UIElement.hpp" />
     <ClInclude Include="classes\Entities\UI\TMS_UIList.hpp" />
+    <ClInclude Include="classes\Entities\UI\TMS_UIScrollBar.hpp" />
     <ClInclude Include="classes\TMS_Action.hpp" />
     <ClInclude Include="classes\TMS_Button.hpp" />
     <ClInclude Include="classes\TMS_Base.hpp" />

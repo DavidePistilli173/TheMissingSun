@@ -53,4 +53,25 @@
         <Name>item_default</Name>
         <File>./resources/textures/items/default.png</File>
     </Texture>
+    <!-- UI Textures. -->
+    <!-- UI List background. -->
+    <Texture>
+        <Name>ui_lst_bckgrnd</Name>
+        <File>./resources/textures/ui/list_back.png</File>
+    </Texture>
+    <!-- UI Element background. -->
+    <Texture>
+        <Name>ui_elm</Name>
+        <File>./resources/textures/ui/ui_elem_back.png</File>
+    </Texture>
+    <!-- UI scroll bar background. -->
+    <Texture>
+        <Name>ui_scrll_bckgrnd</Name>
+        <File>./resources/textures/ui/scroll_bar_back.png</File>
+    </Texture>
+    <!-- UI scroll bar. -->
+    <Texture>
+        <Name>ui_scrll_bar</Name>
+        <File>./resources/textures/ui/scroll_bar.png</File>
+    </Texture>
 </Textures>

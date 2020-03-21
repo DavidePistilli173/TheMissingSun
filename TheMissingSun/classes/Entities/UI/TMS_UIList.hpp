@@ -6,6 +6,7 @@
 #include "../../TMS_Camera.hpp"
 #include "../TMS_Entity.hpp"
 #include "TMS_UIElement.hpp"
+#include "TMS_UIScrollBar.hpp"
 
 template <typename T>
 class TMS_UIList : public TMS_Entity
@@ -29,8 +30,7 @@ public:
 
     TMS_UIList(std::vector<std::shared_ptr<TMS_Shader>>& shaders, std::vector<std::shared_ptr<TMS_Texture>>& textures,
                const TMS_Camera& camera) :
-        TMS_Entity(shaders, textures),
-        _span({0.0f,0.0f,0.0f,0.0f})
+        TMS_Entity(shaders, textures)
     {
         /* Check that there is the right amount of shaders and textures. */
         if (_shaders.size() != static_cast<int>(Shader::TOT)) throw std::string("Wrong number of shaders for UIList.\n");
@@ -38,11 +38,25 @@ public:
         /* Set the relevant events for the list. */
         _relevantEvents.push_back(tms::EventType::MOUSE_HOVER);
         _relevantEvents.push_back(tms::EventType::MOUSE_LEFT_CLICK);
+        _relevantEvents.push_back(tms::EventType::MOUSE_LEFT_CLICK_UP);
+        _relevantEvents.push_back(tms::EventType::MOUSE_WHEEL);
     }
 
     /***************** CONSTANTS *****************/
-    static const std::string REQUIRED_SHADERS[]; // List of all required shaders.
-    static const std::string REQUIRED_TEXTURES[]; // List of all required textures.
+    /* List of all required shaders. */
+    static constexpr std::string_view REQUIRED_SHADERS[] = 
+    {
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)],
+        tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]
+    };
+    /* List of all required textures. */
+    static constexpr std::string_view REQUIRED_TEXTURES[] = 
+    {
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_LIST_BACKGROUND)],
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_ELEMENT)],
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_SCROLL_BACKGROUND)],
+        tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_SCROLL_BAR)]
+    };
 
     /***************** METHODS *****************/
     /* Check whether (x,y) is inside the current entity or not. */
@@ -80,22 +94,9 @@ public:
     }
 
 private:
-    //std::vector<TMS_UIElement<T>> _contents; // Contents of the list.
-    tms::Rect<float> _span; // Position and size of the list.
-};
-
-/* Definition of static variables. */
-template <typename T> const std::string REQUIRED_SHADERS[] =
-{
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::PLAIN)],
-    tms::shader::NAMES[static_cast<int>(tms::shader::Name::HIGHLIGHT)]
-};
-template <typename T> const std::string REQUIRED_TEXTURES[] =
-{
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_LIST_BACKGROUND)],
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_ELEMENT)],
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_SCROLL_BACKGROUND)],
-    tms::texture::NAMES[static_cast<int>(tms::texture::Name::UI_SCROLL_BAR)]
+    std::vector<TMS_UIElement<T>> _contents; // Contents of the list.
+    TMS_UIScrollBar _scrollBar; // Scroll bar for the list.
+    tms::Rect<float> _span = {0.0f, 0.0f, 0.0f, 0.0f}; // Position and size of the list.
 };
 
 #endif
