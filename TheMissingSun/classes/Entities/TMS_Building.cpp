@@ -72,11 +72,6 @@ tms::Layer TMS_Building::getLayer() const
     return tms::default_layer();
 }
 
-std::vector<tms::EventType>& TMS_Building::getRelevantEvents()
-{
-    return _relevantEvents;
-}
-
 bool TMS_Building::checkCollision(const float x, const float y) const
 {
     if (x >= _span.x && x <= _span.x + _span.w &&
@@ -113,11 +108,6 @@ void TMS_Building::render()
     /* Render the building. */
     _drawSprite.setTexture(_textures[_currenTexture]);
     _drawSprite.draw();
-}
-
-std::string_view TMS_Building::getName() const
-{
-    return _name;
 }
 
 void TMS_Building::setName(const std::string& name)
@@ -177,14 +167,4 @@ void TMS_Building::addTexture(const TMS_Texture* texture)
 {
     _textures.push_back(texture);
     _timeStep = static_cast<int>(static_cast<float>(ANIMATION_TIME) / _textures.size());
-}
-
-void TMS_Building::nSelect()
-{
-    _selected = false;
-}
-
-void TMS_Building::nHighlight()
-{
-    _highlighted = false;
 }

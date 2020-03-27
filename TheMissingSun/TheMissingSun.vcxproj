@@ -133,8 +133,10 @@
   <ItemGroup>
     <ClCompile Include="classes\Entities\TMS_Background.cpp" />
     <ClCompile Include="classes\Entities\TMS_Building.cpp" />
+    <ClCompile Include="classes\Entities\TMS_Entity.cpp" />
     <ClCompile Include="classes\Entities\TMS_Item.cpp" />
     <ClCompile Include="classes\Entities\TMS_PlayerBase.cpp" />
+    <ClCompile Include="classes\Entities\UI\TMS_ConstructionMenu.cpp" />
     <ClCompile Include="classes\Entities\UI\TMS_UIElement.cpp" />
     <ClCompile Include="classes\Entities\UI\TMS_UIList.cpp" />
     <ClCompile Include="classes\Entities\UI\TMS_UIScrollBar.cpp" />
@@ -167,6 +169,7 @@
     <ClInclude Include="classes\Entities\TMS_Entity.hpp" />
     <ClInclude Include="classes\Entities\TMS_Item.hpp" />
     <ClInclude Include="classes\Entities\TMS_PlayerBase.hpp" />
+    <ClInclude Include="classes\Entities\UI\TMS_ConstructionMenu.hpp" />
     <ClInclude Include="classes\Entities\UI\TMS_UIElement.hpp" />
     <ClInclude Include="classes\Entities\UI\TMS_UIList.hpp" />
     <ClInclude Include="classes\Entities\UI\TMS_UIScrollBar.hpp" />

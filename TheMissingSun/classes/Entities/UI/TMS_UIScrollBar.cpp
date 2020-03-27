@@ -39,16 +39,6 @@ tms::Layer TMS_UIScrollBar::getLayer() const
     return DEFAULT_LAYER;
 }
 
-std::string_view TMS_UIScrollBar::getName() const
-{
-    return std::string_view();
-}
-
-std::vector<tms::EventType>& TMS_UIScrollBar::getRelevantEvents()
-{
-    return _relevantEvents;
-}
-
 void TMS_UIScrollBar::handleEvent(const SDL_Event& event)
 {
     switch (event.type)

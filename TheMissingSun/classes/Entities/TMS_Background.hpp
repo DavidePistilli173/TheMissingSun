@@ -43,10 +43,8 @@ public:
 
     /***************** METHODS *****************/
     /* Base class methods. */
-    std::string_view getName() const override;
     tms::Layer getLayer() const override;
     bool checkCollision(const float x, const float y) const override;
-    std::vector<tms::EventType>& getRelevantEvents() override;
     void handleEvent(const SDL_Event& event) override;
     void render() override;
     void setSpan(tms::Rect<float> span) override;

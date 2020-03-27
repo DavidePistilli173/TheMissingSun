@@ -108,6 +108,12 @@
     <ClCompile Include="classes\Entities\UI\TMS_UIScrollBar.cpp">
       <Filter>Source Files\Entities\UI</Filter>
     </ClCompile>
+    <ClCompile Include="classes\Entities\TMS_Entity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Entities\UI\TMS_ConstructionMenu.cpp">
+      <Filter>Source Files\Entities\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\TMS_Base.hpp">
@@ -198,6 +204,9 @@
       <Filter>Header Files\Entities\UI</Filter>
     </ClInclude>
     <ClInclude Include="classes\Entities\UI\TMS_UIScrollBar.hpp">
+      <Filter>Header Files\Entities\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\Entities\UI\TMS_ConstructionMenu.hpp">
       <Filter>Header Files\Entities\UI</Filter>
     </ClInclude>
   </ItemGroup>

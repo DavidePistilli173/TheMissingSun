@@ -35,10 +35,12 @@ public:
     /* Check whether (x,y) is inside the current entity or not. */
     virtual bool checkCollision(const float x, const float y) const = 0;
     virtual tms::Layer getLayer() const = 0; // Return the entity's depth layer.
-    virtual std::string_view getName() const = 0; // Return the entity's name.
-    virtual std::vector<tms::EventType>& getRelevantEvents() = 0; // Return the events relevant for the current entity.
+    std::string_view getName() const; // Return the entity's name.
+    const std::vector<tms::EventType>& getRelevantEvents(); // Return the events relevant for the current entity.
     /* Handle each event passed to this entity. */
     virtual void handleEvent(const SDL_Event& event) = 0;
+    void nHighlight(); // Remove highlighting from the current entity.
+    void nSelect(); // Deselect the current entity.
     /* Render the object on screen. */
     virtual void render() = 0;
     virtual void setSpan(tms::Rect<float> span) = 0; // Set the entity's boundaries.
@@ -49,6 +51,9 @@ protected:
     std::vector<const TMS_Shader*> _shaders; // Vector containing all game shaders.
     std::vector<const TMS_Texture*> _textures; // Vector containing all game textures.
     std::vector<tms::EventType> _relevantEvents; // Vector containing all relevant events for the current entity.
+    bool _highlighted{ false }; // True if the entity is highlighted.
+    bool _selected{ false }; // True if the entity is selected.
+    std::string _name{}; // Name of the entity.
 };
 
 #endif

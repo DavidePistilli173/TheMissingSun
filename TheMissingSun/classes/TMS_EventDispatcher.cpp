@@ -105,6 +105,6 @@ void TMS_EventDispatcher::removeEntity(TMS_Entity* entity)
     std::vector<tms::EventType> relevantEvents = entity->getRelevantEvents();
     for (auto eventType : relevantEvents)
     {
-        _entities[static_cast<int>(eventType)].erase(_entities[static_cast<int>(eventType)].find(entity));
+        _entities[static_cast<int>(eventType)].erase(entity);
     }
 }

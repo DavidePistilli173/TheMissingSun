@@ -17,19 +17,9 @@ TMS_PlayerBase::TMS_PlayerBase(std::vector<const TMS_Shader*>& shaders, std::vec
     _setEvents();
 }
 
-std::string_view TMS_PlayerBase::getName() const
-{
-    return std::string_view();
-}
-
 tms::Layer TMS_PlayerBase::getLayer() const
 {
     return tms::default_layer();
-}
-
-std::vector<tms::EventType>& TMS_PlayerBase::getRelevantEvents()
-{
-    return _relevantEvents;
 }
 
 bool TMS_PlayerBase::checkCollision(const float x, const float y) const

@@ -4,7 +4,9 @@
 #include "../include/tms.hpp"
 #include "../include/tms_shader_namespace.hpp"
 #include "../include/tms_texture_namespace.hpp"
+#include "./Entities/TMS_Background.hpp"
 #include "./Entities/TMS_Entity.hpp"
+#include "./Entities/TMS_PlayerBase.hpp"
 #include "TMS_Camera.hpp"
 #include "TMS_Clock.hpp"
 #include "TMS_EventDispatcher.hpp"
@@ -54,7 +56,10 @@ private:
 
     TMS_ResourceContainer<TMS_Shader> _shaders; // All game shaders.
     TMS_ResourceContainer<TMS_Texture> _textures; // All game textures.
-    std::vector<std::unique_ptr<TMS_Entity>> _entities; // Vector containing active game entities.
+    std::vector<TMS_Entity*> _entities; // Vector containing active game entities.
+
+    std::unique_ptr<TMS_Background> _background; // Base background.
+    std::unique_ptr<TMS_PlayerBase> _base; // Player base.
 
     int _windowWidth, _windowHeight; // Dimensions of the window.
 };

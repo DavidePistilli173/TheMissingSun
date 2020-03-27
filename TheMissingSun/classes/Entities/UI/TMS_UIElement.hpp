@@ -46,18 +46,14 @@ public:
 
     /***************** METHODS *****************/
     bool checkCollision(const float x, const float y) const override;
-    std::string_view getName() const override;
     tms::Layer getLayer() const override;
-    std::vector<tms::EventType>& getRelevantEvents() override;
     void handleEvent(const SDL_Event& event) override;
-    void nHighlight(); // Undo the element's highlighting.
-    void nSelect(); // Undo the element's selection.
     void render() override;
     void setSpan(tms::Rect<float> span) override;
 
 private:
     /***************** VARIABLES *****************/
-    std::unique_ptr<TMS_Entity> _element = nullptr; // Data to be displayed.
+    std::unique_ptr<T> _element = nullptr; // Data to be displayed.
     TMS_Texture _labelTex; // Texture for the label.
     TMS_Sprite _label, _background; // Sprites for the element's label and background.
     bool _selected = false; // True when the element is selected.
@@ -77,21 +73,9 @@ inline bool TMS_UIElement<T>::checkCollision(const float x, const float y) const
 }
 
 template <typename T>
-inline std::string_view TMS_UIElement<T>::getName() const
-{
-    return std::string_view();
-}
-
-template <typename T>
 inline tms::Layer TMS_UIElement<T>::getLayer() const
 {
     return DEFAULT_LAYER;
-}
-
-template <typename T>
-inline std::vector<tms::EventType>& TMS_UIElement<T>::getRelevantEvents()
-{
-    return _relevantEvents;
 }
 
 template <typename T>
@@ -106,18 +90,6 @@ inline void TMS_UIElement<T>::handleEvent(const SDL_Event& event)
         _highlighted = true;
         break;
     }
-}
-
-template<typename T>
-inline void TMS_UIElement<T>::nHighlight()
-{
-    _highlighted = false;
-}
-
-template<typename T>
-inline void TMS_UIElement<T>::nSelect()
-{
-    _selected = false;
 }
 
 template <typename T>

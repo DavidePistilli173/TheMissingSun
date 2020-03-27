@@ -49,8 +49,6 @@ public:
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const float x, const float y) const override;
     tms::Layer getLayer() const override; // Return the entity's depth layer.
-    std::string_view getName() const override; // Return the entity's name.
-    std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Handle each event passed to this entity. */
     void handleEvent(const SDL_Event& event) override;
     void moveBar(tms::Point2D<int> mouse); // Move the bar depending on the last mouse movement.

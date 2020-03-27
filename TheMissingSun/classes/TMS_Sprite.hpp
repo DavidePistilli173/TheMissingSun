@@ -20,7 +20,7 @@ public:
                GLenum usage = GL_STATIC_DRAW, TexMode texMode = TexMode::FIT);
 
     /***************** METHODS *****************/
-    void draw(); // Draw the sprite.
+    void draw() const; // Draw the sprite.
     tms::Rect<float> getSpan() const;
     void setPosition(tms::Point2D<float> pos); // Change the sprite's coordinates.
     void setSpan(const tms::Rect<float> span); // Change both position and size of the sprite.

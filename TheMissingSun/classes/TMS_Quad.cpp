@@ -25,7 +25,7 @@ TMS_Quad::TMS_Quad(const TMS_Quad& otherQuad) :
     _usage(otherQuad._usage)
 {}
 
-void TMS_Quad::draw()
+void TMS_Quad::draw() const
 {
     _vao.bind();
     glDrawElements(GL_TRIANGLES, EBO_ELEMS, GL_UNSIGNED_INT, 0);

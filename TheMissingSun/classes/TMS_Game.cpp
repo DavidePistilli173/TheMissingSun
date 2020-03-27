@@ -2,8 +2,6 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
-#include "./Entities/TMS_Background.hpp"
-#include "./Entities/TMS_PlayerBase.hpp"
 #include "TMS_Game.hpp"
 
 
@@ -54,13 +52,10 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
                                         static_cast<float>(BACKGROUND_HEIGHT * _windowHeight) };
     try
     {
-        _entities.push_back(std::make_unique<TMS_Background>(
-                            TMS_Background(requiredShaders,
-                                           requiredTextures,
-                                           backgroundSpan,
-                                           _windowWidth,
-                                           _windowHeight,
-                                           _entities.size())));
+        _background = std::make_unique<TMS_Background>(TMS_Background(requiredShaders, requiredTextures, backgroundSpan,
+                                                                      _windowWidth, _windowHeight, _entities.size()));
+        _entities.push_back(_background.get());
+        _eventDispatcher.addEntity(_background.get());
     }
     catch (std::string e)
     {
@@ -87,24 +82,15 @@ tms::GameState TMS_Game::loadGame(const int winW, const int winH)
                                       backgroundSpan.h - baseHeight, 
                                       static_cast<float>(BASE_WIDTH * _windowWidth), 
                                       baseHeight };
-        _entities.push_back(std::make_unique<TMS_PlayerBase>(
-                            TMS_PlayerBase(requiredBaseShaders,
-                                           requiredBaseTextures,
-                                            baseRect,
-                                           _shaders,
-                                           _textures,
-                                           _camera)));
+        _base = std::make_unique<TMS_PlayerBase>(TMS_PlayerBase(requiredBaseShaders, requiredBaseTextures, baseRect,
+                                                                _shaders, _textures, _camera));
+        _entities.push_back(_base.get());
+        _eventDispatcher.addEntity(_base.get());
     }
     catch (std::string e)
     {
         printf("Unable to create the player's base.\n%s", e.c_str());
         return tms::GameState::EXIT;
-    }
-
-    /* Add entities to the event dispatcher. */
-    for (const auto& entity : _entities)
-    {
-        _eventDispatcher.addEntity(entity.get());
     }
 
     /* Set up the camera. */

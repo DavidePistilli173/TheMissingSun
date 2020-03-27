@@ -46,16 +46,12 @@ public:
 
     /***************** METHODS *****************/
     tms::Layer getLayer() const override; // Return the entities' depth layer.
-    std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const float x, const float y) const override;
     /* Handle each event passed to this entity. */
     void handleEvent(const SDL_Event& event) override;
     /* Render the object on screen. */
     void render() override;
-
-    /* Getters. */
-    std::string_view getName() const override;
 
     /* Setters. */
     void setName(const std::string& name);
@@ -69,13 +65,8 @@ public:
     bool addStorage(const TMS_Item& item, const int maxCapacity);
     void addTexture(const TMS_Texture* texture);
 
-    /* Building selection and highlighting. */
-    void nSelect(); // Deselect the building.
-    void nHighlight(); // Remove highlighting from the building.
-
 private:
     /***************** VARIABLES *****************/
-    std::string _name; // Name of the building.
     int _buildTime = 0; // Build time in seconds.
     std::vector<TMS_ItemCost> _buildCost; // Items required for construction.
     std::vector<std::pair<TMS_ItemProduction, std::vector<TMS_ItemCost>>> _fixedProduction; // Fixed production of items with their fixed costs.
@@ -84,8 +75,6 @@ private:
     std::vector<std::pair<TMS_Item, int>> _storage; // Item storage with maximum capacity.
     tms::Rect<float> _span = { 0.0f, 0.0f, 0.0f, 0.0f }; // Building rectangle.
     TMS_Sprite _drawSprite; // Quad for drawing the building.
-    bool _selected = false; // True if the building is selected.
-    bool _highlighted = false; // True if the building is highlighted (eg. by the mouse cursor).
     int _currenTexture = 0; // Index of the current texture.
     TMS_Clock _clock; // Clock used for building animations.
     int _timeStep = 0; // Time interval between animation frames.

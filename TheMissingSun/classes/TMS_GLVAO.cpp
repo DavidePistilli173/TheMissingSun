@@ -40,7 +40,7 @@ TMS_GLVAO& TMS_GLVAO::operator=(TMS_GLVAO&& otherVAO) noexcept
     return *this;
 }
 
-void TMS_GLVAO::bind()
+void TMS_GLVAO::bind() const
 {
     glBindVertexArray(_id);
 }

@@ -24,11 +24,6 @@ TMS_Background::TMS_Background(std::vector<const TMS_Shader*>& shaders, std::vec
     _setEvents();
 }
 
-std::string_view TMS_Background::getName() const
-{
-    return std::string_view();
-}
-
 tms::Layer TMS_Background::getLayer() const
 {
     return tms::Layer::BACKGROUND_LAYER;
@@ -37,11 +32,6 @@ tms::Layer TMS_Background::getLayer() const
 bool TMS_Background::checkCollision(const float x, const float y) const
 {
     return true;
-}
-
-std::vector<tms::EventType>& TMS_Background::getRelevantEvents()
-{
-    return _relevantEvents;
 }
 
 void TMS_Background::handleEvent(const SDL_Event& event)

@@ -5,11 +5,6 @@ tms::Layer TMS_Item::getLayer() const
     return tms::default_layer();
 }
 
-std::vector<tms::EventType>& TMS_Item::getRelevantEvents()
-{
-    return _relevantEvents;
-}
-
 bool TMS_Item::checkCollision(const float x, const float y) const
 {
     if (x >= _span.x && x <= _span.x + _span.w &&
@@ -29,11 +24,6 @@ void TMS_Item::render()
 int TMS_Item::getAmount() const
 {
     return _amount;
-}
-
-std::string_view TMS_Item::getName() const
-{
-    return _name;
 }
 
 void TMS_Item::setName(const std::string& name)

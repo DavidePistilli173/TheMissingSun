@@ -26,7 +26,7 @@ public:
     static constexpr int VBO_SIZE = (VBO_COORD_COMPS + VBO_TEX_COMPS) * VERTEX_NUM; // Size of the VBO in elements.
 
     /***************** METHODS *****************/
-    void draw(); // Draw the quad with the currently bound shader and texture.
+    void draw() const; // Draw the quad with the currently bound shader and texture.
     void move(const float x, const float y); // Move the quad.
     void resize(const tms::Rect<float> coords); // Resize the quad.
     void set(const tms::Rect<float> coords, tms::Layer layer, const tms::Rect<float> texCoords); // Set all the quad's data.

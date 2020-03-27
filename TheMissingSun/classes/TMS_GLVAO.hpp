@@ -17,7 +17,7 @@ public:
     TMS_GLVAO& operator=(TMS_GLVAO&& otherVAO) noexcept;
 
     /***************** METHODS *****************/
-    void bind();
+    void bind() const;
 
 private:
     GLuint _id;

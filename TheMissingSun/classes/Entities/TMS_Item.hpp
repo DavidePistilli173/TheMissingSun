@@ -3,15 +3,13 @@
 
 #include "TMS_Entity.hpp"
 
-class TMS_Item : TMS_Entity
+class TMS_Item : public TMS_Entity
 {
 public:
     TMS_Item() = default;
 
     /***************** METHODS *****************/
     tms::Layer getLayer() const override; // Return the entities' depth layer.
-    std::string_view getName() const override; // Get the item's name.
-    std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const float x, const float y) const override;
     /* Handle each event passed to this entity. */
@@ -30,7 +28,6 @@ public:
 
 private:
     /***************** VARIABLES *****************/
-    std::string _name; // Item name.
     int _amount = 0; // Number of items in this stack.
     tms::Rect<float> _span = { 0.0f, 0.0f, 0.0f, 0.0f }; // Item rectangle.
 };

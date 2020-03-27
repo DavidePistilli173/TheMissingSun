@@ -15,7 +15,7 @@ TMS_Sprite::TMS_Sprite(const tms::Rect<float> span, const tms::Layer layer, cons
     _quad.set(_span, layer, tms::DEFAULT_TEX_COORDS);
 }
 
-void TMS_Sprite::draw()
+void TMS_Sprite::draw() const
 {
     _texture->bind();
     _quad.draw();

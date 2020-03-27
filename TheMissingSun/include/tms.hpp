@@ -57,6 +57,15 @@ namespace tms
             min(a), max(b) {}
         T min, max;
     };
+    /* 2D size without position information. */
+    template <typename T>
+    struct Size
+    {
+        constexpr Size() {}
+        constexpr Size(T a, T b) :
+            w(a), h(b) {}
+        T w, h;
+    };
 
     /***************** CONSTANTS *****************/
     /* String used for the name of the window. */

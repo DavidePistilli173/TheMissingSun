@@ -51,9 +51,7 @@ public:
 
     /***************** METHODS *****************/
     /* Getters. */
-    std::string_view getName() const override;
     tms::Layer getLayer() const override; // Return the entities' depth layer.
-    std::vector<tms::EventType>& getRelevantEvents() override; // Return the events relevant for the current entity.
     /* Check whether (x,y) is inside the current entity or not. */
     bool checkCollision(const float x, const float y) const override;
     /* Handle each event passed to this entity. */
